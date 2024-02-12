@@ -1,0 +1,161 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - My ASP.NET Application</title>
+
+    <!-- Sweet alert -->
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+    <!-- Jquery -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+
+    <!-- Font awesome-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+    <!-- Custom CSS-->
+    <link rel="stylesheet" href="~/Content/Assets/CSS/Layout_CSS.css" />
+
+
+    @* Google fonts *@
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik&display=swap" rel="stylesheet">
+
+    @* Jquery table *@
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.css" />
+    <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.js"></script>
+
+    <!-- BootStrap JS-->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+    <!-- Bootsrap CSS-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+
+
+</head>
+<body>
+    <div id="wrapper">
+
+        <!--sidebar -->
+        <nav id="sidebar" class="shadow-lg">
+
+            <!--sidebar logo-->
+            <div id="sidebar-logo">
+                <div id="logo">
+
+                </div>
+            </div>
+            <div id="sidebar-strip" class="d-flex justify-content-center align-items-center">
+                @Session["FullName"].ToString()
+            </div>
+
+            <!--main sidebar content-->
+            <div id="sidebar-navigation">
+                @Html.Partial(Session["Navigation"].ToString())
+            </div>
+        </nav>
+
+        <!-- main content-->
+        <div id="content">   
+            <div id="overlayer"></div>
+            <span id="loader"></span>
+            <span id="loader2"></span>
+            @RenderBody()
+            <hr />
+            <footer>
+                <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+            </footer>
+        </div>
+    </div>   
+    @RenderSection("scripts", required: false)
+
+
+</body>
+</html>
+<script type="text/javascript">
+    $("#menu-toggle").click(function () {
+        $("#sidebar").toggleClass("toggle");
+    })
+
+    //this methos also works
+
+    //document.addEventListener("DOMContentLoaded", function () {
+    //    $("#loader").delay().fadeOut("slow");
+    //    $("#overlayer").delay().fadeOut("slow");
+    //});
+
+    //window.onload = function () {
+    //    $("#loader").delay().fadeOut("slow");
+    //    $("#loader2").delay().fadeOut("slow");
+    //    $("#overlayer").delay().fadeOut("slow");
+    //}
+
+    //this also works but was throwing error
+    $(window).on('load', function () {
+        $("#loader").delay().fadeOut("slow");
+        $("#loader2").delay().fadeOut("slow");
+        $("#overlayer").delay().fadeOut("slow");
+    })
+
+    //table check all script
+    $('#acheck2').click(function () {
+        if ($('#acheck2').is(":checked")) {
+            $("input[name='dcheck']").each(function () {
+                $(this).prop('checked', true);
+            });
+        }
+        else {
+            $("input[name='dcheck']").each(function () {
+                $(this).prop('checked', false);
+            });
+        };
+    });
+
+    $('#acexample tbody').on('change', 'input[type="checkbox"]', function () {
+        var tab1 = $('#acexample').DataTable();
+        var all = tab1.$('.selectclass').length;
+        var chkd1 = tab1.$('input[name="dcheck"]:checked').length;
+        var chkd2 = tab1.$('input[name="rowcheck"]:checked').length;
+
+
+        if (chkd1 != 0) {
+
+            if (all == chkd1) {
+                $("#acheck1").prop('checked', true);
+                $("#acheck2").prop('checked', true);
+                $("#select_all").prop('checked', true);
+            }
+            else {
+                $("#acheck1").prop('checked', false);
+                $("#acheck2").prop('checked', false);
+                $("#select_all").prop('checked', false);
+            }
+        }
+        if (chkd2 != 0) {
+
+            if (all == chkd2) {
+                $("#acheck1").prop('checked', true);
+                $("#acheck2").prop('checked', true);
+                $("#select_all").prop('checked', true);
+            }
+            else {
+                $("#acheck1").prop('checked', false);
+                $("#acheck2").prop('checked', false);
+                $("#select_all").prop('checked', false);
+            }
+        }
+        if (chkd1 == 0 && chkd2 == 0) {
+            $("#acheck1").prop('checked', false);
+            $("#acheck2").prop('checked', false);
+            $("#select_all").prop('checked', false);
+
+        }
+
+
+    });
+</script>
+
+

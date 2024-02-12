@@ -1,0 +1,226 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+<div id="page-content-topbar">
+    <div class="navbar navbar-expand-lg navbar-light border-bottom-0">
+
+        <!--button for toggling the sidebar-->
+        @Html.Partial("_TopLeft")
+
+        <!-- current page indication by breadcrumb-->
+        <div class="pt-3 ps-2 d-none d-md-block">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item n-active" aria-current="page">User Master</li>                   
+                </ol>
+            </nav>
+        </div>
+
+        <!-- last login and logout-->
+        @Html.Partial("_TopRight")
+
+    </div>
+</div>
+<div id="main-content">
+    <div class="card">
+        <div class="card-header">
+            <div class="row">
+                <div class="col-6">
+                    @Html.DropDownList("usertype",new List<SelectListItem> {
+                        new SelectListItem { Text = "All", Value = "All" },
+                        new SelectListItem { Text = "Image Uploaders (IU)", Value = "IU" },
+                        new SelectListItem { Text = "Image Approvers (IA)", Value = "IA" }
+
+                    }, new { @class = "form-control dropdown" })
+                </div>
+                <div class="col-6 text-end">
+                    <button type="button" class="btn btn-primary" id="add_user">
+                        <i class="fa fa-plus"> </i> &nbsp; Add
+                    </button>
+                    <button type="button" class="btn btn-danger" id="deactivate_user">
+                        <i class="fa fa-door-closed"> </i> &nbsp; Deactivate
+                    </button>
+                    <button type="button" class="btn btn-success" id="activate_user">
+                        <i class="fa fa-door-open"> </i> &nbsp; Activate
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-body">
+            <table id="acexample" class="table  table-bordered text-center" style="width:100%;">
+                <thead>
+                    <tr role="row">
+                        <th class="col-5-per text-center">
+                            <div class="icheck-primary d-inline align-center">
+                                <input type="checkbox" class="flat" id="acheck2">
+                                <label for="acheck2">
+                                </label>
+                            </div>
+                        </th>
+                        <th class="text-center">Name</th>
+                        <th class="text-center">UserType</th>
+                        <th class="text-center">Email</th>
+                        <th class="text-center">Status</th>
+                        <th class="text-center">Edit</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@if (TempData["message"] != null)
+{
+    <script type="text/javascript">
+             window.onload = function () {
+                swal("@TempData["message"]", "", "@TempData["messagetype"]");
+            };
+    </script>
+    TempData["message"] = null;
+}
+
+
+<script type="text/javascript">
+
+    //load table
+    var table;
+    $(document).ready(function () {
+        table = $('#acexample').dataTable({
+
+            dom: "<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>>" +
+                "<'row'<'col-sm-12 pt-3'tr>>" +
+                "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+            aoColumns: [
+
+                {
+                        'bSortable': false,
+                        'mRender': function (data, type, row) {
+
+                            return '<div class="icheck-primary d-inline"><input type="checkbox" id="check-' + row.Id + '" ' + ($('#acheck2').is(":checked") ? 'checked' : '') + ' value="' + row.Id + '" name="dcheck", class="selectclass")><label for="check-' + row.Id + '"></label></div>';
+
+                        }
+                },
+                { 'data': 'Full_Name' },
+                { 'data': 'UserType' },
+                { 'data': 'Email' },
+                { 'mRender': function (data,type, row) { return row.ActiveFlag == true ? "Active" : "Deactive" } },
+                {
+                    'bSortable': false,
+                    'mRender': function (data, type, row) {
+                        return '<a class="btn btn-warning btn-sm" href=#  onclick=EditUser(' + row.Id + ')> <i class="fa fa-pencil icon"></i>&nbsp&nbspEdit</a>';
+                    }
+                },
+
+            ],
+            ordering: false, //disable filtering ascending and descending
+            bFilter: true,//Enables Filtering
+            bServerSide: true,
+            sAjaxSource:'@Url.Action("GetUsers", "User")',
+            fnServerParams: function (aoData) {
+                aoData.push(
+                    { "name": "usertype", "value": $("#usertype").val() }
+                )
+            }
+         });
+    });
+
+
+    //reload table on change of user
+    $("#usertype").change(function () {
+        $('#acexample').DataTable().ajax.reload();
+    })
+
+    //add category
+    $("#add_user").click(function () {
+            window.location.href = '@Url.Action("Create", "User")'
+     })
+
+    //editCategory redirect
+    function EditUser(id) {
+        window.location.href = '@Url.Action("Edit", "User")?userId='+id;
+    }
+
+    //deactivate categories
+    $("#deactivate_user").on("click", function () {
+
+         var boxdata = [];
+        $("input[name='dcheck']:checked").each(function () {
+            boxdata.push($(this).val());
+        })
+
+        console.log(boxdata);
+
+        if (boxdata.length === 0) {
+            swal("Please select some records", "", "warning");
+            return false;
+        }
+
+         $.ajax({
+             type: "POST",
+             data: { ids: boxdata.join(',') },
+             url: '@Url.Action("Deactivate", "user")',
+             success: function (result) {
+                 let data = result.split("*");
+                 swal({
+                     title: data[1],
+                     icon: data[0],
+                 })
+                     .then((isConfirm) => {
+                         if (isConfirm) {
+                              window.location.href = "@Url.Content("~/user/Index")/";
+                         }
+                     });
+
+             },
+             error: function (error) {
+                 swal("Error occured!", "error");
+             }
+    })
+    })
+
+    //activate categories
+    $("#activate_user").on("click", function () {
+
+         var boxdata = [];
+        $("input[name='dcheck']:checked").each(function () {
+            boxdata.push($(this).val());
+        })
+
+        console.log(boxdata);
+
+        if (boxdata.length === 0) {
+            swal("Please select some records", "", "warning");
+            return false;
+        }
+
+         $.ajax({
+             type: "POST",
+             data: { ids: boxdata.join(',') },
+             url: '@Url.Action("activate", "user")',
+             success: function (result) {
+                 let data = result.split("*");
+                 swal({
+                     title: data[1],
+                     icon: data[0],
+                 })
+                     .then((isConfirm) => {
+                         if (isConfirm) {
+                              window.location.href = "@Url.Content("~/user/Index")/";
+                         }
+                     });
+
+             },
+             error: function (error) {
+                 swal("Error occured!", "error");
+             }
+    })
+    })
+</script>
+

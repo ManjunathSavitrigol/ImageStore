@@ -1,0 +1,225 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="ImageStoreModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Categories">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="Flag" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Images">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="Size" Type="decimal" Precision="4" Scale="2" Nullable="false" />
+          <Property Name="CategoryId" Type="int" Nullable="false" />
+          <Property Name="ResolutionId" Type="int" Nullable="false" />
+          <Property Name="FilePath" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="IsVerified" Type="bit" Nullable="false" />
+          <Property Name="VerifiedBy" Type="int" />
+          <Property Name="UploadDate" Type="datetime" Nullable="false" />
+          <Property Name="ApprovedDate" Type="datetime" />
+          <Property Name="Likes" Type="int" Nullable="false" />
+          <Property Name="Downloads" Type="int" Nullable="false" />
+          <Property Name="UploaderId" Type="int" Nullable="false" />
+          <Property Name="Tags" Type="nvarchar(max)" />
+          <Property Name="IsRejected" Type="bit" Nullable="false" />
+          <Property Name="RejectedDate" Type="datetime" />
+          <Property Name="RejectedBy" Type="int" />
+          <Property Name="Reason" Type="nvarchar" MaxLength="200" />
+        </EntityType>
+        <EntityType Name="ResolutionMaster">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Resolution" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Flag" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="User_Details">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Email" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="Pass" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="Full_Name" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="Last_Login" Type="datetime" />
+          <Property Name="Token" Type="nvarchar" MaxLength="200" />
+          <Property Name="UserType" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="ActiveFlag" Type="bit" Nullable="false" />
+          <Property Name="DOB" Type="date" />
+          <Property Name="Profile" Type="nvarchar(max)" />
+          <Property Name="MobileNo" Type="nvarchar" MaxLength="10" />
+          <Property Name="Bio" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityContainer Name="ImageStoreModelStoreContainer">
+          <EntitySet Name="Categories" EntityType="Self.Categories" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Images" EntityType="Self.Images" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ResolutionMaster" EntityType="Self.ResolutionMaster" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="User_Details" EntityType="Self.User_Details" Schema="dbo" store:Type="Tables" />
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="ImageStoreModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="ImageStoreEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="User_Details" EntityType="ImageStoreModel.User_Details" />
+          <EntitySet Name="Categories" EntityType="ImageStoreModel.Categories" />
+          <EntitySet Name="ResolutionMaster" EntityType="ImageStoreModel.ResolutionMaster" />
+          <EntitySet Name="Images" EntityType="ImageStoreModel.Images" />
+        </EntityContainer>
+        <EntityType Name="User_Details">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Email" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Pass" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Full_Name" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Last_Login" Type="DateTime" Precision="3" />
+          <Property Name="Token" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="UserType" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="ActiveFlag" Type="Boolean" Nullable="false" />
+          <Property Name="DOB" Type="DateTime" Precision="0" />
+          <Property Name="Profile" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="MobileNo" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="Bio" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="Categories">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Flag" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ResolutionMaster">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Resolution" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Flag" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Images">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Size" Type="Decimal" Nullable="false" Precision="4" Scale="2" />
+          <Property Name="CategoryId" Type="Int32" Nullable="false" />
+          <Property Name="ResolutionId" Type="Int32" Nullable="false" />
+          <Property Name="FilePath" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="IsVerified" Type="Boolean" Nullable="false" />
+          <Property Name="VerifiedBy" Type="Int32" />
+          <Property Name="UploadDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ApprovedDate" Type="DateTime" Precision="3" />
+          <Property Name="Likes" Type="Int32" Nullable="false" />
+          <Property Name="Downloads" Type="Int32" Nullable="false" />
+          <Property Name="UploaderId" Type="Int32" Nullable="false" />
+          <Property Name="Tags" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="IsRejected" Type="Boolean" Nullable="false" />
+          <Property Name="RejectedDate" Type="DateTime" Precision="3" />
+          <Property Name="RejectedBy" Type="Int32" />
+          <Property Name="Reason" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ImageStoreModelStoreContainer" CdmEntityContainer="ImageStoreEntities">
+          <EntitySetMapping Name="User_Details">
+            <EntityTypeMapping TypeName="ImageStoreModel.User_Details">
+              <MappingFragment StoreEntitySet="User_Details">
+                <ScalarProperty Name="Bio" ColumnName="Bio" />
+                <ScalarProperty Name="MobileNo" ColumnName="MobileNo" />
+                <ScalarProperty Name="Profile" ColumnName="Profile" />
+                <ScalarProperty Name="DOB" ColumnName="DOB" />
+                <ScalarProperty Name="ActiveFlag" ColumnName="ActiveFlag" />
+                <ScalarProperty Name="UserType" ColumnName="UserType" />
+                <ScalarProperty Name="Token" ColumnName="Token" />
+                <ScalarProperty Name="Last_Login" ColumnName="Last_Login" />
+                <ScalarProperty Name="Full_Name" ColumnName="Full_Name" />
+                <ScalarProperty Name="Pass" ColumnName="Pass" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Categories">
+            <EntityTypeMapping TypeName="ImageStoreModel.Categories">
+              <MappingFragment StoreEntitySet="Categories">
+                <ScalarProperty Name="Flag" ColumnName="Flag" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ResolutionMaster">
+            <EntityTypeMapping TypeName="ImageStoreModel.ResolutionMaster">
+              <MappingFragment StoreEntitySet="ResolutionMaster">
+                <ScalarProperty Name="Flag" ColumnName="Flag" />
+                <ScalarProperty Name="Resolution" ColumnName="Resolution" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Images">
+            <EntityTypeMapping TypeName="ImageStoreModel.Images">
+              <MappingFragment StoreEntitySet="Images">
+                <ScalarProperty Name="Reason" ColumnName="Reason" />
+                <ScalarProperty Name="RejectedBy" ColumnName="RejectedBy" />
+                <ScalarProperty Name="RejectedDate" ColumnName="RejectedDate" />
+                <ScalarProperty Name="IsRejected" ColumnName="IsRejected" />
+                <ScalarProperty Name="Tags" ColumnName="Tags" />
+                <ScalarProperty Name="UploaderId" ColumnName="UploaderId" />
+                <ScalarProperty Name="Downloads" ColumnName="Downloads" />
+                <ScalarProperty Name="Likes" ColumnName="Likes" />
+                <ScalarProperty Name="ApprovedDate" ColumnName="ApprovedDate" />
+                <ScalarProperty Name="UploadDate" ColumnName="UploadDate" />
+                <ScalarProperty Name="VerifiedBy" ColumnName="VerifiedBy" />
+                <ScalarProperty Name="IsVerified" ColumnName="IsVerified" />
+                <ScalarProperty Name="FilePath" ColumnName="FilePath" />
+                <ScalarProperty Name="ResolutionId" ColumnName="ResolutionId" />
+                <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
+                <ScalarProperty Name="Size" ColumnName="Size" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

@@ -1,0 +1,265 @@
+﻿
+@{
+    Layout = null;
+    ViewBag.Title = "Index";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+    @*font*@
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik&display=swap" rel="stylesheet">
+
+    <!-- Font awesome-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    <style>
+        * {
+            /*font-family: 'Poppins', sans-serif;*/
+            font-family: 'Rubik', sans-serif;
+        }
+
+        #main-div {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100vh;
+            background: linear-gradient(to right, #2c5f2d 0%, #2c5f2d 50%, #ffffff 50%, #ffffff 100%);
+            @*background-image: url( @Url.Content("~/Content/Assets/Images/pexels-pixabay-531880.jpg") );*@
+        }
+
+        #card {
+            background: linear-gradient(to right, #ffffff 0%, #ffffff 50%, #2c5f2d 50%, #2c5f2d 100%);
+        }
+
+        #log-box {
+            width: 97%;
+            overflow: hidden;
+        }
+
+        #log-box-inner {
+            width: 600px;
+            transition: all 0.5s ease;
+        }
+
+            #log-box-inner.toggle {
+                margin-left: -300px;
+                animation: ease-in 5s linear;
+            }
+
+
+        #main-card {
+            width: 700px;
+        }
+
+        @@media only screen and (max-width: 771px) {
+            #main-card {
+                width: 350px;
+            }
+        }
+
+        #image {
+            width: 100%;
+            object-fit: fill;
+        }
+    </style>
+</head>
+<body>
+    <div id="main-div">
+        <div id="wrap-div">
+            <div id="header">
+                <h1 class="bg-white text-center shadow">IMAGE UPLOADER</h1>
+            </div>
+            <div id="card" class="card">
+                <div class="card-body" id="main-card">
+                    <div class="row ps-1">
+                        <div class="col-md-6">
+                            <div id="log-box">
+                                <div id="log-box-inner">
+                                    <div class="row">
+                                        <div class="col-6 d-flex justify-content-center align-items-center">
+                                            @using (Html.BeginForm("login", "login", FormMethod.Post))
+                                            {
+                                                <div class="row">
+                                                    <div class="col-12 pb-4">
+                                                        <h1>Login</h1>
+                                                    </div>
+                                                    <div class="col-12 pb-4 ps-3">
+                                                        <label>
+                                                            Email
+                                                            <span class="text-danger">*</span>
+                                                        </label>
+                                                        @Html.Editor("login_email", new { htmlAttributes = new { @class = "form-control", @type = "text" } })
+
+                                                    </div>
+                                                    <div class="col-12 pb-4 ps-3">
+                                                        <label>
+                                                            Password
+                                                            <span class="text-danger">*</span>
+                                                        </label>
+                                                        @Html.Editor("login_password", new { htmlAttributes = new { @class = "form-control", @type = "password" } })
+
+                                                    </div>
+                                                    <div class="col-12 pb-4">
+                                                        <button type="submit" class="btn btn-primary" id="login"> Login </button>
+                                                        <button type="button" class="btn" id="btn-signup"> Signup <i class="fa fa-arrow-right"></i> </button>
+                                                    </div>
+                                                </div>
+                                            }
+                                        </div>
+                                        <div class="col-6">
+                                            @using (Html.BeginForm("signup", "login", FormMethod.Post))
+                                            {
+                                                <div class="row">
+                                                    <div class="col-12 pb-4">
+                                                        <h1>Signup</h1>
+                                                    </div>
+                                                    <div class="col-12 pb-4">
+                                                        <label>
+                                                            Full Name
+                                                            <span class="text-danger">*</span>
+                                                        </label>
+                                                        @Html.Editor("FullName", new { htmlAttributes = new { @class = "form-control", @type = "text" } })
+
+                                                    </div>
+                                                    <div class="col-12 pb-4">
+                                                        <label>
+                                                            Email
+                                                            <span class="text-danger">*</span>
+                                                        </label>
+                                                        @Html.Editor("Email", new { htmlAttributes = new { @class = "form-control", @type = "text" } })
+
+                                                    </div>
+                                                    <div class="col-12 pb-4">
+                                                        <label>
+                                                            Password
+                                                            <span class="text-danger">*</span>
+                                                        </label>
+                                                        @Html.Editor("Password", new { htmlAttributes = new { @class = "form-control", @type = "password" } })
+
+                                                    </div>
+                                                    <div class="col-12 pb-4">
+                                                        <label>
+                                                            Confirm password
+                                                            <span class="text-danger">*</span>
+                                                        </label>
+                                                        @Html.Editor("ConfirmPassword", new { htmlAttributes = new { @class = "form-control", @type = "password" } })
+
+                                                    </div>
+                                                    <div class="col-12 pb-4">
+                                                        <button type="button" id="btn-login" class="btn"> <i class="fa fa-arrow-left"></i>  Login</button>
+                                                        <button type="submit" class="btn btn-primary" id="signup"> Signup </button>
+
+                                                    </div>
+                                                </div>
+
+                                            }
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-5  d-flex justify-content-center align-items-center">
+                            <i class="fa fa-cloud-upload d-none d-md-block" style="color:white;font-size:125px;"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+</html>
+@if (TempData["message"] != null)
+{
+    <script type="text/javascript">
+            window.onload = function () {
+                swal("@TempData["message"]","","@TempData["messagetype"]");
+
+            };
+    </script>
+    TempData["message"] = null;
+}
+
+<script type="text/javascript">
+
+    //swith animation
+    $("#btn-login").click(function () {
+        console.log("manjunath")
+        $("#log-box-inner").toggleClass("toggle");
+    })
+
+    //swith back animation
+    $("#btn-signup").click(function () {
+        console.log("manjunath")
+        $("#log-box-inner").toggleClass("toggle");
+    })
+
+
+    //login checks
+    $("#login").click(function (e) {
+        let email = $("#login_email").val();
+        let password = $("#login_password").val();
+
+        if (email.trim() == "") {
+            $("#login_email").focus();
+            return false;
+        }
+
+        if (password.trim() == "") {
+            $("#login_password").focus();
+            return false;
+        }
+    })
+
+
+    //signup checks
+    $("#signup").click(function (e) {
+        console.log("clicked");
+        let name = $("#FullName").val();
+        let email = $("#Email").val();
+        let password = $("#Password").val();
+        let confirmpassword = $("#ConfirmPassword").val();
+
+        if (name == "") {
+            $("#FullName").focus();
+            return false;
+        }
+        if (email == "") {
+            $("#Email").focus();
+            return false;
+        }
+        if (password == "") {
+            $("#Password").focus();
+            return false;
+        }
+        if (confirmpassword == "") {
+            $("#ConfirmPassword").focus();
+            return false;
+        }
+
+        if (password != confirmpassword) {
+            swal("Password and confirm password does not match", "")
+            return false;
+        }
+    })
+
+</script>
+

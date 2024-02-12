@@ -1,0 +1,37 @@
+﻿@model List<Image.ImageObject>
+
+@foreach (var item in Model)
+{
+    <div class="col p-4">
+        <div class="card imagecard">
+            <img src="@item.ImagePath.Trim('~')"
+                 alt="image">
+            <div class="card-content">
+                <h2>
+                    @item.Name
+                </h2>
+                <div class="icon-heart">
+                    <div style="background-color: white; width: 50px; height: 40px; border-radius: 5px;"
+                         class="d-flex justify-content-center align-items-center likeimage" id="@item.Id">
+                        <i class="fa fa-heart" style="color: black;font-size: 20px;"></i>
+                    </div>
+                </div>
+                <div class="icon-download">
+                    <div style="background-color: white; width: 50px; height: 40px; border-radius: 5px;"
+                         class="d-flex justify-content-center align-items-center downloadimage" id="@item.Id">
+                        <i class="fa fa-download" style="color: black;font-size: 20px;"></i>
+                    </div>
+                </div>
+                <div class="profilename">
+                    <a class="navbar-brand ps-5" href="#">
+                        <img src="@item.ProfilePath.Trim('~')"
+                             class="rounded-pill brandimage">
+                    </a>
+                    <p>@item.Uploader</p>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+}

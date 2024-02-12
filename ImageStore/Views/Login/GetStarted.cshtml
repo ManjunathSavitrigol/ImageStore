@@ -1,0 +1,162 @@
+﻿@model ImageStore.Data.EdmxModel.User_Details
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!--font-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik&display=swap" rel="stylesheet">
+
+    <!-- Jquery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script type="text/javascript" src="http://code.jquery.com/color/jquery.color-2.1.2.js"></script>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
+
+    <style>
+        * {
+            /*font-family: 'Poppins', sans-serif;*/
+            font-family: 'Rubik', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(to right, #2c5f2d 0%, #2c5f2d 50%, #ffffff 50%, #ffffff 100%);
+        }
+
+        #welcome-text {
+            color: white;
+            width: 50%;
+            font-size: 50px;
+        }
+
+        #welcome-image {
+            height: 450px;
+            position: absolute;
+            top: 30%;
+            left: 50%;
+        }
+
+        #welcome-image2 {
+            width: 40%;
+            height: 250px;
+            position: absolute;
+            top: 80%;
+            left: 20%;
+        }
+
+        img {
+            height: 100%;
+            object-fit: fill;
+            width: 100%;
+        }
+
+        .form-control {
+            border: none;
+            border-bottom: 1px solid black;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div class="row justify-content-around">
+            <div class="col-5 position-relative">
+                <h1 id="welcome-text">
+                    <span style="font-size:70px;">WELCOME!!</span> Please fill in necessary details to complete registration
+                </h1>
+                <div id="welcome-image">
+                    <img src="https://th.bing.com/th/id/OIG1.YSdNPuXhJyVHNa44zRst?w=270&h=270&c=6&r=0&o=5&pid=ImgGn" />
+                </div>
+                <div id="welcome-image2">
+                    <img src="https://th.bing.com/th/id/OIG1.Z2yDk47rQUFjyY6eZnym?w=270&h=270&c=6&r=0&o=5&pid=ImgGn" />
+                </div>
+            </div>
+            <div class="col-5">
+                @using (Html.BeginForm("UpdateUser", "login", FormMethod.Post, new
+                { enctype = "multipart/form-data" }))
+                {
+                    @Html.HiddenFor(x => x.Id);
+                    <div class="row mt-5">
+                        <div class="col-12">
+                            @Html.LabelFor(model => model.Full_Name, htmlAttributes: new { @class = "control-label" })
+                            @Html.EditorFor(model => model.Full_Name, new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                        <div class="col-12">
+                            @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label" })
+                            @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+
+                        </div>
+                        <div class="col-12">
+                            @Html.LabelFor(model => model.DOB, htmlAttributes: new { @class = "control-label" })
+                            @Html.EditorFor(model => model.DOB, new { htmlAttributes = new { @class = "form-control", @type = "date" } })
+
+                        </div>
+                        <div class="col-12">
+                            @*<label class="form-label control-label">Choose Profile Image</label>
+                            @Html.EditorFor(model => model.ProfileImage, new { htmlAttributes = new { @class = "form-control", @type = "file" } })*@
+                            <label class="form-label">Choose Profile Image</label>
+                            <input class="form-control" type="file" name="ProfileImage" id="profileimage">
+                        </div>
+                        <div class="col-12">
+                            @Html.LabelFor(model => model.MobileNo, htmlAttributes: new { @class = "control-label" })
+                            @Html.EditorFor(model => model.MobileNo, new { htmlAttributes = new { @class = "form-control" } })
+
+                        </div>
+                        <div class="col-12">
+                            <button type="submit" class="btn btn-primary" id="save">Save</button>
+                        </div>
+
+                    </div>
+                }
+            </div>
+        </div>
+
+    </div>
+</body>
+
+</html>
+<script type="text/javascript">
+
+    var phoneno = /^\d{10}$/;
+    var emialidpattern = /^(([^<>()[\]\\.,;:\s@@"]+(\.[^<>()[\]\\.,;:\s@@"]+)*)|.(".+"))@@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+
+    $("#save").click(function () {
+        let dob = $("#DOB").val();
+        let mobileno = $("#MobileNo").val();
+        let profileimage = $("#profileimage").val();
+
+        if (dob == "") {
+            $("#DOB").focus();
+            return false;
+        }
+        var datesplit = dob.split('/');
+        console.log(datesplit);
+        if (new Date(datesplit[2] + "/" + datesplit[1] + "/" + datesplit[0]) >= new Date()) {
+            $("#DOB").focus();
+            return false;
+        }
+
+        if (profileimage.trim() == "") {
+            $("#profileimage").focus();
+            return false;
+        }
+
+        if (!mobileno.match(phoneno)) {
+            $("#MobileNo").focus();
+            return false;
+        }
+    })
+</script>

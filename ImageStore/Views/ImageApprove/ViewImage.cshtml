@@ -1,0 +1,200 @@
+﻿@model Image.ImageObject
+
+@{
+    ViewBag.Title = "ViewImage";
+}
+
+<style>
+    #imagecontainer img {
+        object-fit: contain;
+        width: 100%;
+        height: 100%;
+    }
+</style>
+
+<div id="page-content-topbar">
+    <div class="navbar navbar-expand-lg navbar-light border-bottom-0">
+
+        <!--button for toggling the sidebar-->
+        @Html.Partial("_TopLeft")
+
+        <!-- current page indication by breadcrumb-->
+        <div class="pt-3 ps-2 d-none d-md-block">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="@Url.Action(TempData["ActionName"].ToString(), TempData["ControllerName"])">@TempData["PreviousPage"]</a></li>
+                    <li><i class="fa fa-angle-right p-1"></i></li>
+                    <li class="breadcrumb-item n-active" aria-current="page">View Image </li>
+                </ol>
+            </nav>
+        </div>
+
+        <!-- last login and logout-->
+        @Html.Partial("_TopRight")
+    </div>
+</div>
+<div id="main-content">
+    <div class="card">
+        @if (TempData["ActionName"] != "Byme")
+        {
+            <div class="card-header">
+                <div class="row">
+                    <div class="col-10 text-end">
+                        <button type="button" class="btn btn-success approvereject" value="approve">
+                            &nbsp; Approve
+                        </button>
+                        <button type="button" class="btn btn-danger approvereject" value="reject">
+                            &nbsp; Reject
+                        </button>
+                        <lable class="form-label">Reason<small class="text-danger">*</small></lable>
+                    </div>
+                    <div class="col-2">
+                        <textarea type="text" class="form-control" rows=1 id="reason"></textarea>
+                    </div>
+                </div>
+            </div>
+        }
+
+
+    </div>
+    <div class="card">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <div>
+                        <h4>ImageObject</h4>
+                        <hr />
+                        <dl class="dl-horizontal">
+                            <dt>
+                                @Html.DisplayNameFor(model => model.Name)
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.Name)
+                            </dd>
+
+                            <dt>
+                                @Html.DisplayNameFor(model => model.Category)
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.Category)
+                            </dd>
+
+                            <dt>
+                                @Html.DisplayNameFor(model => model.Size)
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.Size)
+                            </dd>
+
+                            <dt>
+                                @Html.DisplayNameFor(model => model.Resolution)
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.Resolution)
+                            </dd>
+
+                            <dt>
+                                @Html.DisplayNameFor(model => model.Uploader)
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.Uploader)
+                            </dd>
+
+                            <dt>
+                                @Html.DisplayNameFor(model => model.ImagePath)
+                            </dt>
+
+                            <dd>
+                                <a href="@Url.Content(Model.ImagePath)">View Image</a>
+                            </dd>
+                            <dt>
+                                @Html.DisplayNameFor(model => model.UploadedDate)
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.UploadedDate)
+                            </dd>
+
+                            <dt>
+                                @Html.DisplayNameFor(model => model.IsVerified)
+                            </dt>
+
+                            <dd>
+                                @{var a = Model.IsVerified == true ? "Yes" : "No";}
+                                @a
+                            </dd>
+                            <dt>
+                                @Html.DisplayNameFor(model => model.IsRejected)
+                            </dt>
+                            <dd>
+                                @{var b = Model.IsRejected == true ? "Yes" : "No";}
+                                @b
+                            </dd>
+                            <dt>
+                                @Html.DisplayNameFor(model => model.Reason)
+                            </dt>
+                            <dd>
+                                @Html.DisplayFor(model => model.Reason)
+                            </dd>
+
+
+                        </dl>
+                    </div>
+                </div>
+                <div class="col-md-6 ">
+                    <div class="d-flex justify-content-center align-items-center h-100" id="imagecontainer">
+                        <img src="@Url.Content(Model.ImagePath)" />
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@if (TempData["message"] != null)
+{
+    <script type="text/javascript">
+             window.onload = function () {
+                swal("@TempData["message"]", "", "@TempData["messagetype"]");
+            };
+    </script>
+    TempData["message"] = null;
+}
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(".approvereject").click(function (e) {
+
+            let status = e.target.value;
+            let id = @Model.Id;
+            let reason = $("#reason").val();
+
+            if (status == "reject") {
+                if (reason == "") {
+                    swal("Please enter reason!", "", "warning");
+                    return false;
+                }
+            }
+
+            $.ajax({
+                type: "POST",
+                data: { id: id, status: status, reason: reason },
+                url: "@Url.Action("ApproveReject", "ImageApprove")",
+                success: function (data) {
+                    let mes = data.Message.split('*');
+                    swal(mes[1], "", mes[0]);
+                },
+                error: function (err) {
+                    swal("Error occured!", "", "error");
+                }
+            })
+        })
+    })
+</script>

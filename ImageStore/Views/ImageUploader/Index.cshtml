@@ -1,0 +1,359 @@
+﻿@model Image.ImageUpload
+@{
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+<style>
+    .brandimageinternal {
+        width: 150px;
+        height: 150px;
+        border: 1px solid black;
+        border-radius: 50%;
+    }
+</style>
+<div id="area-profile" class="d-flex justify-content-center">
+    <div>
+        <div class="profile-image mb-2">
+            <div class="image text-center">
+                <a class="navbar-brand" href="#">
+                    <img src="@Session["ProfileImage"].ToString().Trim('~')"
+                         class="rounded-pill brandimageinternal">
+                </a>
+            </div>
+            <div class="username text-center">
+                @Session["FullName"].ToString()
+            </div>
+        </div>
+        <div class="editbutton text-center mb-3">
+            <a href="@Url.Content("~/UploaderProfile/Index")" class="btn btn-primary"> <i class="fa fa-pen"></i> Edit profile</a>
+        </div>
+        <div class="viewslikes">
+            <div class="row">
+                <div class="col-4">
+                    <div class="vl-name ">Total views</div>
+                    <div>0</div>
+                </div>
+                <div class="col-3">
+                    <div class="vl-name">Likes</div>
+                    <div>0</div>
+                </div>
+                <div class="col-4">
+                    <div class="vl-name">Images Uploaded</div>
+                    <div>0</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="self-collection" class="position-relative">
+    <div class="nav nav-tabs position-sticky pt-3" id="v-pills-tab" role="tablist" aria-orientation="vertical" style="top:75px;z-index:50;background-color:white">
+        <button class="nav-link active" id="v-pills-home-tab" data-bs-toggle="pill"
+                data-bs-target="#v-pills-home" type="button" role="tab" aria-controls="v-pills-home"
+                aria-selected="true">
+            My uploads
+        </button>
+        <button class="nav-link" id="v-pills-profile-tab" data-bs-toggle="pill"
+                data-bs-target="#v-pills-profile" type="button" role="tab" aria-controls="v-pills-profile"
+                aria-selected="false">
+            Pending
+        </button>
+        <button class="nav-link" id="v-pills-messages-tab" data-bs-toggle="pill"
+                data-bs-target="#v-pills-messages" type="button" role="tab" aria-controls="v-pills-messages"
+                aria-selected="false">
+            Upload
+        </button>
+    </div>
+    <div class="tab-content" id="v-pills-tabContent">
+
+        <div class="tab-pane fade  show active position-relative" id="v-pills-home" role="tabpanel"
+             aria-labelledby="v-pills-home-tab">
+
+            <div class="row w-100 mt-4 position-sticky p-3" style="top:131px;z-index:50;background-color:white">
+                <div class="col-3">
+                    @Html.Editor("search_byname", new { htmlAttributes = new { @class = "form-control", @type = "text", @placeholder = "Search...", @id = "search_byname" } })
+                </div>
+                <div class="col-3">
+                    @Html.DropDownList("search_category", new List<SelectListItem> { new SelectListItem { Text = "Choose category", Value = "0" } }, new { @class = "form-control", @id = "search_category" })
+                </div>
+                <div class="col-3">
+                    @Html.DropDownList("search_resolution", new List<SelectListItem> { new SelectListItem { Text = "Choose resolution", Value = "0" } }, new { @class = "form-control", @id = "search_resolution" })
+                </div>
+                <div class="col-3">
+                    @Html.DropDownList("sortby", new List<SelectListItem> { new SelectListItem { Text ="Sort by", Value=""},
+                                                                            new SelectListItem { Text = "Name", Value="N" },
+                                                                            new SelectListItem { Text="Date Uploaded", Value="DU"}
+                                                                            }, new { @class = "form-control", @id = "sortby" })
+                </div>
+            </div>
+
+            <div class="row w-100 row-cols-1 row-cols-md-2 row-cols-lg-3" id="allimagepanel">
+
+            </div>
+        </div>
+
+
+        <div class="tab-pane fade" id="v-pills-profile" role="tabpanel"
+             aria-labelledby="v-pills-profile-tab">
+            <div class="row w-100 row-cols-1 row-cols-md-2 row-cols-lg-3" id="pendingimagepanel">
+               
+            </div>
+        </div>
+
+
+
+        <div class="tab-pane fade" id="v-pills-messages" role="tabpanel"
+             aria-labelledby="v-pills-messages-tab">
+            <div id="outer-browse">
+                <div class="container fileupload">
+                    <div class="card">
+                        <h3>Upload File</h3>
+                        <div class="drop_box">
+
+                            <div class="drop_box1">
+                                <header>
+                                    <h4>Select File here</h4>
+                                </header>
+                                <p>Files Supported: JPG</p>
+                                <button class="btn">Choose File</button>
+                            </div>
+
+                            @using (Html.BeginForm("Upload", "ImageUploader", FormMethod.Post, new { enctype = "multipart/form-data", @class = "w-100 mt-3", @id = "Uploadform" }))
+                            {
+                                <div class="form-group row w-100 mb-2">
+                                    <div class="col-sm-3">
+                                        @Html.LabelFor(model => model.Name)
+                                        <small class="text-danger">*</small>
+                                    </div>
+                                    <div class="col-sm-9">
+                                        @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", @type = "text" } })
+                                    </div>
+
+                                </div>
+                                <div class="form-group row w-100 mb-2">
+                                    <div class="col-sm-3">
+                                        @Html.LabelFor(model => model.Category)
+                                        <small class="text-danger">*</small>
+                                    </div>
+                                    <div class="col-sm-9">
+                                        @Html.DropDownListFor(model => model.Category, new List<SelectListItem> { }, new { @class = "form-control" })
+                                    </div>
+
+                                </div>
+                                <div class="form-group row w-100 mb-2">
+                                    <div class="col-sm-3">
+                                        @Html.LabelFor(model => model.Resolution)
+                                        <small class="text-danger">*</small>
+                                    </div>
+                                    <div class="col-sm-9">
+                                        @Html.DropDownListFor(model => model.Resolution, new List<SelectListItem> { }, new { @class = "form-control" })
+                                    </div>
+                                </div>
+                                <div class="form-group row w-100 mb-2">
+                                    <div class="col-sm-3">
+                                        @Html.LabelFor(model => model.ImageSize)
+                                    </div>
+                                    <div class="col-sm-9">
+
+                                        <div class="input-group">
+                                            @Html.EditorFor(model => model.ImageSize, new { htmlAttributes = new { @class = "form-control", @type = "number", @readonly = true, @Placeholder = "0" } })
+                                            <div class="input-group-append">
+                                                <span class="input-group-text" id="basic-addon2">MB</span>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="form-group row w-100 mb-2">
+                                    <div class="col-sm-3">
+                                        @Html.LabelFor(model => model.Tags)
+                                    </div>
+                                    <div class="col-sm-9">
+                                        @Html.EditorFor(model => model.Tags, new { htmlAttributes = new { @class = "form-control" } })
+                                        <small class="text-primary">Enter tags seperated by comma. Accepts only first 5 tags</small>
+                                    </div>
+                                </div>
+                                <input type="file" hidden accept=".jpg" name="ImageFile" id="ImageFile" style="display:none;" />
+                                <div class="drop_box2 text-center mt-2">
+                                    <h4 id="filename"></h4>
+                                    <button class="btn" type='submit' id="upload">Upload</button>
+                                    <button class="btn" type='button' id="cancel">Cancel</button>
+                                    <button type="reset" hidden id="reset"></button>
+                                </div>
+                            }
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+
+    GetDropdowns();
+
+    let search = document.getElementById("search_byname");
+    let category = document.getElementById("search_category");
+    let resolution = document.getElementById("search_resolution");
+    let sort = document.getElementById("sortby");;
+
+    //-------------- get allimages ------------------
+    function GetImages(type) {
+        console.log(search, category, resolution, sort);
+
+        $.get(
+            "@Url.Action("GetImages", "ImageUploader")",
+            {
+                search: search.value,
+                category_id: category.value,
+                resolution_id: resolution.value,
+                sorty_by: sort.value,
+                type: type
+            },
+            function (data) {
+                if (type == "pending") {
+                    let appendelement = document.getElementById("pendingimagepanel");
+                    $("#pendingimagepanel").empty();
+                    appendelement.innerHTML = data;
+                }
+                else {
+                    let appendelement = document.getElementById("allimagepanel");
+                    $("#allimagepanel").empty();
+                    appendelement.innerHTML = data;
+                }               
+            }
+        )
+    }
+
+    $(document).ready(GetImages(""));
+
+    search.addEventListener('change', function () { GetImages() });
+    category.addEventListener('change', function () { GetImages() });
+    resolution.addEventListener('change', function () { GetImages() });
+    sortby.addEventListener('change', function () { GetImages() });
+    //------------------- end -----------------------
+
+    //------------------- get pending images -------
+    $(document).ready(GetImages("pending"));
+
+    //--------------------end -----------------------
+
+    //-------------- get dropdownlist ---------------   
+    function GetDropdowns() {
+         $.get(
+        "@Url.Action("Dropdownlist", "ImageUploader")",
+        function (data) {
+            if (data != null) {
+
+                let optionstext = "";
+                $.each(data.categories, function (index, row) {
+                    optionstext += "<option value='" + row.Value + "'>" + row.Text + "</option>";
+                })
+
+                $("#Category").append(optionstext);
+                //optionstext = "<option value='0' selected>Choose category<option>" + optionstext;
+                $("#search_category").append(optionstext);
+
+                optionstext = "";
+
+                $.each(data.resolutions, function (index, row) {
+                    optionstext += "<option value='" + row.Value + "'>" + row.Text + "</option>";
+                })
+
+                $("#Resolution").append(optionstext);
+                //optionstext = "<option value='0' selected>Choose resolution<option>" + optionstext;
+                $("#search_resolution").append(optionstext);
+            }
+        }
+    )
+    }
+
+    //--------------------- end ---------------------
+
+    //-------------------------- image upload js ------------------------
+
+    $(".drop_box2").hide();
+
+    const dropArea = document.querySelector(".drop_box1");
+    const button = dropArea.querySelector("button");
+    const input = document.getElementById("ImageFile");
+
+    let file;
+    var filename;
+
+    button.onclick = () => {
+        input.click();
+    };
+
+    input.addEventListener("change", function (e) {
+        var fileName = e.target.files[0].name;
+        var filesize = e.target.files[0].size;
+
+        $("#filename").text(fileName);
+        $("#ImageSize").val((Math.round(filesize / 1024) / 1000).toFixed(2));
+
+        $(".drop_box1").hide();
+        $(".drop_box2").show();
+
+
+    });
+
+
+    $("#cancel").click(function () {
+        input.value = "";
+        $(".drop_box1").show();
+        $(".drop_box2").hide();
+    })
+
+    //------------------------------ end ------------------------------------
+    $("#upload").click(function () {
+
+        let name = $("#Name").val();
+        if (name == "") {
+            $("#Name").focus();
+            return false;
+        }
+
+        let formdata = new FormData(document.querySelector("#Uploadform"));
+        formdata.append('file', $('#ImageFile')[0].files[0]);
+
+        $.ajax({
+            url: '@Url.Action("Upload", "ImageUploader")',
+            type: 'POST',
+            data: formdata,
+            async: false,
+            cache: false,
+            contentType: false,
+            enctype: 'multipart/form-data',
+            processData: false,
+            success: function (response) {
+                let data = response.Message.split('*');
+                 swal({
+                     title: data[1],
+                     icon: data[0]
+                 })
+                     .then((isConfirm) => {
+                         if (isConfirm) {
+                             console.log(response.Flag);
+                             if (response.Flag == true) {
+                                 $(".drop_box1").show();
+                                 $(".drop_box2").hide();
+                                 $("#reset").click();
+                             }
+                         }
+                     });
+
+            },
+            error: function (err) {
+                swal("error occured", "", "error");
+            }
+        });
+
+        return false;
+
+    })
+
+</script>

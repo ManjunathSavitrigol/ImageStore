@@ -1,0 +1,117 @@
+﻿@model ImageStore.Data.EdmxModel.User_Details
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+
+
+<div id="page-content-topbar">
+    <div class="navbar navbar-expand-lg navbar-light border-bottom-0">
+
+        <!--button for toggling the sidebar-->
+        @Html.Partial("_TopLeft")
+
+        <!-- current page indication by breadcrumb-->
+        <div class="pt-3 ps-2 d-none d-md-block">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="@Url.Action("Index", "Resolution")">Resolution Master</a></li>
+                    <li><i class="fa fa-angle-right p-1"></i></li>
+                    <li class="breadcrumb-item n-active" aria-current="page">@ViewData["ActionName"]</li>
+                </ol>
+            </nav>
+        </div>
+
+        <!-- last login and logout-->
+        @Html.Partial("_TopRight")
+    </div>
+</div>
+
+<div id="main-content">
+    <div class="card mt-2">
+        <div class="card-body">
+
+            @using (Html.BeginForm("Save", "User", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+                @Html.HiddenFor(model => model.Id);
+
+            <div class="row">
+                <div class="col-4 mb-2">
+
+                    @Html.LabelFor(model => model.Full_Name, htmlAttributes: new { @class = "control-label" })
+
+                    @Html.EditorFor(model => model.Full_Name, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Full_Name, "", new { @class = "text-danger" })
+                </div>
+                <div class="col-4 mb-2">
+
+                    @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label" })
+
+                    @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                </div>
+                <div class="col-4 mb-2">
+
+                    @Html.LabelFor(model => model.Pass, htmlAttributes: new { @class = "control-label" })
+
+                    @Html.EditorFor(model => model.Pass, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Pass, "", new { @class = "text-danger" })
+                </div>
+                <div class="col-4 mb-2">
+
+                    @Html.LabelFor(model => model.UserType, htmlAttributes: new { @class = "control-label" })
+
+                    @Html.DropDownListFor(model => model.UserType, new List<SelectListItem> {
+                                                                        new SelectListItem { Text = "Image Uploader", Value = "IU" },
+                                                                        new SelectListItem { Text = "Image Approver", Value = "IA" }}, new { @class = "form-control p-1" })
+                    @Html.ValidationMessageFor(model => model.UserType, "", new { @class = "text-danger" })
+                </div>
+                <div class="col-4 mb-2 mt-4">
+
+                    @Html.LabelFor(model => model.ActiveFlag, htmlAttributes: new { @class = "control-label" })
+
+                    @Html.CheckBoxFor(model => model.ActiveFlag, new { htmlAttributes = new { @class = "form-control form-check p-4" } })
+                    @Html.ValidationMessageFor(model => model.ActiveFlag, "", new { @class = "text-danger" })
+                </div>
+                <div class="col-12 text-center">
+                    <button type="submit" class="btn btn-primary" id="save">Save</button>
+                </div>
+            </div>
+            }
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    //load usertype and change it
+    let recievedId = @Model.Id;
+    if (recievedId != 0) {
+        
+        $("#usertype").val('@Model.UserType');
+    }
+
+    //check save conditions
+    $("#save").click(function () {
+        let fullname = $("#Full_Name").val();
+        let email = $("#Email").val();
+        let pass = $("#Pass").val();
+
+        if (fullname.trim() == "") {
+            $("#Full_Name").focus();
+            return false;
+        }
+
+        if (email.trim() == "") {
+            $("#Email").focus();
+            return false;
+        }
+        if (pass.trim() == "") {
+            $("#Email").focus();
+            return false;
+        }
+    })
+
+</script>
