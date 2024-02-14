@@ -8,9 +8,11 @@ using System.Web.Mvc;
 using Image;
 using ImageStore.Data.EdmxModel;
 using ImageStore.Domain;
+using ImageStore.FilterAttributes;
 
 namespace ImageStore.Controllers.ImageApprover
 {
+    [CheckIA]
     public class ImageApproveController : Controller
     {
         IImageBusiness _image = new ImageBusiness();

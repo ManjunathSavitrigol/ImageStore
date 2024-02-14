@@ -70,4 +70,48 @@ namespace ImageStore.FilterAttributes
            
         }
     }
+
+    public class CheckIU : ActionFilterAttribute
+    {
+        private readonly UnitOfWork _unitOfWork = new UnitOfWork();
+        private readonly ILoginBusiness loginBusiness = new LoginBusiness();
+
+        public override void OnActionExecuting(ActionExecutingContext filterContext)
+        {
+            HttpContext context = HttpContext.Current;
+
+            if (context.Session["SessionStart"] == null || context.Session["Token"] == null || !loginBusiness.CheckToken(context.Session["Token"].ToString()) || context.Session["UserType"].ToString() != "IU")
+            {
+                filterContext.Result = new RedirectToRouteResult(
+                            new RouteValueDictionary {
+                                { "Controller", "Login" },
+                                { "Action", "Index" }
+                            });
+
+            }
+
+        }
+    }
+
+    public class CheckIA : ActionFilterAttribute
+    {
+        private readonly UnitOfWork _unitOfWork = new UnitOfWork();
+        private readonly ILoginBusiness loginBusiness = new LoginBusiness();
+
+        public override void OnActionExecuting(ActionExecutingContext filterContext)
+        {
+            HttpContext context = HttpContext.Current;
+
+            if (context.Session["SessionStart"] == null || context.Session["Token"] == null || !loginBusiness.CheckToken(context.Session["Token"].ToString()) || context.Session["UserType"].ToString() != "IA")
+            {
+                filterContext.Result = new RedirectToRouteResult(
+                            new RouteValueDictionary {
+                                { "Controller", "Login" },
+                                { "Action", "Index" }
+                            });
+
+            }
+
+        }
+    }
 }

@@ -123,6 +123,7 @@ namespace ImageStore.Controllers
                         res = userBusiness.CreateUpdate(ext_user);
                         if(res.Flag)
                         {
+                            Session["ProfileImage"] = ext_user.Profile;
                             var arr = (Session["Redirect"].ToString()).Split('*');
                             return RedirectToAction(arr[0], arr[1]);
                         }

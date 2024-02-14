@@ -47,26 +47,31 @@
 </div>
 <div id="self-collection" class="position-relative">
     <div class="nav nav-tabs position-sticky pt-3" id="v-pills-tab" role="tablist" aria-orientation="vertical" style="top:75px;z-index:50;background-color:white">
-        <button class="nav-link active" id="v-pills-home-tab" data-bs-toggle="pill"
-                data-bs-target="#v-pills-home" type="button" role="tab" aria-controls="v-pills-home"
+        <button class="nav-link active" id="v-pills-myuploads-tab" data-bs-toggle="pill"
+                data-bs-target="#v-pills-myuploads" type="button" role="tab" aria-controls="v-pills-myuploads"
                 aria-selected="true">
             My uploads
         </button>
-        <button class="nav-link" id="v-pills-profile-tab" data-bs-toggle="pill"
-                data-bs-target="#v-pills-profile" type="button" role="tab" aria-controls="v-pills-profile"
+        <button class="nav-link" id="v-pills-pending-tab" data-bs-toggle="pill"
+                data-bs-target="#v-pills-pending" type="button" role="tab" aria-controls="v-pills-pending"
                 aria-selected="false">
             Pending
         </button>
-        <button class="nav-link" id="v-pills-messages-tab" data-bs-toggle="pill"
-                data-bs-target="#v-pills-messages" type="button" role="tab" aria-controls="v-pills-messages"
+        <button class="nav-link" id="v-pills-rejected-tab" data-bs-toggle="pill"
+                data-bs-target="#v-pills-rejected" type="button" role="tab" aria-controls="v-pills-rejected"
+                aria-selected="false">
+            Rejected
+        </button>
+        <button class="nav-link" id="v-pills-upload-tab" data-bs-toggle="pill"
+                data-bs-target="#v-pills-upload" type="button" role="tab" aria-controls="v-pills-upload"
                 aria-selected="false">
             Upload
         </button>
     </div>
     <div class="tab-content" id="v-pills-tabContent">
 
-        <div class="tab-pane fade  show active position-relative" id="v-pills-home" role="tabpanel"
-             aria-labelledby="v-pills-home-tab">
+        <div class="tab-pane fade  show active position-relative" id="v-pills-myuploads" role="tabpanel"
+             aria-labelledby="v-pills-myuploads-tab">
 
             <div class="row w-100 mt-4 position-sticky p-3" style="top:131px;z-index:50;background-color:white">
                 <div class="col-3">
@@ -92,17 +97,24 @@
         </div>
 
 
-        <div class="tab-pane fade" id="v-pills-profile" role="tabpanel"
-             aria-labelledby="v-pills-profile-tab">
+        <div class="tab-pane fade" id="v-pills-pending" role="tabpanel"
+             aria-labelledby="v-pills-pending-tab">
             <div class="row w-100 row-cols-1 row-cols-md-2 row-cols-lg-3" id="pendingimagepanel">
-               
+
+            </div>
+        </div>
+
+        <div class="tab-pane fade" id="v-pills-rejected" role="tabpanel"
+             aria-labelledby="v-pills-rejected-tab">
+            <div class="row w-100 row-cols-1 row-cols-md-2 row-cols-lg-3" id="rejectedimagepanel">
+
             </div>
         </div>
 
 
 
-        <div class="tab-pane fade" id="v-pills-messages" role="tabpanel"
-             aria-labelledby="v-pills-messages-tab">
+        <div class="tab-pane fade" id="v-pills-upload" role="tabpanel"
+             aria-labelledby="v-pills-upload-tab">
             <div id="outer-browse">
                 <div class="container fileupload">
                     <div class="card">
@@ -219,11 +231,17 @@
                     $("#pendingimagepanel").empty();
                     appendelement.innerHTML = data;
                 }
-                else {
+                else if(type == "rejected") {
+                    let appendelement = document.getElementById("rejectedimagepanel");
+                    $("#rejectedimagepanel").empty();
+                    appendelement.innerHTML = data;
+                } 
+                 else {
                     let appendelement = document.getElementById("allimagepanel");
                     $("#allimagepanel").empty();
                     appendelement.innerHTML = data;
-                }               
+                } 
+                
             }
         )
     }
@@ -237,7 +255,12 @@
     //------------------- end -----------------------
 
     //------------------- get pending images -------
-    $(document).ready(GetImages("pending"));
+    $(document).ready(GetImages("pending"));    
+
+    //--------------------end -----------------------
+
+    //------------------- get pending images -------
+    $(document).ready(GetImages("rejected"));    
 
     //--------------------end -----------------------
 

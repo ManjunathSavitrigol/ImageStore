@@ -133,6 +133,7 @@
     <Compile Include="Controllers\ImageUploader\ImageUploaderController.cs" />
     <Compile Include="Controllers\ImageUploader\UploaderProfileController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
+    <Compile Include="Controllers\Public\PublicController.cs" />
     <Compile Include="Controllers\ResolutionController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="FilterAttributes\FiltetAttribute.cs" />
@@ -218,6 +219,7 @@
     <Folder Include="Content\Fonts\" />
     <Folder Include="Models\" />
     <Folder Include="Views\Image\" />
+    <Folder Include="Views\Public\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.rtl.min.css.map" />

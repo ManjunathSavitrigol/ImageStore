@@ -3,6 +3,7 @@ using ImageStore.Business;
 using ImageStore.Business.Interfaces;
 using ImageStore.Data.EdmxModel;
 using ImageStore.Domain;
+using ImageStore.FilterAttributes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +12,8 @@ using System.Web.Mvc;
 
 namespace ImageStore.Controllers.ImageUploader
 {
+
+    [CheckIU]
     public class ImageUploaderController : Controller
     {
         ICategoryBusiness _category = new CategoryBusiness();
@@ -86,8 +89,12 @@ namespace ImageStore.Controllers.ImageUploader
                     {
                         images = images.Where(x => x.IsVerified == true);
                     }
+                    if (type == "rejected")
+                    {
+                        images = images.Where(x => x.IsRejected == true);
+                    }
 
-                    
+
                     switch (sorty_by)
                     {
                         case "N":
