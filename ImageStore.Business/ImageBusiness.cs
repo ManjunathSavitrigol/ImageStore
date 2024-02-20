@@ -113,7 +113,7 @@ namespace ImageStore.Business
                                                           ApprovedBy = i.VerifiedBy,
                                                           RejectedBy = i.RejectedBy,
                                                           ApprovedDate = i.ApprovedDate,
-                                                          RejectedDate = i.RejectedDate                                                       
+                                                          RejectedDate = i.RejectedDate
                                                       }
                          );
 
@@ -176,5 +176,57 @@ namespace ImageStore.Business
 
             return res;
         }
+
+        public Response Like(int id)
+        {
+            Response res = new Response();
+            res.Message = " * ";
+            try
+            {
+                //get image
+                Images image = _imageRepo.SingleOrDefault(x => x.Id == id);
+                if (image == null)
+                {
+                    res.Message = "Not found!";
+                    return res;
+                }
+
+                image.Likes += 1;
+                _imageRepo.Update(image);
+
+                res.Message = "success*successfull";
+                res.Flag = true;
+            }
+            catch { }
+            return res;
+        }
+
+        public Response Download(int id)
+        {
+            Response res = new Response();
+            res.Message = " * ";
+            try
+            {
+                //get image
+                Images image = _imageRepo.SingleOrDefault(x => x.Id == id);
+                if (image == null)
+                {
+                    res.Message = "Not found!";
+                    return res;
+                }
+
+                image.Downloads += 1;
+                _imageRepo.Update(image);
+
+                res.Message = "success*successfull";
+                res.Flag = true;
+                res.Object = image.FilePath;
+            }
+            catch { }
+
+            return res;
+        }
+
     }
 }
+

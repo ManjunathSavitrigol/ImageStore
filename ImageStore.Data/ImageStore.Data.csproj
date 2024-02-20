@@ -55,6 +55,9 @@
     <Compile Include="EdmxModel\Categories.cs">
       <DependentUpon>ImageStoreEntity.tt</DependentUpon>
     </Compile>
+    <Compile Include="EdmxModel\Configurations.cs">
+      <DependentUpon>ImageStoreEntity.tt</DependentUpon>
+    </Compile>
     <Compile Include="EdmxModel\Images.cs">
       <DependentUpon>ImageStoreEntity.tt</DependentUpon>
     </Compile>
@@ -73,6 +76,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ImageStoreEntity.edmx</DependentUpon>
     </Compile>
+    <Compile Include="EdmxModel\Likes.cs">
+      <DependentUpon>ImageStoreEntity.tt</DependentUpon>
+    </Compile>
     <Compile Include="EdmxModel\ResolutionMaster.cs">
       <DependentUpon>ImageStoreEntity.tt</DependentUpon>
     </Compile>
@@ -87,6 +93,7 @@
     <Compile Include="ResolutionRepo.cs" />
     <Compile Include="Infrastructure\UnitOfWork.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SettingsRepo.cs" />
     <Compile Include="UserDetailsRepo.cs" />
   </ItemGroup>
   <ItemGroup>

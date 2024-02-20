@@ -1,0 +1,144 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutPublic.cshtml";
+}
+
+<div id="carouselExampleDark" class="carousel slide bg-dark h-75" data-bs-ride="carousel">
+    <div class="carousel-indicators">
+        <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="0" class="active"
+                aria-current="true" aria-label="Slide 1"></button>
+
+    </div>
+    <div class="carousel-inner">
+        <div class="d-flex justify-content-center">
+            <img src="@ViewBag.CarouselImage" class="d-block  h-100 " alt="...">
+        </div>
+        <div class="carousel-item active" data-bs-interval="1000">
+            <div style="height: 7vh;"></div>
+            <div class="carousel-caption d-md-block">
+                <div class="input-group input-group-sm">
+                    <input class="form-control" placeholder="search" id="search_byname" />
+                    <button class="btn btn-primary" id="search2">Search</button>
+                </div>
+                <h5>Welcome!!</h5>
+                <p>Please search what type of images you need.</p>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="mt-5 position-relative">
+    <div class="position-sticky top-0">
+        <h1>Free Photos</h1>
+    </div>
+    <div class="imagespace">
+        <div class="row w-100 row-cols-1 row-cols-md-2 row-cols-lg-3" id="allimages">
+
+        </div>
+        <div class="d-flex justify-content-center gap-3 " id="loader">
+            <span class="spinner-grow"></span>
+            <span class="spinner-grow"></span>
+            <span class="spinner-grow"></span>
+            <span class="spinner-grow"></span>
+            <span class="spinner-grow"></span>
+        </div>
+        
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    let count = 0;
+    let search = "";
+    let reachedfullend = false;
+
+    //-------------- get allimages ------------------
+    function GetImages(search, DisplayStart = 0, clearhtml = true) {
+        $.get(
+            "@Url.Action("GetImages", "Public")",
+            {
+                search: search,
+                DisplayStart: DisplayStart
+            },
+            function (data) {
+                let appendelement = document.getElementById("allimages");
+
+                if (data.trim() == "") {
+                    reachedfullend = true;
+                }
+                if (clearhtml) {
+                    appendelement.innerHTML = data;
+                } else {
+                    appendelement.innerHTML += data;
+                }
+
+            }
+        )
+    }
+
+    $(document).ready(GetImages());
+
+    //-------------- search-----------------
+    $("#search2").click(function ()
+    {
+        search = $("#search_byname").val();
+        count = 0;
+        GetImages(search)
+    });
+
+    $("#search1").click(function () {
+        search = $("#search_byname1").val();
+        count = 0;
+        GetImages(search)
+    });
+
+
+    //---------------- load more on end -------------------
+    window.onscroll = function (ev) {
+        if ((window.innerHeight + window.pageYOffset) >= document.body.offsetHeight) {
+            if (!reachedfullend) {
+                GetImages(search, count = count + 10, false)
+            } else {
+                $("#loader").remove();
+            }
+        }
+    };
+
+    //--------------------- LIke----------------------- -------
+
+    function Like(id) {
+        $.ajax({
+            type:"POST",
+            data: {id : id},
+            url: '@Url.Action("Like", "Public")',
+            success: function (data) {
+                if (data.Flag) {
+                    $("#itemL-" + id + "> i").css({ color: 'red', size: '25px' })
+                } else {
+                    window.location.href = "@Url.Content("~/Login/Index")/"
+                }
+            },
+            error: function (err) {
+                swal("error", "", "Error occured!");
+            }
+        })
+    }
+
+    //------------------- Download ---------------------------
+     @*function Download(id) {
+        $.ajax({
+            type:"POST",
+            data: {id : id},
+            url: '@Url.Action("Download", "Public")',
+            success: function (data) {
+
+            },
+            error: function (err) {
+                swal("error", "", "Error occured!");
+            }
+        })
+    }*@
+</script>
+
+
+

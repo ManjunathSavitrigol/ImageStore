@@ -29,5 +29,7 @@ namespace ImageStore.Data.EdmxModel
         public virtual DbSet<Categories> Categories { get; set; }
         public virtual DbSet<ResolutionMaster> ResolutionMaster { get; set; }
         public virtual DbSet<Images> Images { get; set; }
+        public virtual DbSet<Configurations> Configurations { get; set; }
+        public virtual DbSet<Likes> Likes { get; set; }
     }
 }

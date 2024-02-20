@@ -14,5 +14,7 @@ namespace ImageStore.Business.Interfaces
         Response Save(ImageUpload image);
         Response Get(string search, int category_id, int resolution_id, int id = 0, int uploaderid = 0);
         Response ApproveReject(int id, string status, string reason, int approverid);
+        Response Download(int id);
+        Response Like(int id);
     }
 }

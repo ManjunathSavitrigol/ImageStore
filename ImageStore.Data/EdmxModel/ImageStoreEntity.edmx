@@ -13,6 +13,15 @@
           <Property Name="Name" Type="nvarchar" MaxLength="200" Nullable="false" />
           <Property Name="Flag" Type="bit" Nullable="false" />
         </EntityType>
+        <EntityType Name="Configurations">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="KeyName" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Value" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="Details" Type="nvarchar" MaxLength="200" />
+        </EntityType>
         <EntityType Name="Images">
           <Key>
             <PropertyRef Name="Id" />
@@ -35,6 +44,18 @@
           <Property Name="RejectedDate" Type="datetime" />
           <Property Name="RejectedBy" Type="int" />
           <Property Name="Reason" Type="nvarchar" MaxLength="200" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'ImageStore.dbo.Likes' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="Likes">
+          <Key>
+            <PropertyRef Name="ImageId" />
+            <PropertyRef Name="UserId" />
+            <PropertyRef Name="IsLiked" />
+          </Key>
+          <Property Name="ImageId" Type="int" Nullable="false" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="IsLiked" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="ResolutionMaster">
           <Key>
@@ -63,9 +84,17 @@
         </EntityType>
         <EntityContainer Name="ImageStoreModelStoreContainer">
           <EntitySet Name="Categories" EntityType="Self.Categories" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Configurations" EntityType="Self.Configurations" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Images" EntityType="Self.Images" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ResolutionMaster" EntityType="Self.ResolutionMaster" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="User_Details" EntityType="Self.User_Details" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Likes" EntityType="Self.Likes" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [Likes].[ImageId] AS [ImageId], 
+    [Likes].[UserId] AS [UserId], 
+    [Likes].[IsLiked] AS [IsLiked]
+    FROM [dbo].[Likes] AS [Likes]</DefiningQuery>
+          </EntitySet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
@@ -76,6 +105,8 @@
           <EntitySet Name="Categories" EntityType="ImageStoreModel.Categories" />
           <EntitySet Name="ResolutionMaster" EntityType="ImageStoreModel.ResolutionMaster" />
           <EntitySet Name="Images" EntityType="ImageStoreModel.Images" />
+          <EntitySet Name="Configurations" EntityType="ImageStoreModel.Configurations" />
+          <EntitySet Name="Likes" EntityType="ImageStoreModel.Likes" />
         </EntityContainer>
         <EntityType Name="User_Details">
           <Key>
@@ -132,6 +163,25 @@
           <Property Name="RejectedDate" Type="DateTime" Precision="3" />
           <Property Name="RejectedBy" Type="Int32" />
           <Property Name="Reason" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="Configurations">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="KeyName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Value" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Details" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="Likes">
+          <Key>
+            <PropertyRef Name="ImageId" />
+            <PropertyRef Name="UserId" />
+            <PropertyRef Name="IsLiked" />
+          </Key>
+          <Property Name="ImageId" Type="Int32" Nullable="false" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="IsLiked" Type="Boolean" Nullable="false" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -196,6 +246,25 @@
                 <ScalarProperty Name="Size" ColumnName="Size" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Configurations">
+            <EntityTypeMapping TypeName="ImageStoreModel.Configurations">
+              <MappingFragment StoreEntitySet="Configurations">
+                <ScalarProperty Name="Details" ColumnName="Details" />
+                <ScalarProperty Name="Value" ColumnName="Value" />
+                <ScalarProperty Name="KeyName" ColumnName="KeyName" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Likes">
+            <EntityTypeMapping TypeName="ImageStoreModel.Likes">
+              <MappingFragment StoreEntitySet="Likes">
+                <ScalarProperty Name="IsLiked" ColumnName="IsLiked" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="ImageId" ColumnName="ImageId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

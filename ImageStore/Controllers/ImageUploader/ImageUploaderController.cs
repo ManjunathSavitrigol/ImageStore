@@ -22,6 +22,7 @@ namespace ImageStore.Controllers.ImageUploader
 
         public ActionResult Index()
         {
+
             return View();
         }
 
@@ -29,17 +30,20 @@ namespace ImageStore.Controllers.ImageUploader
         public ActionResult Upload(ImageUpload image)
         {
             image.UploaderId = Convert.ToInt32(HttpContext.Session["UserId"].ToString());
-            var tags = image.Tags.Split(',');
+            var tags = image.Tags?.Split(',');
             string final5Tags = "";
 
             int count = 0;
-            foreach (var tag in tags)
+            if(tags != null)
             {
-                if (count > 5)
-                    break;
+                foreach (var tag in tags)
+                {
+                    if (count > 5)
+                        break;
 
-                final5Tags += tag + "#";
-            }
+                    final5Tags += tag + "#";
+                }
+            }           
 
             image.Tags = final5Tags.Trim('#');
             Response res = _image.Save(image);

@@ -1,0 +1,157 @@
+﻿@model List<Image.Settings>
+@{
+    ViewBag.Title = "Index";
+}
+
+<div id="page-content-topbar">
+    <div class="navbar navbar-expand-lg navbar-light border-bottom-0">
+
+        <!--button for toggling the sidebar-->
+        @Html.Partial("_TopLeft")
+
+        <!-- current page indication by breadcrumb-->
+        <div class="pt-3 ps-2 d-none d-md-block">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item n-active" aria-current="page">Configurations</li>
+                </ol>
+            </nav>
+        </div>
+
+        <!-- last login and logout-->
+        @Html.Partial("_TopRight")
+    </div>
+</div>
+<div id="main-content">
+    <div class="card">
+        <div class="card-header">
+            <div class="row">
+                <div class="col-12 text-start">
+                    <button type="button" class="btn btn-primary" id="save">
+                        <i class="fa fa-save"> </i> &nbsp; Save
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-body">
+            <table id="acexample" class="table table-bordered text-center" style="width:100%">
+                <thead>
+                    <tr role="row">
+                        <th class="col-1 text-center">
+                            <div class="icheck-primary d-inline-block text-center">
+                                <input type="checkbox" class="flat" id="acheck2">
+                                <label for="acheck2">
+                                </label>
+                            </div>
+                        </th>
+                        <th class="text-center">Description</th>
+                        <th class="text-center">Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr role="row">
+                            <td class="col-1 text-center">
+                                <div class="icheck-primary d-inline-block text-center">
+                                    @Html.CheckBox("dcheck", false, new { id = item.Id, name="dcheck", @class = "selectclass"})
+                                </div>
+
+                            </td>
+                            <td>@item.Description</td>
+                            <td>
+                                @if (item.Key.StartsWith("FILE_"))
+                                {
+                                    @Html.TextBox(item.Key, null, new { @id = "key_" + item.Id, @accept = "image/*", @name = item.Key, @class = "form-control", @type = "file" })
+                                }
+                                else
+                                {
+                                    @Html.Editor(item.Key, new { htmlAttributes = new { @class = "form-control", @value = item.Value, @Id = "key_" + item.Id } })
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@if (TempData["message"] != null)
+{
+    <script type="text/javascript">
+             window.onload = function () {
+                swal("@TempData["message"]", "", "@TempData["messagetype"]");
+            };
+    </script>
+    TempData["message"] = null;
+}
+
+<script type="text/javascript">
+
+    var tab1 = $('#acexample').DataTable({
+        orderCellsTop: true,
+        fixedHeader: true,
+
+        dom: "<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>>" +
+            "<'row'<'col-sm-12 pt-3'tr>>" +
+            "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+    });
+
+    $("#save").click(function () {
+        let selected = [];
+        let formdata = new FormData();
+
+        tab1.$("input[name=dcheck]").each(function () {
+            if (this.checked) {
+
+                var id = this.id;
+                var value = $("key_" + this.id).val();
+
+                if (value == undefined) {
+                    formdata.append('key_'+ id, $('#key_'+id)[0].files[0]);
+                }
+
+                selected.push({ Id: id, Value:value, Key:"", Description:"", File:null });
+            }
+        })
+
+        selected.forEach((item, i) => {
+            Object.keys(item).forEach(key =>
+                formdata.append(`settings[${i}].${key}`, item[key])
+            );
+        })
+
+
+        console.log(selected);
+        $.ajax({
+            url: '@Url.Action("save", "settings")',
+            type: 'POST',
+            data: formdata,
+            async: false,
+            cache: false,
+            contentType: false,
+            enctype: 'multipart/form-data',
+            processData: false,
+            success: function (response) {
+                let data = response.Message.split('*');
+                 swal({
+                     title: data[1],
+                     icon: data[0]
+                 })
+                     .then((isConfirm) => {
+                         if (isConfirm) {
+                             window.location.reload();
+                         }
+                     });
+
+            },
+            error: function (err) {
+                swal("error occured", "", "error");
+            }
+        })
+       
+    })
+</script>
