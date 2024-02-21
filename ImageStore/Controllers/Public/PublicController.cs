@@ -15,6 +15,8 @@ namespace ImageStore.Controllers.Public
     {
         IImageBusiness _image = new ImageBusiness();
         ISettingsBusiness _settings = new SettingsBusiness();
+        ILikesBusiness _likes = new LikesBusiness();   
+        IUserBusiness _user = new UserBusiness();   
 
 
         public ActionResult Index()
@@ -75,9 +77,14 @@ namespace ImageStore.Controllers.Public
             Response res = new Response();
             if (Session["SessionStart"]?.ToString() == null)
             {
-                res.Flag = false;  
-            }else
-                res = _image.Like(id);
+                res.Flag = false;
+            }
+            else
+            {
+                int userId = Convert.ToInt32(Session["UserId"].ToString());
+                res = _likes.LikeDislike(id, userId);
+            }
+                
             return Json(res, JsonRequestBehavior.AllowGet);
         }
 
@@ -86,10 +93,29 @@ namespace ImageStore.Controllers.Public
             Response res = _image.Download(id);
             if (res.Flag)
             {
-                return File(res.Object.ToString(), "application/image");
+                return File(res.Object.ToString(), "image/jpeg", res.Object1+".jpg");
             }
 
             return RedirectToAction("Index");
+        }
+
+        public ActionResult UserProfile(int id)
+        {
+            User_Details user = new User_Details();
+            try
+            {
+                if (id != 0)
+                {
+                    Response res = _user.Get(id);
+                    if (res.Flag)
+                    {
+                        user = ((IEnumerable<User_Details>)res.Object).FirstOrDefault();
+                    }
+                }
+            }
+            catch { }
+            return PartialView(user);
+            
         }
 
     }

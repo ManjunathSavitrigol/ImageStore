@@ -47,10 +47,12 @@
     <Compile Include="ImageBusiness.cs" />
     <Compile Include="Interfaces\ICategoryBusiness.cs" />
     <Compile Include="Interfaces\IImageBusiness.cs" />
+    <Compile Include="Interfaces\ILikesBusiness.cs" />
     <Compile Include="Interfaces\ILoginBusiness.cs" />
     <Compile Include="Interfaces\IResolutionBusiness.cs" />
     <Compile Include="Interfaces\ISettingsBusiness.cs" />
     <Compile Include="Interfaces\IUserBusiness.cs" />
+    <Compile Include="LikesBusiness.cs" />
     <Compile Include="LoginBusiness.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ResolutionBusiness.cs" />

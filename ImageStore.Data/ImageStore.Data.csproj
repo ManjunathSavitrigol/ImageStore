@@ -89,6 +89,7 @@
     <Compile Include="Infrastructure\BaseRepository.cs" />
     <Compile Include="Infrastructure\Contract\IBaseRepository.cs" />
     <Compile Include="Infrastructure\Contract\IUnitOfWork.cs" />
+    <Compile Include="LikesRepo.cs" />
     <Compile Include="ParitalClasses\User_Details.cs" />
     <Compile Include="ResolutionRepo.cs" />
     <Compile Include="Infrastructure\UnitOfWork.cs" />

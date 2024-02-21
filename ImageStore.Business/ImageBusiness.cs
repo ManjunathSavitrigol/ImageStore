@@ -104,6 +104,7 @@ namespace ImageStore.Business
                                                           Category = c.Name,
                                                           Resolution = r.Resolution,
                                                           Uploader = u.Full_Name,
+                                                          UploaderId = u.Id,
                                                           ImagePath = i.FilePath,
                                                           ProfilePath = u.Profile,
                                                           UploadedDate = i.UploadDate,
@@ -221,6 +222,7 @@ namespace ImageStore.Business
                 res.Message = "success*successfull";
                 res.Flag = true;
                 res.Object = image.FilePath;
+                res.Object1 = image.Name;
             }
             catch { }
 

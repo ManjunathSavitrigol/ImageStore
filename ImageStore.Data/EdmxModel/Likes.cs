@@ -17,5 +17,6 @@ namespace ImageStore.Data.EdmxModel
         public int ImageId { get; set; }
         public int UserId { get; set; }
         public bool IsLiked { get; set; }
+        public int Id { get; set; }
     }
 }

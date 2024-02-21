@@ -14,6 +14,7 @@ namespace Image
         public decimal Size { get; set; }
         public string Resolution { get; set; }
         public string Uploader { get; set; }
+        public int UploaderId { get; set; }
         public string ImagePath { get; set; }
         public string ProfilePath { get; set; }
         public DateTime UploadedDate { get; set; }  

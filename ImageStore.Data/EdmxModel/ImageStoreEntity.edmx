@@ -45,17 +45,14 @@
           <Property Name="RejectedBy" Type="int" />
           <Property Name="Reason" Type="nvarchar" MaxLength="200" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'ImageStore.dbo.Likes' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="Likes">
           <Key>
-            <PropertyRef Name="ImageId" />
-            <PropertyRef Name="UserId" />
-            <PropertyRef Name="IsLiked" />
+            <PropertyRef Name="Id" />
           </Key>
           <Property Name="ImageId" Type="int" Nullable="false" />
           <Property Name="UserId" Type="int" Nullable="false" />
           <Property Name="IsLiked" Type="bit" Nullable="false" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
         </EntityType>
         <EntityType Name="ResolutionMaster">
           <Key>
@@ -86,15 +83,9 @@ warning 6002: The table/view 'ImageStore.dbo.Likes' does not have a primary key 
           <EntitySet Name="Categories" EntityType="Self.Categories" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Configurations" EntityType="Self.Configurations" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Images" EntityType="Self.Images" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Likes" EntityType="Self.Likes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ResolutionMaster" EntityType="Self.ResolutionMaster" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="User_Details" EntityType="Self.User_Details" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Likes" EntityType="Self.Likes" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [Likes].[ImageId] AS [ImageId], 
-    [Likes].[UserId] AS [UserId], 
-    [Likes].[IsLiked] AS [IsLiked]
-    FROM [dbo].[Likes] AS [Likes]</DefiningQuery>
-          </EntitySet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
@@ -175,13 +166,12 @@ warning 6002: The table/view 'ImageStore.dbo.Likes' does not have a primary key 
         </EntityType>
         <EntityType Name="Likes">
           <Key>
-            <PropertyRef Name="ImageId" />
-            <PropertyRef Name="UserId" />
-            <PropertyRef Name="IsLiked" />
+            <PropertyRef Name="Id" />
           </Key>
           <Property Name="ImageId" Type="Int32" Nullable="false" />
           <Property Name="UserId" Type="Int32" Nullable="false" />
           <Property Name="IsLiked" Type="Boolean" Nullable="false" />
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -262,6 +252,7 @@ warning 6002: The table/view 'ImageStore.dbo.Likes' does not have a primary key 
           <EntitySetMapping Name="Likes">
             <EntityTypeMapping TypeName="ImageStoreModel.Likes">
               <MappingFragment StoreEntitySet="Likes">
+                <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="IsLiked" ColumnName="IsLiked" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="ImageId" ColumnName="ImageId" />

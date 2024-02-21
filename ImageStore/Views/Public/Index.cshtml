@@ -113,7 +113,12 @@
             url: '@Url.Action("Like", "Public")',
             success: function (data) {
                 if (data.Flag) {
-                    $("#itemL-" + id + "> i").css({ color: 'red', size: '25px' })
+                    if (data.Object == 1) {
+                        $("#itemL-" + id + "> i").css({ color: 'red', size: '25px' })
+                    } else {
+                        $("#itemL-" + id + "> i").css({ color: 'black', size: '25px' })
+                    }
+                   
                 } else {
                     window.location.href = "@Url.Content("~/Login/Index")/"
                 }

@@ -8,7 +8,7 @@
     <!-- Font awesome-->
     <!--<link rel="stylesheet" href="/Images/font-awesome-4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/c ss/all.min.css" />-->
-    <link  rel="stylesheet" href="~/Content/FontAwesome/css/font-awesome.css"/>
+    <link rel="stylesheet" href="~/Content/FontAwesome/css/font-awesome.css" />
 
     <!--font-->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -36,8 +36,8 @@
 
         .brandimage {
             width: 50px;
-            height:50px;
-            border-radius:50%;
+            height: 50px;
+            border-radius: 50%;
             border: 3px solid black;
         }
 
@@ -149,6 +149,8 @@
     </style>
 </head>
 
+@{ string sessionStared = Session["SessionStart"]?.ToString();}
+
 <body>
     <div class="wrapper">
         <div class="container-fluid w-100">
@@ -161,18 +163,36 @@
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                             <li class="nav-item">
-                                <a class="nav-link active" aria-current="page" href="#">Home</a>
+                                @if (sessionStared == "true")
+                                {
+                                    <span>@Session["FullName"].ToString()</span>
+                                }
+                                else
+                                {
+                                    <span>
+                                        WELCOME
+                                    </span>
+                                }
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#" aria-current="page">Dashboard</a>
-                            </li>
+                            @*
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#" aria-current="page">Dashboard</a>
+                                </li>*@
                         </ul>
                         <form class="d-flex ">
                             <input class="form-control mt-3" type="search" placeholder="Search" aria-label="Search" id="search_byname1">
                             <button class="btn btn-outline-success mt-3" type="button" id="search1">Search</button>
                         </form>
                         <div class="d-flex ms-lg-3 mt-lg-0 mt-3">
-                            <a class="btn btn-success" href="@Url.Action("Index", "Login")">Become a Uploader</a>
+                            @if (sessionStared == "true")
+                            {
+                                <a class="btn btn-success" href="@Url.Action("Index", "ImageUploader")">Upload</a>
+                            }
+                            else
+                            {
+                                <a class="btn btn-success" href="@Url.Action("Index", "Login")">Become a Uploader</a>
+                            }
+
                         </div>
                     </div>
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
@@ -187,13 +207,23 @@
                                 <i class="fa fa-user"></i>
                             </button>
                             <ul class="dropdown-menu dropdown-menu-start">
-                                <li><a class="dropdown-item" href="#">Profile</a></li>
-                                <li>
-                                    <hr class="dropdown-divider">
-                                </li>
-                                <li>
-                                    <a class="dropdown-item" href="#">Logout &ensp;<i class="fa fa-sign-out"></i></a>
-                                </li>
+                                @if (sessionStared == "true")
+                                {
+                                    <li><a class="dropdown-item" href="@Url.Action("index", "UploaderProfile")">Profile</a></li>
+                                    <li>
+                                        <hr class="dropdown-divider">
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="@Url.Action("Logout", "Login")">Logout &ensp;<i class="fa fa-sign-out"></i></a>
+                                    </li>
+                                }
+                                else
+                                {
+                                    <li>
+                                        <a class="dropdown-item" href="@Url.Action("index", "login")">Login &ensp;<i class="fa fa-sign-in"></i></a>
+                                    </li>
+                                }
+
                             </ul>
                         </div>
                     </div>
@@ -201,7 +231,7 @@
             </nav>
 
             @RenderBody()
-            
+
         </div>
     </div>
 </body>

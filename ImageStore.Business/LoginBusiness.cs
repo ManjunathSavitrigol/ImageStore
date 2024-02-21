@@ -38,7 +38,7 @@ namespace ImageStore.Business
                 var user = _userDetails.GetAll().Where(x => x.Email == email && x.Pass == encryptedText).FirstOrDefault();
                 if (user != null)
                 {
-                    sessionHelper.SessionStart = "True";
+                    sessionHelper.SessionStart = "true";
                     sessionHelper.FullName = user.Full_Name;
                     sessionHelper.UserId = user.Id;
                     sessionHelper.UserType = user.UserType;

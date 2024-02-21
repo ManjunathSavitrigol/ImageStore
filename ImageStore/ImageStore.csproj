@@ -129,6 +129,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\CategoryController.cs" />
+    <Compile Include="Controllers\CustomErrorsController.cs" />
     <Compile Include="Controllers\ImageApprover\ImageApproveController.cs" />
     <Compile Include="Controllers\ImageUploader\ImageUploaderController.cs" />
     <Compile Include="Controllers\ImageUploader\UploaderProfileController.cs" />
@@ -226,6 +227,9 @@
     <Content Include="Views\Public\Index.cshtml" />
     <Content Include="Views\Public\GetImages.cshtml" />
     <Content Include="Views\Settings\Index.cshtml" />
+    <Content Include="Views\Public\UserProfile.cshtml" />
+    <Content Include="Views\CustomErrors\Index.cshtml" />
+    <Content Include="Views\CustomErrors\Error500.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

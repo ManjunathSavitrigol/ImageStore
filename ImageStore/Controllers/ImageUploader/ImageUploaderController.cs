@@ -19,10 +19,10 @@ namespace ImageStore.Controllers.ImageUploader
         ICategoryBusiness _category = new CategoryBusiness();
         IResolutionBusiness _resolution = new ResolutionBusiness();
         IImageBusiness _image = new ImageBusiness();
+        IUserBusiness _user = new UserBusiness();
 
         public ActionResult Index()
-        {
-
+        {    
             return View();
         }
 
