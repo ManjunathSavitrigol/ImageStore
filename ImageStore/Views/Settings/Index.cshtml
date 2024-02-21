@@ -3,6 +3,9 @@
     ViewBag.Title = "Index";
 }
 
+@Scripts.Render("~/content/jquery/datatables.min.js")
+@Styles.Render("~/content/jquery/datatables.min.css")
+
 <div id="page-content-topbar">
     <div class="navbar navbar-expand-lg navbar-light border-bottom-0">
 
@@ -56,7 +59,7 @@
                         <tr role="row">
                             <td class="col-1 text-center">
                                 <div class="icheck-primary d-inline-block text-center">
-                                    @Html.CheckBox("dcheck", false, new { id = item.Id, name="dcheck", @class = "selectclass"})
+                                    @Html.CheckBox("dcheck", false, new { id = item.Id, name = "dcheck", @class = "selectclass" })
                                 </div>
 
                             </td>
@@ -152,6 +155,6 @@
                 swal("error occured", "", "error");
             }
         })
-       
+
     })
 </script>

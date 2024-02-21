@@ -3,6 +3,9 @@
     ViewBag.Title = "Index";
 }
 
+@Scripts.Render("~/content/jquery/datatables.min.js")
+@Styles.Render("~/content/jquery/datatables.min.css")
+
 <div id="page-content-topbar">
     <div class="navbar navbar-expand-lg navbar-light border-bottom-0">
 
@@ -13,7 +16,7 @@
         <div class="pt-3 ps-2 d-none d-md-block">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item n-active" aria-current="page">User Master</li>                   
+                    <li class="breadcrumb-item n-active" aria-current="page">User Master</li>
                 </ol>
             </nav>
         </div>
@@ -28,7 +31,7 @@
         <div class="card-header">
             <div class="row">
                 <div class="col-6">
-                    @Html.DropDownList("usertype",new List<SelectListItem> {
+                    @Html.DropDownList("usertype", new List<SelectListItem> {
                         new SelectListItem { Text = "All", Value = "All" },
                         new SelectListItem { Text = "Image Uploaders (IU)", Value = "IU" },
                         new SelectListItem { Text = "Image Approvers (IA)", Value = "IA" }

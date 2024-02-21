@@ -3,6 +3,9 @@
     ViewBag.Title = "Rejected";
 }
 
+@Scripts.Render("~/content/jquery/datatables.min.js")
+@Styles.Render("~/content/jquery/datatables.min.css")
+
 <div id="page-content-topbar">
     <div class="navbar navbar-expand-lg navbar-light border-bottom-0">
 
@@ -38,13 +41,13 @@
                     <button type="button" class="btn btn-primary" id="reload">Reload</button>
                 </div>
                 @*<div class="col-12 col-md-4 text-end pt-4">
-                    <button type="button" class="btn btn-success" id="approve">
-                        Approve
-                    </button>
-                    <button type="button" class="btn btn-danger" id="reject">
-                        Reject
-                    </button>
-                </div>*@
+                        <button type="button" class="btn btn-success" id="approve">
+                            Approve
+                        </button>
+                        <button type="button" class="btn btn-danger" id="reject">
+                            Reject
+                        </button>
+                    </div>*@
             </div>
 
         </div>

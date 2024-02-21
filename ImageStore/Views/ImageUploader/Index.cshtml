@@ -3,6 +3,8 @@
     Layout = "~/Views/Shared/_Layout2.cshtml";
 }
 
+@Styles.Render("~/content/assets/css/imagecard.css")
+
 <style>
     .brandimageinternal {
         width: 150px;
@@ -47,22 +49,22 @@
 </div>
 <div id="self-collection" class="position-relative">
     <div class="nav nav-tabs position-sticky pt-3" id="v-pills-tab" role="tablist" aria-orientation="vertical" style="top:75px;z-index:50;background-color:white">
-        <button class="nav-link active" id="v-pills-myuploads-tab" data-bs-toggle="pill"
+        <button class="nav-link active p-2" id="v-pills-myuploads-tab" data-bs-toggle="pill"
                 data-bs-target="#v-pills-myuploads" type="button" role="tab" aria-controls="v-pills-myuploads"
                 aria-selected="true">
             My uploads
         </button>
-        <button class="nav-link" id="v-pills-pending-tab" data-bs-toggle="pill"
+        <button class="nav-link p-2" id="v-pills-pending-tab" data-bs-toggle="pill"
                 data-bs-target="#v-pills-pending" type="button" role="tab" aria-controls="v-pills-pending"
                 aria-selected="false">
             Pending
         </button>
-        <button class="nav-link" id="v-pills-rejected-tab" data-bs-toggle="pill"
+        <button class="nav-link p-2" id="v-pills-rejected-tab" data-bs-toggle="pill"
                 data-bs-target="#v-pills-rejected" type="button" role="tab" aria-controls="v-pills-rejected"
                 aria-selected="false">
             Rejected
         </button>
-        <button class="nav-link" id="v-pills-upload-tab" data-bs-toggle="pill"
+        <button class="nav-link p-2" id="v-pills-upload-tab" data-bs-toggle="pill"
                 data-bs-target="#v-pills-upload" type="button" role="tab" aria-controls="v-pills-upload"
                 aria-selected="false">
             Upload
@@ -74,16 +76,16 @@
              aria-labelledby="v-pills-myuploads-tab">
 
             <div class="row w-100 mt-4 position-sticky p-3" style="top:131px;z-index:50;background-color:white">
-                <div class="col-3">
+                <div class="col-12 col-md-3 mb-2 mb-md-0">
                     @Html.Editor("search_byname", new { htmlAttributes = new { @class = "form-control", @type = "text", @placeholder = "Search...", @id = "search_byname" } })
                 </div>
-                <div class="col-3">
+                <div class="col-4 col-md-3">
                     @Html.DropDownList("search_category", new List<SelectListItem> { new SelectListItem { Text = "Choose category", Value = "0" } }, new { @class = "form-control", @id = "search_category" })
                 </div>
-                <div class="col-3">
+                <div class="col-4 col-md-3">
                     @Html.DropDownList("search_resolution", new List<SelectListItem> { new SelectListItem { Text = "Choose resolution", Value = "0" } }, new { @class = "form-control", @id = "search_resolution" })
                 </div>
-                <div class="col-3">
+                <div class="col-4 col-md-3">
                     @Html.DropDownList("sortby", new List<SelectListItem> { new SelectListItem { Text ="Sort by", Value=""},
                                                                             new SelectListItem { Text = "Name", Value="N" },
                                                                             new SelectListItem { Text="Date Uploaded", Value="DU"}
@@ -235,13 +237,13 @@
                     let appendelement = document.getElementById("rejectedimagepanel");
                     $("#rejectedimagepanel").empty();
                     appendelement.innerHTML = data;
-                } 
+                }
                  else {
                     let appendelement = document.getElementById("allimagepanel");
                     $("#allimagepanel").empty();
                     appendelement.innerHTML = data;
-                } 
-                
+                }
+
             }
         )
     }
@@ -255,16 +257,16 @@
     //------------------- end -----------------------
 
     //------------------- get pending images -------
-    $(document).ready(GetImages("pending"));    
+    $(document).ready(GetImages("pending"));
 
     //--------------------end -----------------------
 
     //------------------- get pending images -------
-    $(document).ready(GetImages("rejected"));    
+    $(document).ready(GetImages("rejected"));
 
     //--------------------end -----------------------
 
-    //-------------- get dropdownlist ---------------   
+    //-------------- get dropdownlist ---------------
     function GetDropdowns() {
          $.get(
         "@Url.Action("Dropdownlist", "ImageUploader")",

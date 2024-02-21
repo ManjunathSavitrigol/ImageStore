@@ -45,7 +45,8 @@ namespace ImageStore.Controllers.Public
                 if (res.Flag)
                 {
 
-                    var images = (IEnumerable<ImageObject>)res.Object;
+                    var images = ((IEnumerable<ImageObject>)res.Object).Where(x => x.IsVerified == true);
+                    
                     int count = images.Count();
 
                     switch (sorty_by)

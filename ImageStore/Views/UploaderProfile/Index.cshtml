@@ -13,25 +13,16 @@
     }
 </style>
 
-<div class="d-flex justify-content-center">
-    <div class="w-50">
+<div class="row w-100 justify-content-evenly">
+    <div class="col-12 col-lg-6 ps-5 p-lg-0">
         <div class="text-center">
             <h1>Profile</h1>
         </div>
-        @*<div class="d-flex justify-content-center mb-5 gap-5">
-            <div>
-                <img src="https://tse1.mm.bing.net/th?id=OIP.wwxK07x0Umfnh0l-nrjxjgHaDg&pid=Api&P=0&h=180"
-                     class="rounded-circle brandimageinternal">
-            </div>
-
-            <div><button class="btn btn-success  p-3 mt-5">Change Image</button></div>
-
-        </div>*@
         @using (Html.BeginForm("UpdateUser", "UploaderProfile", FormMethod.Post, new { @enctype = "multipart/form-data" }))
         {
             @Html.AntiForgeryToken()
             @Html.HiddenFor(x => x.Id)
-            @Html.HiddenFor(x => x.ProfileImage, new {@type="file", @hidden="true"})
+            @Html.HiddenFor(x => x.ProfileImage, new { @type = "file", @hidden = "true" })
 
             <div class="d-flex justify-content-center mb-5 gap-5">
                 <div>
@@ -40,31 +31,31 @@
                 </div>
                 <div>
                     @*@Html.EditorFor(x => x.ProfileImage, new { htmlAttributes = new { @class = "form-control", @type = "file" } })*@
-                    <button class="btn btn-success  p-3 mt-5" type="button" id="change_profile">Change Image</button>
+                    <button class="btn btn-success  p-2 mt-5" type="button" id="change_profile">Change Image</button>
                 </div>
 
             </div>
 
             <div class="row w-100">
-                <div class="col-6 mb-3">
+                <div class="col-sm-6 col-12 mb-3">
                     <label class="form-label">Full Name</label>
                     @Html.EditorFor(model => model.Full_Name, new { htmlAttributes = new { @class = "form-control", @type = "text" } })
                 </div>
-                <div class="col-6  mb-3">
+                <div class="col-sm-6 col-12  mb-3">
                     <label class="form-label">Email</label>
                     @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", @type = "email" } })
                 </div>
-                <div class="col-6  mb-3">
+                <div class="col-sm-6 col-12  mb-3">
                     <label class="form-label">Date Of Birth</label>
-                    @Html.EditorFor(model => model.DOB, new { htmlAttributes = new { @class = "form-control"} })
+                    @Html.EditorFor(model => model.DOB, new { htmlAttributes = new { @class = "form-control" } })
 
                 </div>
-                <div class="col-6  mb-3">
+                <div class="col-sm-6 col-12  mb-3">
                     <label class="form-label">Contact</label>
                     @Html.EditorFor(model => model.MobileNo, new { htmlAttributes = new { @class = "form-control", @type = "number" } })
 
                 </div>
-                <div class="col-6  mb-3">
+                <div class="col-sm-6 col-12 mb-3 pe-0 me-0">
                     <label class="form-label">Password</label>
                     <input class="btn btn-primary form-control" type="button" value="change password" />
                 </div>
@@ -73,7 +64,7 @@
                 </div>
                 <div class="col-12 mb-3">
                     <lablel class="form-label">Short Bio</lablel>
-                    @Html.TextAreaFor(model => model.Bio,  new { @class = "form-control", @rows = 5 } )
+                    @Html.TextAreaFor(model => model.Bio, new { @class = "form-control", @rows = 5 })
                 </div>
                 <div class="col-12 mb-3 text-center">
                     <button class="btn btn-success" type="submit">
@@ -84,6 +75,7 @@
         }
 
     </div>
+
 </div>
 
 <script type="text/javascript">

@@ -22,20 +22,21 @@
                         </div>
                     
                 </div>
-                <div class="icon-download">
-                    <a href='@Url.Action("Download", "Public")?id=@item.Id'>
+                <div >
+                    <a class="icon-download" href='@Url.Action("Download", "Public")?id=@item.Id'>
                         <div style="background-color: white; width: 50px; height: 40px; border-radius: 5px;"
-                             class="d-flex justify-content-center align-items-center" onclick="Download(@item.Id)" id="itemD-@item.Id">
+                             class="d-flex justify-content-center align-items-center" id="itemD-@item.Id">
                             <i class="fa fa-download" style="color: black;font-size: 20px;"></i>
                         </div>
                     </a>
+                    
                 </div>
-                <div class="profilename">
-                    <a class="navbar-brand ps-5" href="@Url.Content("ImageUploader/index")?id=@item.UploaderId">
+                <div class="profile">
+                    <a class="navbar-brand ps-5 profileimage" href="@Url.Content("ImageUploader/index")?id=@item.UploaderId">
                         <img src="@item.ProfilePath.Trim('~')"
-                             class="rounded-pill brandimage">
+                             class="rounded-pill">
                     </a>
-                    <p>@item.Uploader</p>
+                    <p class="profilename">@item.Uploader</p>
                 </div>
 
             </div>
