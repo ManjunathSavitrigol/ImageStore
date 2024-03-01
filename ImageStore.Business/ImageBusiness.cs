@@ -7,6 +7,8 @@ using ImageStore.Data.Infrastructure.Contract;
 using ImageStore.Domain;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Drawing.Imaging;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,6 +23,7 @@ namespace ImageStore.Business
         private readonly CategoryRepo _categoryRepo;
         private readonly ResolutionRepo _resolutionRepo;
         private readonly UserDetailsRepo _userRepo;
+        private readonly SettingsRepo _settingsRepo;
 
         public ImageBusiness()
         {
@@ -28,6 +31,7 @@ namespace ImageStore.Business
             _categoryRepo = new CategoryRepo(_unitofwork);
             _resolutionRepo = new ResolutionRepo(_unitofwork);
             _userRepo = new UserDetailsRepo(_unitofwork);
+            _settingsRepo = new SettingsRepo(_unitofwork);
         }
         public Response Save(ImageUpload image)
         {
@@ -36,6 +40,17 @@ namespace ImageStore.Business
             {
                 if (image.Id == 0)
                 {
+                    //check if the size is greater than the specified size
+                    Configurations sizeconfiguration = _settingsRepo.GetAll(x => x.KeyName == "UploadSize").FirstOrDefault();
+                    if (sizeconfiguration != null)
+                    {
+                        if (Convert.ToInt32(sizeconfiguration.Value) > image.ImageSize)
+                        {
+                            res.Message = "warning*Please select a file grater than equal to " + sizeconfiguration.Value + "MB";
+                            goto ret;
+                        }
+                    }
+
                     //check if the name is already used by this user
                     int count = _imageRepo.GetAll(x => x.UploaderId == image.UploaderId && x.Name == image.Name).Count();
                     if (count > 0)
@@ -45,16 +60,51 @@ namespace ImageStore.Business
                     }
 
                     //save file to a folder
-                    string filePath = Helpers.SaveFile(image.ImageFile, "Images/" + image.UploaderId, image.Name);
-                    if (string.IsNullOrEmpty(filePath))
-                    {
-                        res.Message = "error*Failed to save file! Please try again later.";
-                        goto ret;
-                    }
+                    //old full size
+                    //string filePath = Helpers.SaveFile(image.ImageFile, "Images/" + image.UploaderId, image.Name);
+                    //if (string.IsNullOrEmpty(filePath))
+                    //{
+                    //    res.Message = "error*Failed to save file! Please try again later.";
+                    //    goto ret;
+                    //}
+
+                    //Save different sizes of the same image
+                    //compressing original image to 80
+                    System.Drawing.Image bitimage = new Bitmap(image.ImageFile.InputStream);
+                    var a = bitimage.HorizontalResolution;
+                    var b = bitimage.VerticalResolution;
+                    var c = bitimage.PixelFormat;
+                    var d = bitimage.RawFormat;
+                    var e = bitimage.PropertyItems;
+
+                    //get if watermark is enabled
+                    string isWatermarkEnabled = _settingsRepo.GetAll(x => x.KeyName == "EnableSizeWaterMark").FirstOrDefault()?.Value ?? "false";
+
+                    //image to be downloaded
+                    string filePath = Helpers.CompressAndSaveImage(bitimage, 80, "Images/" + image.UploaderId + "/" + image.Name, image.Name, Convert.ToInt32(bitimage.Width/2), isWatermarkEnabled);
+
+                    //width 1200 quality 70
+                    Helpers.CompressAndSaveImage(bitimage, 70, "Images/" + image.UploaderId + "/" + image.Name, image.Name + "_1200", 1200, isWatermarkEnabled);
+
+                    ////width 800 quality 60
+                    Helpers.CompressAndSaveImage(bitimage, 70, "Images/" + image.UploaderId + "/" + image.Name, image.Name + "_800", 800, isWatermarkEnabled);
+
+                    ////width 600 quality 50
+                    Helpers.CompressAndSaveImage(bitimage, 70, "Images/" + image.UploaderId + "/" + image.Name, image.Name + "_600", 600, isWatermarkEnabled);
+
+                    ////width 400 quality 45
+                    Helpers.CompressAndSaveImage(bitimage, 70, "Images/" + image.UploaderId + "/" + image.Name, image.Name + "_400", 400, isWatermarkEnabled);
+
+                    ////width 300 quality 40
+                    Helpers.CompressAndSaveImage(bitimage, 70, "Images/" + image.UploaderId + "/" + image.Name, image.Name + "_300", 300, isWatermarkEnabled);
+
+                    ////width 150 quality 35
+                    Helpers.CompressAndSaveImage(bitimage, 70, "Images/" + image.UploaderId + "/" + image.Name, image.Name + "_150", 150, isWatermarkEnabled);
+
 
                     Images newImage = new Images();
                     newImage.Name = image.Name;
-                    newImage.Size = Convert.ToDecimal(image.ImageSize); ;
+                    newImage.Size = Convert.ToDecimal(image.ImageSize);
                     newImage.CategoryId = image.Category;
                     newImage.ResolutionId = image.Resolution;
                     newImage.FilePath = filePath;
@@ -228,6 +278,18 @@ namespace ImageStore.Business
 
             return res;
         }
+
+        //private void ImageCompressor()
+        //{
+        //    using (MagickImage image = new MagickImage(@"YourImage.jpg"))
+        //    {
+        //        image.Format = MagickFormat.Jpeg; // Set the format of the image.
+        //        image.Resize(40, 40); // Fit the image into the requested width and height.
+        //        image.Quality = 10; // Set the compression level.
+        //        image.Write("YourFinalImage.jpg");
+        //    }
+        //}
+
 
     }
 }

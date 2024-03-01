@@ -5,6 +5,23 @@
     <div class="col p-4">
         <div class="card imagecard">
             <img src="@item.ImagePath.Trim('~')" lazy="load"
+                @*original
+                 @*srcset="@item.ImagePath.Trim('~').Insert(item.ImagePath.Length - 6, "_1200") 1200w,
+                         @item.ImagePath.Trim('~').Insert(item.ImagePath.Length - 6, "_800") 800w,
+                         @item.ImagePath.Trim('~').Insert(item.ImagePath.Length - 6, "_600") 600w,
+                         @item.ImagePath.Trim('~').Insert(item.ImagePath.Length - 6, "_400") 400w,
+                         @item.ImagePath.Trim('~').Insert(item.ImagePath.Length - 6, "_300") 300w,
+                         @item.ImagePath.Trim('~').Insert(item.ImagePath.Length - 6, "_150") 150w "*@
+
+                 srcset="@item.ImagePath.Trim('~').Insert(item.ImagePath.Length - 6, "_1200") 1200w,
+                         @item.ImagePath.Trim('~').Insert(item.ImagePath.Length - 6, "_800") 800w,
+                         @item.ImagePath.Trim('~').Insert(item.ImagePath.Length - 6, "_600") 600w,
+                         @item.ImagePath.Trim('~').Insert(item.ImagePath.Length - 6, "_800") 400w,
+                         @item.ImagePath.Trim('~').Insert(item.ImagePath.Length - 6, "_300") 300w,
+                         @item.ImagePath.Trim('~').Insert(item.ImagePath.Length - 6, "_150") 150w "
+                 sizes="(max-width: 768px) calc((100vw - 3rem))
+                        (max-width: 992px) calc((100vw - 6rem)/2),
+                        calc((100vw - 9rem)/3)"
                  alt="image">
             <div class="card-content">
                 <div class="shadowtop"></div>

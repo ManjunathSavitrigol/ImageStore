@@ -57,7 +57,7 @@
                 </div>
                 <div class="col-sm-6 col-12 mb-3 pe-0 me-0">
                     <label class="form-label">Password</label>
-                    <input class="btn btn-primary form-control" type="button" value="change password" />
+                    <input class="btn btn-primary form-control" type="button" value="change password" data-bs-toggle="modal" data-bs-target="#id1" />
                 </div>
                 <div class="col-12 mb-3">
                     <h1>About you</h1>
@@ -74,12 +74,80 @@
             </div>
         }
 
+        <div class="modal fade " id="id1" aria-hidden="false" data-bs-backdrop="static" data-bs-keyboard="false">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <div class="modal-title"> CHANGE PASSWORD </div>
+                        <button class="btn-close" type="button" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        @using (Html.BeginForm("changepassword", "UploaderProfile", FormMethod.Post, new { @id = "passwordform" }))
+                        {
+                            <div class="row flex-fill">
+                                <div class="col-12 mb-2">
+                                    <label class="form-label">Old Password</label>
+                                    <input class="form-control" name="oldpass" id="oldpass" type="password" />
+                                </div>
+                                <div class="col-12 mb-2">
+                                    <label class="form-label">New Password</label>
+                                    <input class="form-control" name="password" id="pass" type="password" />
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-label">Confirm Password</label>
+                                    <input class="form-control" type="password" id="confirmpass" />
+                                </div>
+                                <div id="errortex" class="text-danger"></div>
+                            </div>
+                        }
+
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Close</button>
+                        <button class="btn btn-primary" type="submit" id="savepass"> save changes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
     </div>
 
+
 </div>
+
+@if (TempData["message"] != null)
+{
+    <script type="text/javascript">
+             window.onload = function () {
+                swal("@TempData["message"]", "", "@TempData["messagetype"]");
+            };
+    </script>
+    TempData["message"] = null;
+}
 
 <script type="text/javascript">
     $("#change_profile").click(function () {
         $("#ProfileImage").click();
+    })
+
+    //save password
+    $("#savepass").click(function () {
+        let oldpass = $("#oldpass").val();
+        let password = $("#pass").val();
+        let confirmpass = $("#confirmpass").val();
+
+        if (password == "" || confirmpass == "" || oldpass == "") {
+            $("#errortex").text("Please enter both passwords!!");
+            return false;
+        }
+
+        if (password != confirmpass) {
+            $("#errortex").text("Passwords do not match!!");
+            return false;
+        }
+
+        $("#passwordform").submit();
     })
 </script>

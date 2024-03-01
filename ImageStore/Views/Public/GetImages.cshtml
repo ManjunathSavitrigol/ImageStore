@@ -7,6 +7,23 @@
     <div class="col p-4">
         <div class="card imagecard">
             <img src="@item.ImagePath.Trim('~')" lazy="load"
+                 @*original
+                 @*srcset="@item.ImagePath.Trim('~').Insert(item.ImagePath.Length - 6, "_1200") 1200w,
+                         @item.ImagePath.Trim('~').Insert(item.ImagePath.Length - 6, "_800") 800w,
+                         @item.ImagePath.Trim('~').Insert(item.ImagePath.Length - 6, "_600") 600w,
+                         @item.ImagePath.Trim('~').Insert(item.ImagePath.Length - 6, "_400") 400w,
+                         @item.ImagePath.Trim('~').Insert(item.ImagePath.Length - 6, "_300") 300w,
+                         @item.ImagePath.Trim('~').Insert(item.ImagePath.Length - 6, "_150") 150w "*@
+
+                 srcset="@item.ImagePath.Trim('~').Insert(item.ImagePath.Length - 6, "_1200") 1200w,
+                         @item.ImagePath.Trim('~').Insert(item.ImagePath.Length - 6, "_800") 800w,
+                         @item.ImagePath.Trim('~').Insert(item.ImagePath.Length - 6, "_600") 600w,
+                         @item.ImagePath.Trim('~').Insert(item.ImagePath.Length - 6, "_800") 400w,
+                         @item.ImagePath.Trim('~').Insert(item.ImagePath.Length - 6, "_300") 300w,
+                         @item.ImagePath.Trim('~').Insert(item.ImagePath.Length - 6, "_150") 150w "
+                 sizes="(max-width: 768px) calc((100vw - 3rem))
+                        (max-width: 992px) calc((100vw - 6rem)/2),
+                        calc((100vw - 9rem)/3)"
                  alt="image">
             <div class="card-content">
                 <div class="shadowtop"></div>
@@ -15,21 +32,21 @@
                     @item.Name
                 </h2>
                 <div class="icon-heart">
-                    
-                        <div style="background-color: white; width: 50px; height: 40px; border-radius: 5px;"
-                             class="d-flex justify-content-center align-items-center" onclick="Like(@item.Id)" id="itemL-@item.Id">
-                            <i class="fa fa-heart" style="color: black;font-size: 20px;"></i>
-                        </div>
-                    
+
+                    <div style="background-color: white; width: 50px; height: 40px; border-radius: 5px;"
+                         class="d-flex justify-content-center align-items-center" onclick="Like(@item.Id)" id="itemL-@item.Id">
+                        <i class="fa fa-heart" style="color: black;font-size: 20px;"></i>
+                    </div>
+
                 </div>
-                <div >
+                <div>
                     <a class="icon-download" href='@Url.Action("Download", "Public")?id=@item.Id'>
                         <div style="background-color: white; width: 50px; height: 40px; border-radius: 5px;"
                              class="d-flex justify-content-center align-items-center" id="itemD-@item.Id">
                             <i class="fa fa-download" style="color: black;font-size: 20px;"></i>
                         </div>
                     </a>
-                    
+
                 </div>
                 <div class="profile">
                     <a class="navbar-brand ps-5 profileimage" href="@Url.Content("ImageUploader/index")?id=@item.UploaderId">

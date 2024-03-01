@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing.Imaging;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net.Security;
@@ -91,6 +93,103 @@ namespace ImageStore.Business
             {
             }
             return "";
+        }
+
+        public static string CompressAndSaveImage(System.Drawing.Image inputImage, int quality, string folder, string filename, int width, string isWatermarkEnabled = "false")
+        {
+            try
+            {
+                using (Bitmap mybitmap = new Bitmap(inputImage, width, CalculateHeight(width, CalculateAspectRatio(inputImage.Width, inputImage.Height))))
+                {
+                    
+                    ImageCodecInfo jpgEncoder = GetEncoder(ImageFormat.Jpeg);
+
+                    System.Drawing.Imaging.Encoder myencoder = System.Drawing.Imaging.Encoder.Quality;
+
+                    EncoderParameters myEncoderParameters = new EncoderParameters(1);
+                    EncoderParameter myEncoderParameter = new EncoderParameter(myencoder, quality);
+                    myEncoderParameters.Param[0] = myEncoderParameter;
+
+
+                    //check if watermarking is enabled
+
+                    if(isWatermarkEnabled == "true")
+                    {
+                        Graphics graphicimage = Graphics.FromImage(mybitmap);
+
+                        //watermarking images by size
+                        StringFormat stringformat = new StringFormat();
+                        stringformat.Alignment = StringAlignment.Far;
+                        Color stringcolor = ColorTranslator.FromHtml("#ff0000");
+                        string stringonimage = width + "";
+
+                        graphicimage.DrawString(stringonimage, new Font("arail", 20, FontStyle.Regular), new SolidBrush(stringcolor), new Point(268, 245), stringformat);
+
+                    }
+
+                    //create folder if not created
+                    string imagesPath = System.Web.HttpContext.Current.Server.MapPath($"~/{folder}"); // Or file save folder, etc.
+                    if (!Directory.Exists(imagesPath))
+                    {
+                        Directory.CreateDirectory(imagesPath);
+                    }
+                    //string extension = Path.GetExtension();
+                    string newFileName = $"{filename}.JPEG";
+                    string saveToPath = Path.Combine(imagesPath, newFileName);
+
+
+                    mybitmap.Save(saveToPath, jpgEncoder, myEncoderParameters);
+                    return "~/" + folder + "/" + filename + ".JPEG";
+                }
+            }
+            catch { }
+            return "";
+        }
+
+        private static ImageCodecInfo GetEncoder(ImageFormat format)
+        {
+            ImageCodecInfo[] codecs = ImageCodecInfo.GetImageDecoders();
+            foreach (ImageCodecInfo codec in codecs)
+            {
+                if (codec.FormatID == format.Guid)
+                {
+                    return codec;
+                }
+            }
+
+            return null;
+        }
+
+        private static int CalculateHeight(int width, string aspectRatio)
+        {
+            string[] ratioParts = aspectRatio.Split(':');
+            if (ratioParts.Length != 2 || !int.TryParse(ratioParts[0], out int aspectWidth) || !int.TryParse(ratioParts[1], out int aspectHeight))
+            {
+                throw new ArgumentException("Invalid aspect ratio format. Use 'width:height'.");
+            }
+
+            double ratio = (double)aspectHeight / aspectWidth;
+            return (int)(width * ratio);
+        }
+
+        private static string CalculateAspectRatio(int width, int height)
+        {
+            int gcd = GCD(width, height);
+            int aspectWidth = width / gcd;
+            int aspectHeight = height / gcd;
+
+            return $"{aspectWidth}:{aspectHeight}";
+        }
+
+        private static int GCD(int a, int b)
+        {
+            while (b != 0)
+            {
+                int temp = b;
+                b = a % b;
+                a = temp;
+            }
+            return a;
         }
     }
 }

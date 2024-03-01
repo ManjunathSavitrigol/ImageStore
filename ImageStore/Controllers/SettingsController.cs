@@ -3,6 +3,7 @@ using ImageStore.Business;
 using ImageStore.Business.Interfaces;
 using ImageStore.Data.EdmxModel;
 using ImageStore.Domain;
+using ImageStore.FilterAttributes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +12,7 @@ using System.Web.Mvc;
 
 namespace ImageStore.Controllers
 {
+    [CheckAdmin]
     public class SettingsController : Controller
     {
         ISettingsBusiness _settings = new SettingsBusiness();

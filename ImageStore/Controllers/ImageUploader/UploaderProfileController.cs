@@ -6,6 +6,7 @@ using ImageStore.Domain;
 using ImageStore.FilterAttributes;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -53,7 +54,10 @@ namespace ImageStore.Controllers.ImageUploader
                         //save photo to a file and save path in the db
                         if (user.ProfileImage != null)
                         {
-                            ext_user.Profile = Helpers.SaveFile(user.ProfileImage, "UserProfileImages", user.Full_Name + DateTime.Now.ToString("yyyyMMddHHmmss"));
+                            //ext_user.Profile = Helpers.SaveFile(user.ProfileImage, "UserProfileImages", user.Full_Name + DateTime.Now.ToString("yyyyMMddHHmmss"));
+
+                            System.Drawing.Image  profileImage = new Bitmap(user.ProfileImage.InputStream);
+                            ext_user.Profile = Helpers.CompressAndSaveImage(profileImage, 80,  "UserProfileImages", user.Full_Name + DateTime.Now.ToString("yyyyMMddHHmmss"), 1200);
 
                         }
 
@@ -69,6 +73,26 @@ namespace ImageStore.Controllers.ImageUploader
             }
             catch { }
             return RedirectToAction("index");
-        }      
+        }
+
+        [HttpPost]
+        public ActionResult ChangePassword(string oldpass, string password)
+        {
+            Response res = new Response();
+            try
+            {
+                int userid = Convert.ToInt32(Session["UserId"]?.ToString() ?? "0");
+                res = _userBusiness.ChangePassword(userid, oldpass, password);
+
+                string[] mes = res.Message.Split('*');
+                TempData["messagetype"] = mes[0];
+                TempData["message"] = mes[1];   
+
+            }
+            catch { }
+
+            //return Json(res, JsonRequestBehavior.AllowGet);
+            return RedirectToAction("Index");
+        }
     }
 }

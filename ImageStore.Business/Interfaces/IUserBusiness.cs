@@ -39,5 +39,7 @@ namespace ImageStore.Business.Interfaces
         /// <returns>object Result</returns>
         Response Activate(string ids);
 
+        Response ChangePassword(int userid, string oldpass, string newpass);
+
     }
 }

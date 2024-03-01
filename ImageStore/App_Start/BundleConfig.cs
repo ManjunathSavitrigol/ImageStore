@@ -44,10 +44,21 @@ namespace ImageStore
                 "~/Content/Bootstrap5/bootstrap.min.css"));
 
 
+            //main js file required js files 
+            bundles.Add(new Bundle("~/bundles/mainjs").Include(
+                         "~/Content/Jquery/jquery.min.js",
+                         "~/Content/SweetAlert/sweetalert.min.js",
+                         "~/Content/Bootstrap5/bootstrap.bundle.js"
+                         ));
+
+            //main css file required
+            bundles.Add(new StyleBundle("~/bundles/maincss").Include(
+                "~/Content/Assets/CSS/Layout_CSS.css",
+                "~/Content/FontAwesome/css/font-awesome.css",
+                "~/Content/Bootstrap5/bootstrap.css"
+                ));
 
 
-
-            
         }
     }
 

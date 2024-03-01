@@ -6,6 +6,7 @@ using ImageStore.Data.Infrastructure;
 using ImageStore.Domain;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -38,7 +39,11 @@ namespace ImageStore.Business
                     {
                         if (setting.KeyName.StartsWith("FILE_"))
                         {
-                            setting.Value = Helpers.SaveFile(item.File, "SettingsFile", setting.KeyName+setting.Id+DateTime.Now.ToString("ddMMyyyyhhmmssfff"));
+                            //setting.Value = Helpers.SaveFile(item.File, "SettingsFile", setting.KeyName+setting.Id+DateTime.Now.ToString("ddMMyyyyhhmmssfff"));
+
+                            System.Drawing.Image settingimage = new Bitmap(item.File.InputStream);
+                            setting.Value = Helpers.CompressAndSaveImage(settingimage, 100, "SettingsFile", setting.KeyName + setting.Id + DateTime.Now.ToString("ddMMyyyyhhmmssfff"), 1200);
+
                         }
                         else
                         {

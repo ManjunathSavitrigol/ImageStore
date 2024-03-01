@@ -8,6 +8,10 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using ImageStore.Data.EdmxModel;
+using Aspose.Imaging.FileFormats.Jpeg;
+using ImageMagick;
+using System.Drawing;
+using System.Drawing.Imaging;
 
 namespace ImageStore.Controllers.Public
 {
@@ -118,6 +122,6 @@ namespace ImageStore.Controllers.Public
             return PartialView(user);
             
         }
-
+        
     }
 }

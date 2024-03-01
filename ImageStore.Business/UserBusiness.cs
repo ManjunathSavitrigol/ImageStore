@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace ImageStore.Business
 {
-    public class UserBusiness:IUserBusiness
+    public class UserBusiness : IUserBusiness
     {
         private readonly UnitOfWork _unitOfWork = new UnitOfWork();
         private readonly UserDetailsRepo _userDetails;
@@ -25,18 +25,18 @@ namespace ImageStore.Business
         {
             _userDetails = new UserDetailsRepo(_unitOfWork);
             _userRepo = new UserDetailsRepo(_unitOfWork);
-            _likesRepo = new LikesRepo(_unitOfWork);    
+            _likesRepo = new LikesRepo(_unitOfWork);
         }
 
         public Response CreateUpdate(User_Details user)
-        { 
+        {
             Response res = new Response();
             res.Message = " * ";
             try
             {
                 //check if the same email is registered or not
                 int emailCount = _userDetails.Count(x => x.Email == user.Email && x.Id != user.Id);
-                if(emailCount > 0)
+                if (emailCount > 0)
                 {
                     res.Message = "warning*This Email is already registered!";
                     res.Flag = false;
@@ -44,7 +44,7 @@ namespace ImageStore.Business
                 }
 
                 if (user.Id == 0)
-                {                    
+                {
                     user.ActiveFlag = true;
                     _userDetails.Insert(user);
                     res.Message = "success*User added successfully!";
@@ -52,8 +52,8 @@ namespace ImageStore.Business
                 }
                 else
                 {
-                    User_Details existingUser = _userDetails.SingleOrDefault(x=> x.Id == user.Id);
-                    if(existingUser != null)
+                    User_Details existingUser = _userDetails.SingleOrDefault(x => x.Id == user.Id);
+                    if (existingUser != null)
                     {
                         existingUser.Full_Name = user.Full_Name;
                         existingUser.Email = user.Email;
@@ -71,13 +71,14 @@ namespace ImageStore.Business
                         res.Message = "error*Not Found!";
                     }
                 }
-               
+
 
             }
-            catch {
+            catch
+            {
                 res.Message = "error*Something went wrong!";
             }
-            ret:
+        ret:
             return res;
         }
 
@@ -107,7 +108,7 @@ namespace ImageStore.Business
             try
             {
                 IEnumerable<User_Details> users = _userRepo.GetAll();
-                IEnumerable<Likes> likes = _likesRepo.GetAll(); 
+                IEnumerable<Likes> likes = _likesRepo.GetAll();
 
                 res.Object = (from u in users
                               join l in likes
@@ -120,7 +121,7 @@ namespace ImageStore.Business
                                   //Email = u.Email,
                                   //TotalDownloads = 
                               }
-                              
+
                               );
             }
             catch { }
@@ -191,6 +192,37 @@ namespace ImageStore.Business
             return res;
         }
 
+        public Response ChangePassword(int userid, string oldpass, string newpass)
+        {
+            Response res = new Response();
+            res.Message = " * ";
+            try
+            {
+                //get the user
+                User_Details user = _userDetails.SingleOrDefault(x => x.Id == userid);
+                if (user == null)
+                {
+                    res.Message = "error*User not found!";
+                    goto ret;
+                }
+
+                string encryptedoldpass = Helpers.Encrypt(oldpass);
+                if (encryptedoldpass != user.Pass)
+                {
+                    res.Message = "error*Wrong old password!";
+                    goto ret;
+                }
+
+                user.Pass = Helpers.Encrypt(newpass);
+                _userDetails.Update(user);
+                res.Flag = true;
+                res.Message = "success*Password updated successfully!";
+            }
+            catch { }
+
+        ret:
+            return res;
+        }
         //private string CreatePassword()
         //{
         //    string newPassword;

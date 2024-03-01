@@ -216,7 +216,6 @@
 
     //-------------- get allimages ------------------
     function GetImages(type) {
-        console.log(search, category, resolution, sort);
 
         $.get(
             "@Url.Action("GetImages", "ImageUploader")",
@@ -354,6 +353,12 @@
             contentType: false,
             enctype: 'multipart/form-data',
             processData: false,
+            xhr: function () {
+                var xhr = new window.XMLHttpRequest();
+                xhr.upload.addEventListener("progress", function (evt) {
+                    console.log(evt.loaded);
+                });
+            },
             success: function (response) {
                 let data = response.Message.split('*');
                  swal({
@@ -362,7 +367,6 @@
                  })
                      .then((isConfirm) => {
                          if (isConfirm) {
-                             console.log(response.Flag);
                              if (response.Flag == true) {
                                  $(".drop_box1").show();
                                  $(".drop_box2").hide();
@@ -376,6 +380,8 @@
                 swal("error occured", "", "error");
             }
         });
+
+        
 
         return false;
 

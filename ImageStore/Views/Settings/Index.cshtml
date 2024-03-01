@@ -3,8 +3,8 @@
     ViewBag.Title = "Index";
 }
 
-@Scripts.Render("~/content/jquery/datatables.min.js")
-@Styles.Render("~/content/jquery/datatables.min.css")
+@Scripts.Render("~/bundles/jquerytable_js")
+@Styles.Render("~/bundles/jquerytable_css")
 
 <div id="page-content-topbar">
     <div class="navbar navbar-expand-lg navbar-light border-bottom-0">
@@ -71,7 +71,7 @@
                                 }
                                 else
                                 {
-                                    @Html.Editor(item.Key, new { htmlAttributes = new { @class = "form-control", @value = item.Value, @Id = "key_" + item.Id } })
+                                    @Html.TextBox(item.Key, item.Value, new { @class = "form-control", @value = item.Value, @Id = "key_" + item.Id })
                                 }
                             </td>
                         </tr>
@@ -111,15 +111,29 @@
             if (this.checked) {
 
                 var id = this.id;
-                var value = $("key_" + this.id).val();
+                var value = $("#key_" + this.id).val();
 
-                if (value == undefined) {
-                    formdata.append('key_'+ id, $('#key_'+id)[0].files[0]);
+                if ($("#key_" + this.id).attr("type") == "file") {
+
+                    let file = $('#key_' + id)[0].files[0];
+                    console.log(file);
+                    if (file === undefined) {
+                        swal("Please select a image to upload", "", "warning");
+                        selected = [];
+                        return false;
+                    }
+
+                    formdata.append('key_' + id, file);
                 }
 
                 selected.push({ Id: id, Value:value, Key:"", Description:"", File:null });
             }
         })
+
+        if (selected.length == 0) {
+            swal("Please check some settings", "", "warning");
+            return false;
+        }
 
         selected.forEach((item, i) => {
             Object.keys(item).forEach(key =>

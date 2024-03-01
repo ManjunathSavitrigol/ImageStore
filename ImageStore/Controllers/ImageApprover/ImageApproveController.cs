@@ -19,9 +19,9 @@ namespace ImageStore.Controllers.ImageApprover
 
         public ActionResult Index()
         {
-            TempData["PreviousPage"] = "All";
-            TempData["ActionName"] = "Index";
-            TempData["ControllerName"] = "ImageApprove";
+            Session["PreviousPage"] = "All";
+            Session["ActionName"] = "Index";
+            Session["ControllerName"] = "ImageApprove";
             return View();
         }
 
@@ -88,9 +88,9 @@ namespace ImageStore.Controllers.ImageApprover
             try
             {
                 //just to keep alive Tempdata["PreviousPage"] to next view page;
-                var previouspage = TempData["PreviousPage"];
-                var action = TempData["ActionName"];
-                var controller = TempData["ControllerName"];
+                var previouspage = Session["PreviousPage"];
+                var action = Session["ActionName"];
+                var controller = Session["ControllerName"];
 
                 Response res = _image.Get("", 0, 0, id);
                 if (res.Flag)
@@ -119,18 +119,18 @@ namespace ImageStore.Controllers.ImageApprover
 
         public ActionResult Byme()
         {
-            TempData["PreviousPage"] = "By me";
-            TempData["ActionName"] = "Byme";
-            TempData["ControllerName"] = "ImageApprove";
+            Session["PreviousPage"] = "By me";
+            Session["ActionName"] = "Byme";
+            Session["ControllerName"] = "ImageApprove";
 
             return View();
         }
 
         public ActionResult Pending()
         {
-            TempData["PreviousPage"] = "Pending";
-            TempData["ActionName"] = "Pending";
-            TempData["ControllerName"] = "ImageApprove";
+            Session["PreviousPage"] = "Pending";
+            Session["ActionName"] = "Pending";
+            Session["ControllerName"] = "ImageApprove";
             return View();
         }
         
