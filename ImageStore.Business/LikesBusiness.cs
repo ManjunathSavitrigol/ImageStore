@@ -5,6 +5,7 @@ using ImageStore.Data;
 using System.Linq;
 using ImageStore.Data.EdmxModel;
 using ImageStore.Business.Interfaces;
+using System;
 
 namespace ImageStore.Business
 {
@@ -58,7 +59,10 @@ namespace ImageStore.Business
                 }
 
             }
-            catch { }
+            catch (Exception ex)
+            {
+                Helpers.WriteErrorLog("LikeDislike Error | " + ex.Message + " | " + ex.InnerException + " | " + ex.StackTrace);
+            }
             return res;
         }
 
@@ -71,7 +75,10 @@ namespace ImageStore.Business
                                                      && userId == 0? true:  x.UserId == userId);
                 res.Flag = true;
             }
-            catch { }
+            catch (Exception ex)
+            {
+                Helpers.WriteErrorLog("Get Error | " + ex.Message + " | " + ex.InnerException + " | " + ex.StackTrace);
+            }
             return res; 
         }
     }

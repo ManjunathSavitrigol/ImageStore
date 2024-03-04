@@ -31,19 +31,25 @@
         }
 
         body {
-            background: linear-gradient(to right, #2c5f2d 0%, #2c5f2d 50%, #ffffff 50%, #ffffff 100%);
-        }
+/*            background: linear-gradient(to right, #2c5f2d 0%, #2c5f2d 50%, #ffffff 50%, #ffffff 100%);
+*/        }
 
         #welcome-text {
-            color: white;
+            color: #2c5f2d  ;
             width: 50%;
             font-size: 50px;
+        }
+
+        @@media screen and (max-width:766px) {
+            #welcome-text {
+                width:100%;
+            }
         }
 
         #welcome-image {
             height: 450px;
             position: absolute;
-            top: 30%;
+            top: 30vh;
             left: 50%;
         }
 
@@ -51,7 +57,7 @@
             width: 40%;
             height: 250px;
             position: absolute;
-            top: 80%;
+            top: 60vh;
             left: 20%;
         }
 
@@ -72,18 +78,18 @@
 <body>
     <div class="container-fluid">
         <div class="row justify-content-around">
-            <div class="col-5 position-relative">
+            <div class="col-md-5 position-relative">
                 <h1 id="welcome-text">
                     <span style="font-size:70px;">WELCOME!!</span> Please fill in necessary details to complete registration
                 </h1>
-                <div id="welcome-image">
+                <div id="welcome-image" class="d-none d-xl-block">
                     <img src="https://th.bing.com/th/id/OIG1.YSdNPuXhJyVHNa44zRst?w=270&h=270&c=6&r=0&o=5&pid=ImgGn" />
                 </div>
-                <div id="welcome-image2">
+                <div id="welcome-image2" class="d-none d-xl-block">
                     <img src="https://th.bing.com/th/id/OIG1.Z2yDk47rQUFjyY6eZnym?w=270&h=270&c=6&r=0&o=5&pid=ImgGn" />
                 </div>
             </div>
-            <div class="col-5">
+            <div class="col-md-5" style="background-color:white">
                 @using (Html.BeginForm("UpdateUser", "login", FormMethod.Post, new
                 { enctype = "multipart/form-data" }))
                 {
@@ -105,7 +111,7 @@
                         </div>
                         <div class="col-12">
                             @*<label class="form-label control-label">Choose Profile Image</label>
-                            @Html.EditorFor(model => model.ProfileImage, new { htmlAttributes = new { @class = "form-control", @type = "file" } })*@
+                                @Html.EditorFor(model => model.ProfileImage, new { htmlAttributes = new { @class = "form-control", @type = "file" } })*@
                             <label class="form-label">Choose Profile Image</label>
                             <input class="form-control" type="file" name="ProfileImage" id="profileimage">
                         </div>

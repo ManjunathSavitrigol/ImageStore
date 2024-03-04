@@ -31,7 +31,10 @@ namespace ImageStore.Controllers.ImageUploader
                     user = ((IEnumerable<User_Details>)res.Object).FirstOrDefault();
                 }
             }
-            catch { }          
+            catch (Exception ex)
+            {
+                Helpers.WriteErrorLog("Index Error | " + ex.Message + " | " + ex.InnerException + " | " + ex.StackTrace);
+            }
 
             return View(user);
         }
@@ -56,8 +59,8 @@ namespace ImageStore.Controllers.ImageUploader
                         {
                             //ext_user.Profile = Helpers.SaveFile(user.ProfileImage, "UserProfileImages", user.Full_Name + DateTime.Now.ToString("yyyyMMddHHmmss"));
 
-                            System.Drawing.Image  profileImage = new Bitmap(user.ProfileImage.InputStream);
-                            ext_user.Profile = Helpers.CompressAndSaveImage(profileImage, 80,  "UserProfileImages", user.Full_Name + DateTime.Now.ToString("yyyyMMddHHmmss"), 1200);
+                            System.Drawing.Image profileImage = new Bitmap(user.ProfileImage.InputStream);
+                            ext_user.Profile = Helpers.CompressAndSaveImage(profileImage, 80, "UserProfileImages", user.Full_Name + DateTime.Now.ToString("yyyyMMddHHmmss"), 1200);
 
                         }
 
@@ -71,7 +74,7 @@ namespace ImageStore.Controllers.ImageUploader
                     }
                 }
             }
-            catch { }
+            catch (Exception ex) { Helpers.WriteErrorLog("UpdateUser Error | " + ex.Message + " | " + ex.InnerException + " | " + ex.StackTrace); }
             return RedirectToAction("index");
         }
 
@@ -86,10 +89,10 @@ namespace ImageStore.Controllers.ImageUploader
 
                 string[] mes = res.Message.Split('*');
                 TempData["messagetype"] = mes[0];
-                TempData["message"] = mes[1];   
+                TempData["message"] = mes[1];
 
             }
-            catch { }
+            catch (Exception ex) { Helpers.WriteErrorLog("ChangePassword Error | " + ex.Message + " | " + ex.InnerException + " | " + ex.StackTrace); }
 
             //return Json(res, JsonRequestBehavior.AllowGet);
             return RedirectToAction("Index");

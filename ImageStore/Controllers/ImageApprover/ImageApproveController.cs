@@ -72,7 +72,10 @@ namespace ImageStore.Controllers.ImageApprover
 
 
             }
-            catch { }
+            catch(Exception ex) 
+            {
+                Helpers.WriteErrorLog("GetImages Error | " + ex.Message + " | " + ex.InnerException + " | " + ex.StackTrace);
+            }
 
             var result = new
             {
@@ -100,7 +103,10 @@ namespace ImageStore.Controllers.ImageApprover
                     return View(image);
                 }
             }
-            catch { }
+            catch (Exception ex)
+            {
+                Helpers.WriteErrorLog("ViewImage Error | " + ex.Message + " | " + ex.InnerException + " | " + ex.StackTrace);
+            }
             return RedirectToAction("Index");
         }
 
@@ -113,7 +119,10 @@ namespace ImageStore.Controllers.ImageApprover
                 int approveid = Convert.ToInt32( Session["UserId"].ToString());
                 res = _image.ApproveReject(id, status, reason, approveid);
             }
-            catch { }
+            catch (Exception ex)
+            {
+                Helpers.WriteErrorLog("ApproveReject Error | " + ex.Message + " | " + ex.InnerException + " | " + ex.StackTrace);
+            }
             return Json(res, JsonRequestBehavior.AllowGet);   
         }
 

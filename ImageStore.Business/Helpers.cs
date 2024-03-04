@@ -191,5 +191,26 @@ namespace ImageStore.Business
             }
             return a;
         }
+
+        public static void WriteErrorLog(string description)
+        {
+            try
+            {
+                string path = System.Web.HttpContext.Current.Server.MapPath("~\\LogFile");
+                string strFile = path + @"\error" + DateTime.Now.Date.ToString("ddMMyyyy") + ".txt";
+
+                if (!Directory.Exists(path))
+                {
+                    Directory.CreateDirectory(path);
+                }
+                var objStreamWriter = new StreamWriter(strFile, true);
+                objStreamWriter.WriteLine("Error Message : " + description + "  Date:" + DateTime.Now);
+                objStreamWriter.Dispose();
+
+            }
+            catch (Exception)
+            {
+            }
+        }
     }
 }

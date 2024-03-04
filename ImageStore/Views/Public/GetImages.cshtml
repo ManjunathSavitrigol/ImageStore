@@ -6,15 +6,7 @@
 {
     <div class="col p-4">
         <div class="card imagecard">
-            <img src="@item.ImagePath.Trim('~')" lazy="load"
-                 @*original
-                 @*srcset="@item.ImagePath.Trim('~').Insert(item.ImagePath.Length - 6, "_1200") 1200w,
-                         @item.ImagePath.Trim('~').Insert(item.ImagePath.Length - 6, "_800") 800w,
-                         @item.ImagePath.Trim('~').Insert(item.ImagePath.Length - 6, "_600") 600w,
-                         @item.ImagePath.Trim('~').Insert(item.ImagePath.Length - 6, "_400") 400w,
-                         @item.ImagePath.Trim('~').Insert(item.ImagePath.Length - 6, "_300") 300w,
-                         @item.ImagePath.Trim('~').Insert(item.ImagePath.Length - 6, "_150") 150w "*@
-
+            <img src="@item.ImagePath.Trim('~')" lazy="load"        
                  srcset="@item.ImagePath.Trim('~').Insert(item.ImagePath.Length - 6, "_1200") 1200w,
                          @item.ImagePath.Trim('~').Insert(item.ImagePath.Length - 6, "_800") 800w,
                          @item.ImagePath.Trim('~').Insert(item.ImagePath.Length - 6, "_600") 600w,
@@ -29,7 +21,7 @@
                 <div class="shadowtop"></div>
                 <div class="shadowbottom"></div>
                 <h2>
-                    @item.Name
+                    @item.Name 
                 </h2>
                 <div class="icon-heart">
 

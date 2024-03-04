@@ -84,7 +84,10 @@ namespace ImageStore.Business
                     res.Flag = false;
                 }
             }
-            catch (Exception e) { }
+            catch (Exception ex)
+            {
+                Helpers.WriteErrorLog("CheckUser Error | " + ex.Message + " | " + ex.InnerException + " | " + ex.StackTrace);
+            }
             return res;
         }
 
@@ -126,9 +129,10 @@ namespace ImageStore.Business
                     res.Message = "warning*This email is already registered";
                 }
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                res.Message = "error*Failed to register";
+                Helpers.WriteErrorLog("Register Error | " + ex.Message + " | " + ex.InnerException + " | " + ex.StackTrace);
+                res.Message = "error*Failed to register!";
             }
             return res;
         }
@@ -145,7 +149,10 @@ namespace ImageStore.Business
                     return true;
                 }
             }
-            catch { }
+            catch (Exception ex)
+            {
+                Helpers.WriteErrorLog("CheckToken Error | " + ex.Message + " | " + ex.InnerException + " | " + ex.StackTrace);
+            }
 
             return false;
         }

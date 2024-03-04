@@ -39,7 +39,10 @@ namespace ImageStore.Controllers
                 TempData["message"] = mes[1];
                 TempData["messagetype"] = mes[0];
             }
-            catch { }
+            catch (Exception ex)
+            {
+                Helpers.WriteErrorLog("Save Error | " + ex.Message + " | " + ex.InnerException + " | " + ex.StackTrace);
+            }
 
             return RedirectToAction("Index");
         }
@@ -67,7 +70,10 @@ namespace ImageStore.Controllers
                 return View(resolution);
 
             }
-            catch { }
+            catch (Exception ex)
+            {
+                Helpers.WriteErrorLog("Edit Error | " + ex.Message + " | " + ex.InnerException + " | " + ex.StackTrace);
+            }
 
             return View();
         }
@@ -87,7 +93,10 @@ namespace ImageStore.Controllers
             {
                 res = _resolutionBusiness.Deactivate(ids);
             }
-            catch { }
+            catch (Exception ex)
+            {
+                Helpers.WriteErrorLog("Deactivate Error | " + ex.Message + " | " + ex.InnerException + " | " + ex.StackTrace);
+            }
 
             return Json(res.Message, JsonRequestBehavior.AllowGet);
         }
@@ -100,7 +109,10 @@ namespace ImageStore.Controllers
             {
                 res = _resolutionBusiness.Activate(ids);
             }
-            catch { }
+            catch (Exception ex)
+            {
+                Helpers.WriteErrorLog("Activate Error | " + ex.Message + " | " + ex.InnerException + " | " + ex.StackTrace);
+            }
 
             return Json(res.Message, JsonRequestBehavior.AllowGet);
         }
@@ -122,7 +134,10 @@ namespace ImageStore.Controllers
 
 
             }
-            catch { }
+            catch (Exception ex)
+            {
+                Helpers.WriteErrorLog("GetResolutions Error | " + ex.Message + " | " + ex.InnerException + " | " + ex.StackTrace);
+            }
 
             var result = new
             {

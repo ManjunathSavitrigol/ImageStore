@@ -120,7 +120,10 @@ namespace ImageStore.Business
                 }
 
             }
-            catch { }
+            catch (Exception ex)
+            {
+                Helpers.WriteErrorLog("Save Error | " + ex.Message + " | " + ex.InnerException + " | " + ex.StackTrace);
+            }
 
         ret:
             return res;
@@ -171,7 +174,10 @@ namespace ImageStore.Business
                 res.Object = allimages;
                 res.Flag = true;
             }
-            catch { }
+            catch (Exception ex)
+            {
+                Helpers.WriteErrorLog("Get Error | " + ex.Message + " | " + ex.InnerException + " | " + ex.StackTrace);
+            }
             return res;
         }
 
@@ -223,7 +229,10 @@ namespace ImageStore.Business
                     res.Message = "error*Not Found!";
                 }
             }
-            catch { }
+            catch (Exception ex)
+            {
+                Helpers.WriteErrorLog("ApproveReject Error | " + ex.Message + " | " + ex.InnerException + " | " + ex.StackTrace);
+            }
 
             return res;
         }
@@ -248,7 +257,10 @@ namespace ImageStore.Business
                 res.Message = "success*successfull";
                 res.Flag = true;
             }
-            catch { }
+            catch (Exception ex)
+            {
+                Helpers.WriteErrorLog("Like Error | " + ex.Message + " | " + ex.InnerException + " | " + ex.StackTrace);
+            }
             return res;
         }
 
@@ -274,7 +286,10 @@ namespace ImageStore.Business
                 res.Object = image.FilePath;
                 res.Object1 = image.Name;
             }
-            catch { }
+            catch (Exception ex)
+            {
+                Helpers.WriteErrorLog("Download Error | " + ex.Message + " | " + ex.InnerException + " | " + ex.StackTrace);
+            }
 
             return res;
         }

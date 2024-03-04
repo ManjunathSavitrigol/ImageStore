@@ -58,7 +58,7 @@ namespace ImageStore.Business
                 res.Message = "success*Saved successfully";
                 res.Flag = true;
             }
-            catch { }
+            catch (Exception ex) { Helpers.WriteErrorLog("Save Error | " + ex.Message + " | " + ex.InnerException + " | " + ex.StackTrace); }
 
             return res;
         }
@@ -85,7 +85,7 @@ namespace ImageStore.Business
                 res.Object = settings;
                 res.Flag = true;
             }
-            catch { }
+            catch (Exception ex) { Helpers.WriteErrorLog("Get Error | " + ex.Message + " | " + ex.InnerException + " | " + ex.StackTrace); }
             return res;
         }
     }

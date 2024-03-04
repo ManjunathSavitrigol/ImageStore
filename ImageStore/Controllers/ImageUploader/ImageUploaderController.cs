@@ -29,24 +29,32 @@ namespace ImageStore.Controllers.ImageUploader
         [HttpPost]
         public ActionResult Upload(ImageUpload image)
         {
-            image.UploaderId = Convert.ToInt32(HttpContext.Session["UserId"].ToString());
-            var tags = image.Tags?.Split(',');
-            string final5Tags = "";
-
-            int count = 0;
-            if(tags != null)
+            Response res = new Response();
+            try
             {
-                foreach (var tag in tags)
+                image.UploaderId = Convert.ToInt32(HttpContext.Session["UserId"].ToString());
+                var tags = image.Tags?.Split(',');
+                string final5Tags = "";
+
+                int count = 0;
+                if (tags != null)
                 {
-                    if (count > 5)
-                        break;
+                    foreach (var tag in tags)
+                    {
+                        if (count > 5)
+                            break;
 
-                    final5Tags += tag + "#";
+                        final5Tags += tag + "#";
+                    }
                 }
-            }           
 
-            image.Tags = final5Tags.Trim('#');
-            Response res = _image.Save(image);
+                image.Tags = final5Tags.Trim('#');
+                res = _image.Save(image);                
+            }
+            catch (Exception ex)
+            {
+                Helpers.WriteErrorLog("Upload Error | " + ex.Message + " | " + ex.InnerException + " | " + ex.StackTrace);
+            }
             return Json(res, JsonRequestBehavior.AllowGet);
         }
 
@@ -68,7 +76,10 @@ namespace ImageStore.Controllers.ImageUploader
 
                 }
             }
-            catch { }
+            catch (Exception ex)
+            {
+                Helpers.WriteErrorLog("Dropdownlist Error | " + ex.Message + " | " + ex.InnerException + " | " + ex.StackTrace);
+            }
             return Json(new { categories = categories, resolutions = resolutions }, JsonRequestBehavior.AllowGet);
 
         }
@@ -113,7 +124,10 @@ namespace ImageStore.Controllers.ImageUploader
                     }
                 }
             }
-            catch { }
+            catch (Exception ex)
+            {
+                Helpers.WriteErrorLog("GetImages Error | " + ex.Message + " | " + ex.InnerException + " | " + ex.StackTrace);
+            }
             return PartialView(imagelist);
         }
 

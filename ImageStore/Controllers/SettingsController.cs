@@ -46,7 +46,10 @@ namespace ImageStore.Controllers
                 }
 
             }
-            catch { }
+            catch (Exception ex)
+            {
+                Helpers.WriteErrorLog("Get Error | " + ex.Message + " | " + ex.InnerException + " | " + ex.StackTrace);
+            }
             var result = new
             {
                 iTotalRecords = count,
@@ -71,7 +74,10 @@ namespace ImageStore.Controllers
                 {
                     res = _settings.Save(settings);
                 }
-                catch (Exception ex) { }
+                catch (Exception ex)
+                {
+                    Helpers.WriteErrorLog("Save Error | " + ex.Message + " | " + ex.InnerException + " | " + ex.StackTrace);
+                }
             }
            
 

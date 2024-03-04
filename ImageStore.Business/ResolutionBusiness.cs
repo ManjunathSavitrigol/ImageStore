@@ -64,7 +64,9 @@ namespace ImageStore.Business
                     }
                 }
             }
-            catch {
+            catch (Exception ex)
+            {
+                Helpers.WriteErrorLog("AddUpdate Error | " + ex.Message + " | " + ex.InnerException + " | " + ex.StackTrace);
                 res.Message = "error*Something went wrong!";
             }
 
@@ -84,7 +86,10 @@ namespace ImageStore.Business
 
                 res.Flag = true;
             }
-            catch { }
+            catch (Exception ex)
+            {
+                Helpers.WriteErrorLog("Get Error | " + ex.Message + " | " + ex.InnerException + " | " + ex.StackTrace);
+            }
             return res;
         }
 
@@ -116,7 +121,10 @@ namespace ImageStore.Business
                 res.Message = "success*Resolutions Updated Successfully!";
                 res.Flag = true;
             }
-            catch { }
+            catch (Exception ex)
+            {
+                Helpers.WriteErrorLog("Deactivate Error | " + ex.Message + " | " + ex.InnerException + " | " + ex.StackTrace);
+            }
             return res;
         }
 
@@ -147,7 +155,7 @@ namespace ImageStore.Business
                 res.Message = "success*Resolutions Updated Successfully!";
                 res.Flag = true;
             }
-            catch { }
+            catch (Exception ex) { Helpers.WriteErrorLog("Activate Error | " + ex.Message + " | " + ex.InnerException + " | " + ex.StackTrace); }
 
             return res;
         }

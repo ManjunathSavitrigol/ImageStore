@@ -52,7 +52,7 @@ namespace ImageStore.Controllers
                     return RedirectToAction("Index");
                 }
             }
-            catch { }
+            catch (Exception ex) { Helpers.WriteErrorLog("Login Error | " + ex.Message + " | " + ex.InnerException + " | " + ex.StackTrace); }
 
             return RedirectToAction("Index");
 
@@ -85,7 +85,10 @@ namespace ImageStore.Controllers
                     return RedirectToAction("Index");
                 }
             }
-            catch(Exception ex) { }
+            catch (Exception ex)
+            {
+                Helpers.WriteErrorLog("Signup Error | " + ex.Message + " | " + ex.InnerException + " | " + ex.StackTrace);
+            }
             return RedirectToAction("Login");
         }
 
@@ -95,6 +98,7 @@ namespace ImageStore.Controllers
             return RedirectToAction("Index");
         }
 
+        
         public ActionResult GetStarted(User_Details user)
         {
             if (user != null)
@@ -104,6 +108,7 @@ namespace ImageStore.Controllers
                 return RedirectToAction("Index");
         }
 
+        [CheckIU]
         public ActionResult UpdateUser(User_Details user)
         {
             try
@@ -130,7 +135,10 @@ namespace ImageStore.Controllers
                     }
                 }
             }
-            catch { }
+            catch (Exception ex)
+            {
+                Helpers.WriteErrorLog("UpdateUser Error | " + ex.Message + " | " + ex.InnerException + " | " + ex.StackTrace);
+            }
             return RedirectToAction("index");
         }       
 
@@ -144,7 +152,10 @@ namespace ImageStore.Controllers
                     Session[property.Name]  = property.GetValue(sessionHelper) ?? ""; 
                 }
             }
-            catch (Exception ex) { }
+            catch (Exception ex)
+            {
+                Helpers.WriteErrorLog("SetSession Error | " + ex.Message + " | " + ex.InnerException + " | " + ex.StackTrace);
+            }
         }
        
     }

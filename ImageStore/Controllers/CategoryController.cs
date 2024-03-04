@@ -33,7 +33,7 @@ namespace ImageStore.Controllers
                 TempData["message"] = mes[1];
                 TempData["messagetype"] = mes[0];
             }
-            catch { }
+            catch (Exception ex) { Helpers.WriteErrorLog("Save Error | " + ex.Message + " | " + ex.InnerException + " | " + ex.StackTrace); }
 
             return RedirectToAction("Index"); 
         }
@@ -56,7 +56,7 @@ namespace ImageStore.Controllers
                 return View(categoty);
                 
             }
-            catch { }
+            catch (Exception ex) { Helpers.WriteErrorLog("Edit Error | " + ex.Message + " | " + ex.InnerException + " | " + ex.StackTrace); }
 
             return View();
         }
@@ -76,7 +76,7 @@ namespace ImageStore.Controllers
             {
                 res = _categoryBusiness.Deactivate(ids);
             }
-            catch { }
+            catch (Exception ex) { Helpers.WriteErrorLog("Deactivate Error | " + ex.Message + " | " + ex.InnerException + " | " + ex.StackTrace); }
 
             return Json(res.Message, JsonRequestBehavior.AllowGet);
         }
@@ -89,7 +89,7 @@ namespace ImageStore.Controllers
             {
                 res = _categoryBusiness.Activate(ids);
             }
-            catch { }
+            catch (Exception ex) { Helpers.WriteErrorLog("Activate Error | " + ex.Message + " | " + ex.InnerException + " | " + ex.StackTrace); }
 
             return Json(res.Message, JsonRequestBehavior.AllowGet);
         }
@@ -111,7 +111,7 @@ namespace ImageStore.Controllers
                 
 
             }
-            catch { }
+            catch (Exception ex) { Helpers.WriteErrorLog("GetCategories Error | " + ex.Message + " | " + ex.InnerException + " | " + ex.StackTrace); }
 
             var result = new
             {

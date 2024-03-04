@@ -32,7 +32,10 @@ namespace ImageStore.Controllers
                 TempData["message"] = mes[1];
                 TempData["messagetype"] = mes[0];
             }
-            catch { }
+            catch (Exception ex)
+            {
+                Helpers.WriteErrorLog("Save Error | " + ex.Message + " | " + ex.InnerException + " | " + ex.StackTrace);
+            }
 
             return RedirectToAction("Index");
         }
@@ -57,7 +60,10 @@ namespace ImageStore.Controllers
                 return View(user);
 
             }
-            catch { }
+            catch (Exception ex)
+            {
+                Helpers.WriteErrorLog("Edit Error | " + ex.Message + " | " + ex.InnerException + " | " + ex.StackTrace);
+            }
 
             return View();
         }
@@ -112,7 +118,10 @@ namespace ImageStore.Controllers
                     users = eList.Where(x=> usertype == "All"?true:(x.UserType == usertype)).Skip(serverData.iDisplayStart).Take(serverData.iDisplayLength).ToList();
                 }
             }
-            catch { }
+            catch (Exception ex)
+            {
+                Helpers.WriteErrorLog("GetUsers Error | " + ex.Message + " | " + ex.InnerException + " | " + ex.StackTrace);
+            }
 
             var result = new
             {
