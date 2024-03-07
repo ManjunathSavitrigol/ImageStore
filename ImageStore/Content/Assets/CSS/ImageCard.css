@@ -1,6 +1,6 @@
 ﻿/* Image card design */
-.imagecard {
-    max-width: 24rem;
+/*.imagecard {
+    max-width: 100%;
     border-radius: 10px;
     overflow: hidden;
     cursor: pointer;
@@ -14,7 +14,6 @@
         position: absolute;
         object-fit: cover;
         width: 100%;
-        height: 100%;
         top: 0;
         left: 0;
         opacity: 0.9;
@@ -22,32 +21,32 @@
     }
 
 @media (max-width:576px) {
-    .imagecard {
-        min-height: 0rem;
-    }
+    .imagecard, .imagecard img {
+       min-height: 0rem;
+    }    
 }
 
 @media (max-width:768px) {
-    .imagecard {
+    .imagecard, .imagecard img {
         min-height: 25rem;
     }
 }
 
 @media (max-width:992px) {
-    .imagecard {
+    .imagecard, .imagecard img {
         min-height: 30rem;
     }
 }
 
 @media (max-width:1200px) {
-    .imagecard {
+    .imagecard, .imagecard img {
         min-height: 35rem;
     }
 }
 
 @media (min-width:1200px) {
-    .imagecard {
-        min-height: 35rem;
+    .imagecard, .imagecard img {
+        min-height: 35rem;x
     }
 }
 
@@ -73,7 +72,7 @@
 }
 
 .icon-heart {
-    inset: auto auto 520px 80%;
+    inset: auto auto 500px 80%;
     color: white;
 }
 
@@ -129,6 +128,160 @@
     top: 0;
     box-shadow: 0 0 100px 100px rgba(124, 124, 124, 0.586);
     opacity: 0;
-}
+}*/
 
 /* image card design end */
+
+
+/* main conatainer */
+.main-container {
+    max-width: 101vw;
+    width: 100%;
+    margin:5px;
+    padding: 40px 0;
+}
+
+
+/*photo gallary and column design */
+.photo-gallary {
+    display: flex;
+    gap: 20px;
+    justify-content:center;
+}
+
+.columns {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+
+/* image card design */
+/* imagecard */
+.imagecard {
+    position: relative;   
+}
+
+@media screen and (max-width:768px){
+    .imagecard {
+        width: 44vw;
+    }
+}
+
+@media screen and (min-width:769px){
+    .imagecard {
+        width: 30vw;
+    }
+}
+/* image design */
+.image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* imageshadow */
+.imageshadow {
+    opacity: 1;
+    height: 100%;
+    width: 100%;
+    background-image: linear-gradient(to bottom, rgb(0, 0, 0, 1) -100%, rgba(0, 0, 0, 0) 30%, rgba(0, 0, 0, 0) 70%, rgba(0, 0, 0, 1) 150%);
+    position: absolute;
+    transition: all .3s ease;
+    top: 0;
+    right: 0;
+}
+
+/* Heart */
+.icon-heart-wrapper {
+    position: absolute;
+    opacity: 1;
+    max-width: 80%;
+    transition: opacity .1s ease-out;
+    top: 5;
+    left: 5;
+}
+
+.icon-heart-background {
+    background-color: white;
+    width: 35px;
+    height: 25px;
+    border-radius: 5px;
+}
+
+.icon-heart {
+    color: black;
+    font-size: 10px;
+}
+
+/* Heart */
+.icon-download-wrapper {
+    position: absolute;
+    opacity: 1;
+    transition: opacity .1s ease-out;
+    top: 5;
+    right: 5;
+}
+
+.icon-download-background {
+    background-color: white;
+    width: 35px;
+    height: 25px;
+    border-radius: 5px;
+}
+
+.icon-download {
+    color: black;
+    font-size: 10px;
+}
+
+/* profile */
+.profile-wrapper {
+    display: flex;
+    bottom: 5;
+    left: 5;
+    position: absolute;
+}
+
+.profilelink-background {
+    color: white;
+    text-decoration: none;
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
+    border: 2px solid black;
+    overflow: hidden;
+}
+
+.profile-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.profile-name {
+    padding-top: 10px;
+    color: rgb(255, 255, 255);
+    text-decoration: none;
+}
+
+/* hide all element of overlay */
+.overlay * {
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0s, opacity 0.3s linear;
+}
+
+@media screen and (max-width:768px) {
+    .imagecard:hover .overlay * {
+        visibility: visible;
+        opacity: 1;
+    }
+}
+
+@media screen and (min-width:768px) {
+    .imagecard:hover .overlay * {
+        visibility: visible;
+        opacity: 1;
+    }
+}

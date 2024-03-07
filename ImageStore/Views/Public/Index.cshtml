@@ -17,7 +17,7 @@
             <div class="d-flex justify-content-center h-100 w-100">
                 <img src="@ViewBag.CarouselImage" class="w-100 h-100" style="object-fit:contain" alt="...">
             </div>
-        </div>       
+        </div>
         <div class="carousel-item active" data-bs-interval="1000">
             <div style="height: 7vh;"></div>
             <div class="carousel-caption d-md-block">
@@ -35,18 +35,54 @@
     <div class="position-sticky top-0">
         <h1>Free Photos</h1>
     </div>
-    <div class="imagespace d-flex justify-content-center">
-        <div class="row w-100 row-cols-2 row-cols-md-2 row-cols-lg-3" id="allimages">
-            <div class="col-12">
-                <div class="d-flex justify-content-center gap-3 " id="loading">
-                    <span class="spinner-grow"></span>
-                    <span class="spinner-grow"></span>
-                    <span class="spinner-grow"></span>
-                    <span class="spinner-grow"></span>
-                    <span class="spinner-grow"></span>
+    <div class="main-container">
+        <div class="gallery-wrapper">
+            <div class="photo-gallary" id="galarytype1">
+                <div class="columns" id="column1"></div>
+                <div class="columns" id="column2"></div>
+                <div class="columns" id="column3"></div>
+            </div>
+            <div class="photo-gallary" id="galarytype2">
+                <div class="columns" id="column4"></div>
+                <div class="columns" id="column5"></div>
+            </div>
+        </div>
+    </div>
+
+    @*<div class="imagespace d-flex justify-content-center">
+            <div class="row w-100 row-cols-1 row-cols-sm-2 row-cols-md-2 row-cols-lg-3" id="allimages">
+
+                <div class="col-12">
+                    <div class="d-flex justify-content-center gap-3 " id="loading">
+                        <span class="spinner-grow"></span>
+                        <span class="spinner-grow"></span>
+                        <span class="spinner-grow"></span>
+                        <span class="spinner-grow"></span>
+                        <span class="spinner-grow"></span>
+                    </div>
                 </div>
             </div>
-        </div>   
+        </div>*@
+
+    <!-- modal for mobile screens -->
+    <div class="modal fade" id="exampleModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+         aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-fullscreen">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="imagecard" id="modal_imagecard">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary " data-bs-dismiss="modal">Close</button>
+
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -65,17 +101,113 @@
                 DisplayStart: DisplayStart
             },
             function (data) {
-                let appendelement = document.getElementById("allimages");
+                console.log("called");
+                console.log(data);
+                let count3 = 0;
+                let appenddata = "";
 
-                if (data.trim() == "") {
+                let column1 = document.getElementById("column1");
+                let column2 = document.getElementById("column2");
+                let column3 = document.getElementById("column3");
+
+                let column4 = document.getElementById("column4");
+                let column5 = document.getElementById("column5");
+
+                let text1 = "";
+                let text2 = "";
+                let text3 = "";
+                let text4 = "";
+                let text5 = "";
+
+
+                for (let item of data) {
+                    let original_imagepath = item.ImagePath.slice(1);
+                    item.ImagePath = original_imagepath;
+                    item.ImagePath = item.ImagePath.slice(0, item.ImagePath.length - 5);
+
+                    appenddata = '<div class="main-child imagecard" data-bs-target="#exampleModal" id="imagecard-' + item.Id + '" onclick="OpenModal(' + item.Id + ')">'
+                        + '    <img src="' + original_imagepath + '" class="image" lazy="load"                                   '
+                        +'                srcset="'+item.ImagePath+'_1200.JPEG 1200w,         '
+                        + '                        ' + item.ImagePath +'_800.JPEG 800w,           '
+                        + '                        ' + item.ImagePath +'_600.JPEG 600w,           '
+                        + '                        ' + item.ImagePath +'_800.JPEG 400w,           '
+                        + '                        ' + item.ImagePath +'_300.JPEG 300w,           '
+                        + '                        ' + item.ImagePath +'_150.JPEG 150w "          '
+                        +'                sizes="(max-width: 768px) calc((100vw - 60px)/3),                                              '
+                        +'                       (min-width: 769px) calc((100vw - 35px)/2)                                           '
+                        +'                       "                                                              '
+                        +'                alt="image"                                                                                 '
+                        +'                                                                                                            '
+                        +'                                                                                                            '
+                        +'>                                                                                                           '
+                        + '    <h2 hidden class="title">'+item.Name+'</h2>'
+                        + '                                                                                                           '
+                        + '        <div class="overlay">                                                                              '
+                        + '            <div class="imageshadow"></div>                                                                '
+                        + '            <div class="icon-heart-wrapper">                                                               '
+                        + '                <div class="d-flex justify-content-center align-items-center icon-heart-background" onclick="Like(' + item.Id + ')" id="itemL-' + item.Id + '">       '
+                        + '                    <i class="fa fa-heart icon-heart"></i>                                                 '
+                        + '                </div>                                                                                     '
+                        + '            </div>                                                                                         '
+                        + '            <div>                                                                                          '
+                        + '                <a class="icon-download-wrapper" href="/Public/Download?id=' + item.Id + '">                                                          '
+                        + '                    <div class="d-flex justify-content-center align-items-center icon-download-background" id="itemD-' + item.Id + '">'
+                        + '                        <i class="fa fa-download accordion icon-download"></i>                             '
+                        + '                    </div>                                                                                 '
+                        + '                </a>                                                                                       '
+                        + '            </div>                                                                                         '
+                        + '            <div class="profile-wrapper ">                                                                 '
+                        + '                <a class="profilelink-background" href="ImageUploader/index?id=' + item.UploaderId + '">                                                         '
+                        + '                    <img class="profile-image" src="' + item.ProfilePath.slice(1) + '">                            '
+                        + '                </a>                                                                                       '
+                        + '                <p class="profile-name">'+item.Uploader+'</p>                                                      '
+                        + '            </div>                                                                                         '
+                        + '                                                                                                           '
+                        + '        </div>                                                                                             '
+                        + '</div>                                                                                                     ';
+
+                        //append to 3 columns
+                    if (count3 == 0) {
+                        text1 += appenddata;
+                        count3++;
+                    }
+                    else if (count3 == 1) {
+                        text2 += appenddata;
+                        count3++;
+                    } else {
+                        text3 += appenddata;
+                        count3 = 0;
+                    }
+
+                    //append to 2 columns
+                    if (data.indexOf(item) % 2 == 0) {
+                        text4 += appenddata;
+                    } else {
+                        text5 += appenddata;
+                    }
+
+
+
+                }
+
+
+                if (data.length == 0) {
+                    console.log("data is empty");
                     reachedfullend = true;
                 }
                 if (clearhtml) {
-                    appendelement.innerHTML = data;
+                    column1.innerHTML = text1;
+                    column2.innerHTML = text2;
+                    column3.innerHTML = text3;
+                    column4.innerHTML = text4;
+                    column5.innerHTML = text5;
                 } else {
-                    appendelement.innerHTML += data;
-                }
-
+                    column1.innerHTML += text1;
+                    column2.innerHTML += text2;
+                    column3.innerHTML += text3;
+                    column4.innerHTML += text4;
+                    column5.innerHTML += text5;
+                }     
             }
         )
     }
@@ -85,12 +217,14 @@
     //-------------- search-----------------
     $("#search2").click(function ()
     {
+        reachedfullend = false;
         search = $("#search_byname").val();
         count = 0;
         GetImages(search)
     });
 
     $("#search1").click(function () {
+        reachedfullend = false;
         search = $("#search_byname1").val();
         count = 0;
         GetImages(search)
@@ -98,8 +232,9 @@
 
 
     //---------------- load more on end -------------------
-    window.onscroll = function (ev) {
+    window.onscroll = function (ev) {        
         if ((window.innerHeight + window.pageYOffset) >= document.body.offsetHeight) {
+            console.log("I am called");
             if (!reachedfullend) {
                 GetImages(search, count = count + 10, false)
             } else {
@@ -147,6 +282,97 @@
             }
         })
     }*@
+
+
+    //change column
+
+
+        let resize = 0;
+        if (screen.width > 768) {
+            $("#galarytype1").show();
+            $("#galarytype2").hide();
+        } else {
+            $("#galarytype1").hide();
+            $("#galarytype2").show();
+        }
+
+        //hide profile
+        if (screen.width < 500) {
+            $(".profile-wrapper").hide();
+        }
+
+        //change of screen resize
+        let currentWidth = 0;
+        window.addEventListener("resize", function () {
+            if (screen.width > 768) {
+                if (resize != 1) {
+                    $("#galarytype1").show();
+                    $("#galarytype2").hide();
+                }
+                resize = 1;
+            }
+            else {
+                if (resize != 0) {
+                    $("#galarytype1").hide();
+                    $("#galarytype2").show();
+                }
+                resize = 0;
+            }
+
+            if (screen.width < 500) {
+                $(".profile-wrapper").hide();
+            }
+            else {
+                $(".profile-wrapper").show();
+            }
+
+        })
+
+        //onclick of the image for mobile devices
+
+        function OpenModal(Id) {
+            if (screen.width < 500) {
+                $('#exampleModal').modal("show");
+                $(".image").css("object-fit", "contain");
+                $(".imagecard").css("width", "100%")
+
+                let element = document.getElementById("imagecard-"+Id);
+
+                let title = element.getElementsByClassName("title");
+
+                document.getElementById("exampleModalLabel").innerHTML = title[0].innerHTML;
+
+                /*$(".profile-wrapper").show();*/
+
+                let modal = document.getElementById("modal_imagecard");
+                modal.innerHTML = element.innerHTML;
+
+                modal.getElementsByClassName("image")[0].removeAttribute("srcset");
+                modal.getElementsByClassName("profile-wrapper")[0].show();
+            }
+    }
+
+    $("#exampleModal").on("hide.bs.modal", function () {
+        $(".imagecard").css("width", "44vw");
+    })
+
+    //set width on close of the modal
+
+
+        //$(".main-child").click(function (element) {
+        //    console.log("mainchild clicked");
+        //    if (screen.width < 500) {
+        //        $('#exampleModal').modal("show");
+        //        $(".image").css("object-fit", "contain");
+        //        console.log(element);
+        //        let title = element.currentTarget.getElementsByClassName("title");
+        //        exampleModalLabel.innerHTML = title[0].innerHTML;
+        //        console.log(title[0].innerHTML);
+        //        $(".profile-wrapper").show();
+        //        document.getElementById("modal_imagecard").innerHTML = element.currentTarget.innerHTML;
+        //    }
+        //})
+        
 </script>
 
 

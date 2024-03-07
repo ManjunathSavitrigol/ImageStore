@@ -24,7 +24,7 @@
             @Html.HiddenFor(x => x.Id)
             @Html.HiddenFor(x => x.ProfileImage, new { @type = "file", @hidden = "true" })
 
-            <div class="d-flex justify-content-center mb-5 gap-5">
+            <div class="d-flex justify-content-center mb-5 gap-4">
                 <div>
                     <img src="@Model.Profile.Trim('~')"
                          class="rounded-circle brandimageinternal">

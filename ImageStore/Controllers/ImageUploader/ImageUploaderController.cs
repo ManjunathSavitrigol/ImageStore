@@ -84,7 +84,7 @@ namespace ImageStore.Controllers.ImageUploader
 
         }
 
-        public ActionResult GetImages(string search, int category_id, int resolution_id, string sorty_by)
+        public ActionResult GetImages(string search, int category_id, int resolution_id, string sorty_by, int displaystart)
         {
             List<ImageObject> imagelist = new List<ImageObject>();
             string type = "";
@@ -100,26 +100,30 @@ namespace ImageStore.Controllers.ImageUploader
                     }
 
                     var images = (IEnumerable<ImageObject>)res.Object;
-                    if (type == "pending")
+                    if (type == "p")
                     {
-                        images = images.Where(x => x.IsVerified == true);
+                        images = images.Where(x => x.IsVerified != true && x.IsRejected != true);
                     }
-                    if (type == "rejected")
+                    else if (type == "r")
                     {
                         images = images.Where(x => x.IsRejected == true);
+                    }
+                    else
+                    {
+                        images = images.Where(x => x.IsVerified == true);
                     }
 
 
                     switch (sorty_by)
                     {
                         case "N":
-                            imagelist = images.OrderBy(x => x.Name).ToList();
+                            imagelist = images.OrderBy(x => x.Name).Skip(displaystart).Take(10).ToList();
                             break;
                         case "DU":
-                            imagelist = images.OrderByDescending(x => x.UploadedDate).ToList();
+                            imagelist = images.OrderByDescending(x => x.UploadedDate).Skip(displaystart).Take(10).ToList();
                             break;
                         default:
-                            imagelist = images.ToList();
+                            imagelist = images.Skip(displaystart).Take(10).ToList();
                             break;
                     }
                 }
@@ -128,9 +132,8 @@ namespace ImageStore.Controllers.ImageUploader
             {
                 Helpers.WriteErrorLog("GetImages Error | " + ex.Message + " | " + ex.InnerException + " | " + ex.StackTrace);
             }
-            return PartialView(imagelist);
-        }
-
-       
+            //return PartialView(imagelist);
+            return Json(imagelist, JsonRequestBehavior.AllowGet);
+        }       
     }
 }

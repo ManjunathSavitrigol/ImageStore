@@ -73,7 +73,8 @@ namespace ImageStore.Controllers.Public
                 }
             }
             catch { }
-            return PartialView(imagelist);
+            //return PartialView(imagelist);
+            return Json(imagelist, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
