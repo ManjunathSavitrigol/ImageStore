@@ -113,7 +113,7 @@
                             @*<label class="form-label control-label">Choose Profile Image</label>
                                 @Html.EditorFor(model => model.ProfileImage, new { htmlAttributes = new { @class = "form-control", @type = "file" } })*@
                             <label class="form-label">Choose Profile Image</label>
-                            <input class="form-control" type="file" name="ProfileImage" id="profileimage">
+                            <input class="form-control" type="file" name="ProfileImage" id="profileimage" accept="image/*">
                         </div>
                         <div class="col-12">
                             @Html.LabelFor(model => model.MobileNo, htmlAttributes: new { @class = "control-label" })
@@ -121,7 +121,7 @@
 
                         </div>
                         <div class="col-12">
-                            <button type="submit" class="btn btn-primary" id="save">Save</button>
+                            <button type="submit" class="btn btn-primary" id="save"><i class="spinner-grow spinner-grow-sm" id="save-loader" style="display:none"></i><span id="save-text">Save</span></button>
                         </div>
 
                     </div>
@@ -164,5 +164,8 @@
             $("#MobileNo").focus();
             return false;
         }
+
+        $("#save-text").hide();
+        $("#save-loader").show();
     })
 </script>

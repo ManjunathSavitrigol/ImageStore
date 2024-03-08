@@ -60,7 +60,7 @@ namespace ImageStore.Controllers.ImageUploader
                             //ext_user.Profile = Helpers.SaveFile(user.ProfileImage, "UserProfileImages", user.Full_Name + DateTime.Now.ToString("yyyyMMddHHmmss"));
 
                             System.Drawing.Image profileImage = new Bitmap(user.ProfileImage.InputStream);
-                            ext_user.Profile = Helpers.CompressAndSaveImage(profileImage, 80, "UserProfileImages", user.Full_Name + DateTime.Now.ToString("yyyyMMddHHmmss"), 1200);
+                            ext_user.Profile = Helpers.CompressAndSaveImage(profileImage, 80, "UserProfileImages", user.Full_Name + DateTime.Now.ToString("yyyyMMddHHmmss"), 400);
 
                         }
 

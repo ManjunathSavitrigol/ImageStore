@@ -67,8 +67,8 @@
                     @Html.TextAreaFor(model => model.Bio, new { @class = "form-control", @rows = 5 })
                 </div>
                 <div class="col-12 mb-3 text-center">
-                    <button class="btn btn-success" type="submit">
-                        Save Profile
+                    <button class="btn btn-success" type="submit" id="profile-save">
+                        <i class="spinner-grow spinner-grow-sm" id="save-loader" style="display:none"></i><span id="save-text">Save Profile</span>
                     </button>
                 </div>
             </div>
@@ -130,6 +130,11 @@
 <script type="text/javascript">
     $("#change_profile").click(function () {
         $("#ProfileImage").click();
+    })
+
+    $("#profile-save").click(function () {
+        $("#save-text").hide();
+        $("#save-loader").show();
     })
 
     //save password

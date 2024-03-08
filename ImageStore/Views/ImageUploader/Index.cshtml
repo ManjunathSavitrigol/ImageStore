@@ -219,7 +219,7 @@
                                 <input type="file" hidden accept=".jpg" name="ImageFile" id="ImageFile" style="display:none;" />
                                 <div class="drop_box2 text-center mt-2">
                                     <h4 id="filename"></h4>
-                                    <button class="btn" type='submit' id="upload">Upload</button>
+                                    <button class="btn" type='submit' id="upload"><i class="spinner-grow spinner-grow-sm" id="upload-loader" style="display:none"></i><span id="upload-text">Upload</span></button>
                                     <button class="btn" type='button' id="cancel">Cancel</button>
                                     <button type="reset" hidden id="reset"></button>
                                 </div>
@@ -583,11 +583,13 @@
         let formdata = new FormData(document.querySelector("#Uploadform"));
         formdata.append('file', $('#ImageFile')[0].files[0]);
 
+        $("#upload-text").hide();
+        $("#upload-loader").show();
         $.ajax({
             url: '@Url.Action("Upload", "ImageUploader")',
             type: 'POST',
             data: formdata,
-            async: false,
+            async: true,
             cache: false,
             contentType: false,
             enctype: 'multipart/form-data',
@@ -611,6 +613,8 @@
                                  $(".drop_box2").hide();
                                  $("#reset").click();
                              }
+                             $("#upload-text").show();
+                             $("#upload-loader").hide();
                          }
                      });
 
