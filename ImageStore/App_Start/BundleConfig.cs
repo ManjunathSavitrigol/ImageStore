@@ -38,7 +38,7 @@ namespace ImageStore
 
             //Bootstrap
             bundles.Add(new ScriptBundle("~/bundle/bootstrap5_js").Include(
-                "~/Content/Bootstrap5/bootstrap.min.js"));
+                "~/Content/Bootstrap5/bootstrap.bundle.js"));
 
             bundles.Add(new StyleBundle("~/bundle/bootstrap5_css").Include(
                 "~/Content/Bootstrap5/bootstrap.min.css"));

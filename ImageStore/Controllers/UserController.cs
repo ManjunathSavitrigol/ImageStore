@@ -3,6 +3,7 @@ using ImageStore.Business;
 using ImageStore.Business.Interfaces;
 using ImageStore.Data.EdmxModel;
 using ImageStore.Domain;
+using ImageStore.FilterAttributes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,15 +13,18 @@ using System.Web.Razor.Tokenizer;
 
 namespace ImageStore.Controllers
 {
+   
     public class UserController : Controller
     {
         IUserBusiness _userBusiness = new UserBusiness();
+        [CheckAdmin]
         public ActionResult Index()
         {
             return View();
         }
 
         [HttpPost]
+        [CheckAdmin]
         public ActionResult Save(User_Details user)
         {
             try
@@ -40,6 +44,7 @@ namespace ImageStore.Controllers
             return RedirectToAction("Index");
         }
 
+        [CheckAdmin]
         public ActionResult Edit(int userId)
         {
             try
@@ -68,6 +73,7 @@ namespace ImageStore.Controllers
             return View();
         }
 
+        [CheckAdmin]
         public ActionResult Create()
         {
             User_Details newUser = new User_Details();
@@ -76,6 +82,7 @@ namespace ImageStore.Controllers
         }
 
         [HttpPost]
+        [CheckAdmin]
         public ActionResult Deactivate(string ids)
         {
             Response res = new Response();
@@ -89,6 +96,7 @@ namespace ImageStore.Controllers
         }
 
         [HttpPost]
+        [CheckAdmin]
         public ActionResult Activate(string ids)
         {
             Response res = new Response();
@@ -101,6 +109,7 @@ namespace ImageStore.Controllers
             return Json(res.Message, JsonRequestBehavior.AllowGet);
         }
 
+        [CheckAdmin]
         public ActionResult GetUsers(ServerDataTable serverData)
         {
             int count = 0;
@@ -132,6 +141,10 @@ namespace ImageStore.Controllers
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 
+        //public ActionResult GetUser(int id == 0)
+        //{
+
+        //}
        
     }
 }

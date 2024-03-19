@@ -26,5 +26,6 @@ namespace ImageStore.Data.EdmxModel
         public string Profile { get; set; }
         public string MobileNo { get; set; }
         public string Bio { get; set; }
+        public int TotalViews { get; set; }
     }
 }

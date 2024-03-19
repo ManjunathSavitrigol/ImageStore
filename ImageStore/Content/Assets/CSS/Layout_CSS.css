@@ -25,11 +25,29 @@
     border-radius: 5px;
 }
 
+@media screen and (max-width:890px){
+    #sidebar.toggle {
+        margin-left: -250px;
+        animation: ease-in 5s linear;
+        position:absolute;
+    }
+    #sidebar {
+        position: absolute;
+        z-index: 50;
+        min-height: 100%;
+        top:85px;
+        left:0px;
+        margin:0px;
+    }
+}
+@media screen and (min-width:890px) {
     /*for the toggle effect*/
     #sidebar.toggle {
         margin-left: -250px;
         animation: ease-in 5s linear;
-    }
+    }   
+}
+   
 
 /*content*/
 #content {

@@ -1,6 +1,7 @@
 ﻿@model Image.ImageUpload
 @{
-    Layout = "~/Views/Shared/_Layout2.cshtml";
+    //Layout = "~/Views/Shared/_Layout2.cshtml";
+    Layout = ViewBag.layout;
 }
 
 @Styles.Render("~/content/assets/css/imagecard.css")
@@ -18,30 +19,46 @@
         <div class="profile-image1 mb-2">
             <div class=" text-center">
                 <a class="navbar-brand" href="#">
-                    <img src="@Session["ProfileImage"].ToString().Trim('~')"
+                    <img src="@if (string.IsNullOrEmpty(ViewBag.ProfileImage)) {
+                        @Session["ProfileImage"].ToString().Trim('~')
+                        } else {
+                        @ViewBag.ProfileImage
+                        }"
                          class="rounded-pill brandimageinternal">
                 </a>
             </div>
             <div class="username text-center">
-                @Session["FullName"].ToString()
+                @if (string.IsNullOrEmpty(ViewBag.FullName))
+                {
+                    @Session["FullName"].ToString()
+                }
+                else
+                {
+                    @ViewBag.FullName
+                }
+
             </div>
         </div>
-        <div class="editbutton text-center mb-3">
-            <a href="@Url.Content("~/UploaderProfile/Index")" class="btn btn-primary"> <i class="fa fa-pen"></i> Edit profile</a>
-        </div>
+        @if (!string.IsNullOrEmpty(ViewBag.PersonalView))
+        {
+            <div class="editbutton text-center mb-3">
+                <a href="@Url.Content("~/UploaderProfile/Index")" class="btn btn-primary"> <i class="fa fa-pen"></i> Edit profile</a>
+            </div>
+        }
+
         <div class="viewslikes">
             <div class="row">
                 <div class="col-4">
-                    <div class="vl-name ">Views</div>
-                    <div>0</div>
+                    <div>Views</div>
+                    <div class="vl-view ">0</div>
                 </div>
                 <div class="col-3">
-                    <div class="vl-name">Likes</div>
-                    <div>0</div>
+                    <div>Likes</div>
+                    <div class="vl-like">0</div>
                 </div>
                 <div class="col-4">
-                    <div class="vl-name">Uploaded</div>
-                    <div>0</div>
+                    <div>Downloads</div>
+                    <div class="vl-download">0</div>
                 </div>
             </div>
         </div>
@@ -54,28 +71,32 @@
                 aria-selected="true">
             My uploads
         </button>
-        <button class="nav-link p-2" id="v-pills-pending-tab" data-bs-toggle="pill"
-                data-bs-target="#v-pills-pending" type="button" role="tab" aria-controls="v-pills-pending"
-                aria-selected="false">
-            Pending
-        </button>
-        <button class="nav-link p-2" id="v-pills-rejected-tab" data-bs-toggle="pill"
-                data-bs-target="#v-pills-rejected" type="button" role="tab" aria-controls="v-pills-rejected"
-                aria-selected="false">
-            Rejected
-        </button>
-        <button class="nav-link p-2" id="v-pills-upload-tab" data-bs-toggle="pill"
-                data-bs-target="#v-pills-upload" type="button" role="tab" aria-controls="v-pills-upload"
-                aria-selected="false">
-            Upload
-        </button>
+        @if (!string.IsNullOrEmpty(ViewBag.PersonalView))
+        {
+            <button class="nav-link p-2" id="v-pills-pending-tab" data-bs-toggle="pill"
+                    data-bs-target="#v-pills-pending" type="button" role="tab" aria-controls="v-pills-pending"
+                    aria-selected="false">
+                Pending
+            </button>
+            <button class="nav-link p-2" id="v-pills-rejected-tab" data-bs-toggle="pill"
+                    data-bs-target="#v-pills-rejected" type="button" role="tab" aria-controls="v-pills-rejected"
+                    aria-selected="false">
+                Rejected
+            </button>
+            <button class="nav-link p-2" id="v-pills-upload-tab" data-bs-toggle="pill"
+                    data-bs-target="#v-pills-upload" type="button" role="tab" aria-controls="v-pills-upload"
+                    aria-selected="false">
+                Upload
+            </button>
+        }
+
     </div>
     <div class="tab-content" id="v-pills-tabContent">
 
         <div class="tab-pane fade  show active position-relative" id="v-pills-myuploads" role="tabpanel"
              aria-labelledby="v-pills-myuploads-tab">
 
-            <div class="row mt-4 position-sticky p-3" style="top:131px;z-index:50;background-color:white">
+            <div class="row m-0 mt-4 position-sticky p-3" style="top:131px;z-index:50;background-color:white">
                 <div class="col-12 col-md-3 mb-2 mb-md-0">
                     @Html.Editor("search_byname", new { htmlAttributes = new { @class = "form-control", @type = "text", @placeholder = "Search...", @id = "search_byname" } })
                 </div>
@@ -108,129 +129,133 @@
             </div>
         </div>
 
-
-        <div class="tab-pane fade" id="v-pills-pending" role="tabpanel"
-             aria-labelledby="v-pills-pending-tab">
-            <div class="main-container">
-                <div class="gallery-wrapper">
-                    <div class="photo-gallary" id="galarytype1-p">
-                        <div class="columns" id="column1-p"></div>
-                        <div class="columns" id="column2-p"></div>
-                        <div class="columns" id="column3-p"></div>
-                    </div>
-                    <div class="photo-gallary" id="galarytype2-p">
-                        <div class="columns" id="column4-p"></div>
-                        <div class="columns" id="column5-p"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="tab-pane fade" id="v-pills-rejected" role="tabpanel"
-             aria-labelledby="v-pills-rejected-tab">
-            <div class="main-container">
-                <div class="gallery-wrapper">
-                    <div class="photo-gallary" id="galarytype1-r">
-                        <div class="columns" id="column1-r"></div>
-                        <div class="columns" id="column2-r"></div>
-                        <div class="columns" id="column3-r"></div>
-                    </div>
-                    <div class="photo-gallary" id="galarytype2-r">
-                        <div class="columns" id="column4-r"></div>
-                        <div class="columns" id="column5-r"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-
-
-        <div class="tab-pane fade" id="v-pills-upload" role="tabpanel"
-             aria-labelledby="v-pills-upload-tab">
-            <div id="outer-browse">
-                <div class="container fileupload">
-                    <div class="card">
-                        <h3>Upload File</h3>
-                        <div class="drop_box">
-
-                            <div class="drop_box1">
-                                <header>
-                                    <h4>Select File here</h4>
-                                </header>
-                                <p>Files Supported: JPG</p>
-                                <button class="btn">Choose File</button>
-                            </div>
-
-                            @using (Html.BeginForm("Upload", "ImageUploader", FormMethod.Post, new { enctype = "multipart/form-data", @class = "w-100 mt-3", @id = "Uploadform" }))
-                            {
-                                <div class="form-group row w-100 mb-2">
-                                    <div class="col-sm-3">
-                                        @Html.LabelFor(model => model.Name)
-                                        <small class="text-danger">*</small>
-                                    </div>
-                                    <div class="col-sm-9">
-                                        @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", @type = "text" } })
-                                    </div>
-
-                                </div>
-                                <div class="form-group row w-100 mb-2">
-                                    <div class="col-sm-3">
-                                        @Html.LabelFor(model => model.Category)
-                                        <small class="text-danger">*</small>
-                                    </div>
-                                    <div class="col-sm-9">
-                                        @Html.DropDownListFor(model => model.Category, new List<SelectListItem> { }, new { @class = "form-control" })
-                                    </div>
-
-                                </div>
-                                <div class="form-group row w-100 mb-2">
-                                    <div class="col-sm-3">
-                                        @Html.LabelFor(model => model.Resolution)
-                                        <small class="text-danger">*</small>
-                                    </div>
-                                    <div class="col-sm-9">
-                                        @Html.DropDownListFor(model => model.Resolution, new List<SelectListItem> { }, new { @class = "form-control" })
-                                    </div>
-                                </div>
-                                <div class="form-group row w-100 mb-2">
-                                    <div class="col-sm-3">
-                                        @Html.LabelFor(model => model.ImageSize)
-                                    </div>
-                                    <div class="col-sm-9">
-
-                                        <div class="input-group">
-                                            @Html.EditorFor(model => model.ImageSize, new { htmlAttributes = new { @class = "form-control", @type = "number", @readonly = true, @Placeholder = "0" } })
-                                            <div class="input-group-append">
-                                                <span class="input-group-text" id="basic-addon2">MB</span>
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                </div>
-                                <div class="form-group row w-100 mb-2">
-                                    <div class="col-sm-3">
-                                        @Html.LabelFor(model => model.Tags)
-                                    </div>
-                                    <div class="col-sm-9">
-                                        @Html.EditorFor(model => model.Tags, new { htmlAttributes = new { @class = "form-control" } })
-                                        <small class="text-primary">Enter tags seperated by comma. Accepts only first 5 tags</small>
-                                    </div>
-                                </div>
-                                <input type="file" hidden accept=".jpg" name="ImageFile" id="ImageFile" style="display:none;" />
-                                <div class="drop_box2 text-center mt-2">
-                                    <h4 id="filename"></h4>
-                                    <button class="btn" type='submit' id="upload"><i class="spinner-grow spinner-grow-sm" id="upload-loader" style="display:none"></i><span id="upload-text">Upload</span></button>
-                                    <button class="btn" type='button' id="cancel">Cancel</button>
-                                    <button type="reset" hidden id="reset"></button>
-                                </div>
-                            }
-
-
+        @if (!string.IsNullOrEmpty(ViewBag.PersonalView))
+        {
+            <div class="tab-pane fade" id="v-pills-pending" role="tabpanel"
+                 aria-labelledby="v-pills-pending-tab">
+                <div class="main-container">
+                    <div class="gallery-wrapper">
+                        <div class="photo-gallary" id="galarytype1-p">
+                            <div class="columns" id="column1-p"></div>
+                            <div class="columns" id="column2-p"></div>
+                            <div class="columns" id="column3-p"></div>
+                        </div>
+                        <div class="photo-gallary" id="galarytype2-p">
+                            <div class="columns" id="column4-p"></div>
+                            <div class="columns" id="column5-p"></div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+
+            <div class="tab-pane fade" id="v-pills-rejected" role="tabpanel"
+                 aria-labelledby="v-pills-rejected-tab">
+                <div class="main-container">
+                    <div class="gallery-wrapper">
+                        <div class="photo-gallary" id="galarytype1-r">
+                            <div class="columns" id="column1-r"></div>
+                            <div class="columns" id="column2-r"></div>
+                            <div class="columns" id="column3-r"></div>
+                        </div>
+                        <div class="photo-gallary" id="galarytype2-r">
+                            <div class="columns" id="column4-r"></div>
+                            <div class="columns" id="column5-r"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <div class="tab-pane fade" id="v-pills-upload" role="tabpanel"
+                 aria-labelledby="v-pills-upload-tab">
+                <div id="outer-browse">
+                    <div class="container fileupload">
+                        <div class="card">
+                            <h3>Upload File</h3>
+                            <div class="drop_box">
+
+                                <div class="drop_box1">
+                                    <header>
+                                        <h4>Select File here</h4>
+                                    </header>
+                                    <p>Files Supported: JPG</p>
+                                    <button class="btn">Choose File</button>
+                                </div>
+
+                                @using (Html.BeginForm("Upload", "ImageUploader", FormMethod.Post, new { enctype = "multipart/form-data", @class = "w-100 mt-3", @id = "Uploadform" }))
+                                {
+                                    <div class="form-group row w-100 mb-2">
+                                        <div class="col-sm-3">
+                                            @Html.LabelFor(model => model.Name)
+                                            <small class="text-danger">*</small>
+                                        </div>
+                                        <div class="col-sm-9">
+                                            @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", @type = "text" } })
+                                        </div>
+
+                                    </div>
+                                    <div class="form-group row w-100 mb-2">
+                                        <div class="col-sm-3">
+                                            @Html.LabelFor(model => model.Category)
+                                            <small class="text-danger">*</small>
+                                        </div>
+                                        <div class="col-sm-9">
+                                            @Html.DropDownListFor(model => model.Category, new List<SelectListItem> { }, new { @class = "form-control" })
+                                        </div>
+
+                                    </div>
+                                    <div class="form-group row w-100 mb-2">
+                                        <div class="col-sm-3">
+                                            @Html.LabelFor(model => model.Resolution)
+                                            <small class="text-danger">*</small>
+                                        </div>
+                                        <div class="col-sm-9">
+                                            @Html.DropDownListFor(model => model.Resolution, new List<SelectListItem> { }, new { @class = "form-control" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group row w-100 mb-2">
+                                        <div class="col-sm-3">
+                                            @Html.LabelFor(model => model.ImageSize)
+                                        </div>
+                                        <div class="col-sm-9">
+
+                                            <div class="input-group">
+                                                @Html.EditorFor(model => model.ImageSize, new { htmlAttributes = new { @class = "form-control", @type = "number", @readonly = true, @Placeholder = "0" } })
+                                                <div class="input-group-append">
+                                                    <span class="input-group-text" id="basic-addon2">MB</span>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div class="form-group row w-100 mb-2">
+                                        <div class="col-sm-3">
+                                            @Html.LabelFor(model => model.Tags)
+                                        </div>
+                                        <div class="col-sm-9">
+                                            @Html.EditorFor(model => model.Tags, new { htmlAttributes = new { @class = "form-control" } })
+                                            <small class="text-primary">Enter tags seperated by comma. Accepts only first 5 tags</small>
+                                        </div>
+                                    </div>
+                                    <input type="file" hidden accept=".jpg" name="ImageFile" id="ImageFile" style="display:none;" />
+                                    <div class="drop_box2 text-center mt-2">
+                                        <h4 id="filename"></h4>
+                                        <button class="btn" type='submit' id="upload"><i class="spinner-grow spinner-grow-sm" id="upload-loader" style="display:none"></i><span id="upload-text">Upload</span></button>
+                                        <button class="btn" type='button' id="cancel">Cancel</button>
+                                        <button type="reset" hidden id="reset"></button>
+                                    </div>
+                                }
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+
+
     </div>
 </div>
 
@@ -256,6 +281,9 @@
 </div>
 
 <script type="text/javascript">
+
+    let prsonalview = "@ViewBag.PersonalView";
+    let userId = "@ViewBag.UserId" == "" ? 0 :"@ViewBag.UserId";
 
     GetDropdowns();
 
@@ -284,11 +312,10 @@
                 resolution_id: resolution.value,
                 sorty_by: sort.value,
                 type: type,
-                displaystart: DisplayStart
+                displaystart: DisplayStart,
+                uploaderid: userId
             },
             function (data) {
-                console.log("called");
-                console.log(data);
                 let count3 = 0;
                 let appenddata = "";
 
@@ -343,7 +370,7 @@
                         + '                </a>                                                                                       '
                         + '            </div>                                                                                         '
                         + '            <div class="profile-wrapper ">                                                                 '
-                        + '                <a class="profilelink-background" href="ImageUploader/index?id=' + item.UploaderId + '">                                                         '
+                        + '                <a class="profilelink-background" href="@Url.Content("/ImageUploader/PublicUploaderProfile")?UserId=' + item.UploaderId + '">                                                         '
                         + '                    <img class="profile-image" src="' + item.ProfilePath.slice(1) + '">                            '
                         + '                </a>                                                                                       '
                         + '                <p class="profile-name">' + item.Uploader + '</p>                                                      '
@@ -375,7 +402,6 @@
 
 
                 if (data.length == 0) {
-                    console.log("data is empty");
                     if (type == "a")
                         reachedfullend_a = true;
                     else if (type == "p")
@@ -410,11 +436,14 @@
     //------------------- end -----------------------
 
     //------------------- get pending images -------
-    $(document).ready(GetImages("p"));
-
+    if (prsonalview != "") {
+        $(document).ready(GetImages("p"));
+    }
 
     //------------------- get rejected images -------
-    $(document).ready(GetImages("r"));
+    if (prsonalview != "") {
+        $(document).ready(GetImages("r"));
+    }
 
 
     //-------------- get dropdownlist ---------------
@@ -447,19 +476,37 @@
     )
     }
 
+    //----------get Views, Likes and Downloads-------
+    function VLD(UserId) {
+        $.get(
+            "@Url.Action("GetVLD", "ImageUploader")?UserId=" + UserId,
+            function (data) {
+                if (data != null) {
+                    $(".vl-view").text(data.TotalViews);
+                    $(".vl-like").text(data.Likes);
+                    $(".vl-download").text(data.Downloads);
+                }
+            }
+        )
+    }
+
+    VLD(userId)
+
     //---------------- load more on end -------------------
     window.onscroll = function (ev) {
         if ((window.innerHeight + window.pageYOffset) >= document.body.offsetHeight) {
-            console.log("I am called");
             if (!reachedfullend_a) {
                 GetImages("a", count_a = count_a + 10, false)
             }
-            if (!reachedfullend_p) {
-                GetImages("p", count_p = count_p + 10, false)
+            if (prsonalview != "") {
+                if (!reachedfullend_p) {
+                    GetImages("p", count_p = count_p + 10, false)
+                }
+                if (!reachedfullend_r) {
+                    GetImages("r", count_r = count_r + 10, false)
+                }
             }
-            if (!reachedfullend_r) {
-                GetImages("r", count_r = count_r + 10, false)
-            }
+
         }
     };
 
@@ -525,7 +572,7 @@
             modal.innerHTML = element.innerHTML;
 
             modal.getElementsByClassName("image")[0].removeAttribute("srcset");
-            modal.getElementsByClassName("profile-wrapper")[0].show();
+        //    modal.getElementsByClassName("profile-wrapper")[0].show();
         }
     }
 
@@ -534,9 +581,8 @@
     })
 
 
-
-
-    //-------------------------- image upload js ------------------------
+    if (prsonalview != "") {
+        //-------------------------- image upload js ------------------------
 
     $(".drop_box2").hide();
 
@@ -592,14 +638,34 @@
             async: true,
             cache: false,
             contentType: false,
-            enctype: 'multipart/form-data',
+            //enctype: 'multipart/form-data',
             processData: false,
-            //xhr: function () {
-            //    var xhr = new window.XMLHttpRequest();
-            //    xhr.upload.addEventListener("progress", function (evt) {
-            //        console.log(evt.loaded);
-            //    });
+            beforeSend: function (xhr) {
+                console.log("I am beforesend");
+                setTimeout(10000);
+            },
+            context: this,
+            //converters: { "text json": jQuery.parseJSON },
+            /*crossDomain: true,*/
+            //dataFilter: function (data, type) {
+            //    console.log("I am datafilter")
             //},
+            /* dataType: "json",*/
+            //global: false,
+            //headers: {
+            //    tokeninh:"something"
+            //},
+            ///*ifModified: true,*/
+            //password: "pass",
+            //username:"username",
+            //statusCode: {
+            //    404: function () {
+            //        console.log("I am error occured")
+            //        swal("404 occured", "", "error");
+            //    }
+            //},
+            //timeout: 10000,
+
             success: function (response) {
                 let data = response.Message.split('*');
                  swal({
@@ -619,7 +685,14 @@
                      });
 
             },
+            //xhr: function () {
+            //    var filexhr = $.ajaxSettings.xhr();
+            //    if (filexhr.upload) {
+            //        console.log("uploading");
+            //    }
+            //},
             error: function (err) {
+                console.log(err);
                 swal("error occured", "", "error");
             }
         });
@@ -629,5 +702,31 @@
         return false;
 
     })
+    }
+
+     //--------------------- LIke----------------------- -------
+
+    function Like(id) {
+        $.ajax({
+            type:"POST",
+            data: {id : id},
+            url: '@Url.Action("Like", "Public")',
+            success: function (data) {
+                if (data.Flag) {
+                    if (data.Object == 1) {
+                        $("#itemL-" + id + "> i").css({ color: 'red', size: '25px' })
+                    } else {
+                        $("#itemL-" + id + "> i").css({ color: 'black', size: '25px' })
+                    }
+
+                } else {
+                    window.location.href = "@Url.Content("~/Login/Index")/"
+                }
+            },
+            error: function (err) {
+                swal("error", "", "Error occured!");
+            }
+        })
+    }
 
 </script>

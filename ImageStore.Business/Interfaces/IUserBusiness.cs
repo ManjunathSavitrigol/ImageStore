@@ -41,5 +41,7 @@ namespace ImageStore.Business.Interfaces
 
         Response ChangePassword(int userid, string oldpass, string newpass);
 
+        Response GetWithLikes(int userId);
+
     }
 }

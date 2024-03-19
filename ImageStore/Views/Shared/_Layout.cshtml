@@ -15,39 +15,48 @@
 
 </head>
 <body>
-    <div id="wrapper">
+    <div style="width:100%">
+        <div id="wrapper">
 
-        <!--sidebar -->
-        <nav id="sidebar" class="shadow-lg">
+            <!--sidebar -->
+            <nav id="sidebar" class="shadow-lg d-flex flex-column toggle">
 
-            <!--sidebar logo-->
-            <div id="sidebar-logo">
-                <div id="logo">
+                <!--sidebar logo-->
+                <div id="sidebar-logo">
+                    <div id="logo">
 
+                    </div>
                 </div>
-            </div>
-            <div id="sidebar-strip" class="d-flex justify-content-center align-items-center">
-                @Session["FullName"].ToString()
-            </div>
+                <div id="sidebar-strip" class="d-flex justify-content-center align-items-center">
+                    @Session["FullName"].ToString()
+                </div>
 
-            <!--main sidebar content-->
-            <div id="sidebar-navigation">
-                @Html.Partial(Session["Navigation"].ToString())
-            </div>
-        </nav>
+                <!--main sidebar content-->
+                <div id="sidebar-navigation">
+                    @Html.Partial(Session["Navigation"].ToString())
+                </div>
+                <div style="flex:1 1 auto" class="d-flex justify-content-center pb-3">
+                    <a class="align-self-end" style="color: black !important" href="@Url.Action("Logout", "Login")">
+                        Logout
+                        <i class="fa fa-sign-out" aria-hidden="true"></i>
+                    </a>
+                </div>
+               
+            </nav>
 
-        <!-- main content-->
-        <div id="content">   
-            <div id="overlayer"></div>
-            <span id="loader"></span>
-            <span id="loader2"></span>
-            @RenderBody()
-            <hr />
-            <footer>
-                <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
-            </footer>
+            <!-- main content-->
+            <div id="content">
+                <div id="overlayer"></div>
+                <span id="loader"></span>
+                <span id="loader2"></span>
+                @RenderBody()
+                <hr />
+                <footer>
+                    <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+                </footer>
+            </div>
         </div>
-    </div>   
+    </div>
     @RenderSection("scripts", required: false)
 
 

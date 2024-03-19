@@ -13,7 +13,7 @@
         @Html.Partial("_TopLeft")
 
         <!-- current page indication by breadcrumb-->
-        <div class="pt-3 ps-2 d-none d-md-block">
+        <div class="pt-3 ps-2">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item n-active" aria-current="page">By me</li>
@@ -138,6 +138,7 @@
             ordering: false, //disable filtering ascending and descending
             bFilter: true,//Enables Filtering
             bServerSide: true,
+            scrollX:50,
             sAjaxSource: '@Url.Action("GetImages", "ImageApprove")',
             fnServerParams: function (aoData) {
                 aoData.push(

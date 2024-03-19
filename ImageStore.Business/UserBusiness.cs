@@ -7,6 +7,8 @@ using ImageStore.Data.Infrastructure.Contract;
 using ImageStore.Domain;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Security.Policy;
 using System.Text;
@@ -60,6 +62,7 @@ namespace ImageStore.Business
                         existingUser.Pass = user.Pass;
                         existingUser.UserType = user.UserType;
                         existingUser.ActiveFlag = user.ActiveFlag;
+                        existingUser.TotalViews = user.TotalViews;
                         _userDetails.Update(existingUser);
 
                         res.Message = "success*User updated successfully!";
@@ -105,28 +108,23 @@ namespace ImageStore.Business
             return res;
         }
 
-        public Response GetWithLikes(int id)
+        public Response GetWithLikes(int userId)
         {
             Response res = new Response();
             res.Message = " * ";
             try
             {
-                IEnumerable<User_Details> users = _userRepo.GetAll();
-                IEnumerable<Likes> likes = _likesRepo.GetAll();
-
-                res.Object = (from u in users
-                              join l in likes
-                              on u.Id equals l.UserId into ul
-                              where u.Id == id
-                              group ul by u.Id into groupul
-                              select new UserDetails2
-                              {
-                                  //Id = groupul.Key,
-                                  //Email = u.Email,
-                                  //TotalDownloads = 
-                              }
-
-                              );
+                //string cs = ConfigurationManager.ConnectionStrings["connectionStringName"].ConnectionString;
+                string query = "select totalviews as TotalViews, (select count(*) from Likes join Images on Likes.ImageId = Images.Id where Likes.IsLiked =1 and Images.UploaderId = " + userId + ") as Likes, (select sum(downloads) from Images where UploaderId = " + userId + ") as Downloads from User_Details where Id = " + userId + "; ";
+                using(ImageStoreEntities IS = new ImageStoreEntities())
+                {
+                     VLD vld = IS.Database.SqlQuery<VLD>(query).FirstOrDefault();
+                    if (vld != null)
+                    {
+                        res.Object = vld;
+                        res.Flag = true;
+                    }
+                }
             }
             catch (Exception ex) { Helpers.WriteErrorLog("GetWithLike Error | " + ex.Message + " | " + ex.InnerException + " | " + ex.StackTrace); }
             return res;

@@ -101,8 +101,6 @@
                 DisplayStart: DisplayStart
             },
             function (data) {
-                console.log("called");
-                console.log(data);
                 let count3 = 0;
                 let appenddata = "";
 
@@ -156,8 +154,8 @@
                         + '                    </div>                                                                                 '
                         + '                </a>                                                                                       '
                         + '            </div>                                                                                         '
-                        + '            <div class="profile-wrapper ">                                                                 '
-                        + '                <a class="profilelink-background" href="ImageUploader/index?id=' + item.UploaderId + '">                                                         '
+                        + '            <div class="profile-wrapper">                                                                 '
+                        + '                <a class="profilelink-background" data-bs-toggle="popover" title="Bio" data-bs-content=" '+item.Bio +'" href="@Url.Content("/ImageUploader/PublicUploaderProfile")?UserId=' + item.UploaderId + '">                                                         '
                         + '                    <img class="profile-image" src="' + item.ProfilePath.slice(1) + '">                            '
                         + '                </a>                                                                                       '
                         + '                <p class="profile-name">'+item.Uploader+'</p>                                                      '
@@ -192,7 +190,6 @@
 
 
                 if (data.length == 0) {
-                    console.log("data is empty");
                     reachedfullend = true;
                 }
                 if (clearhtml) {
@@ -207,7 +204,13 @@
                     column3.innerHTML += text3;
                     column4.innerHTML += text4;
                     column5.innerHTML += text5;
-                }     
+                }
+
+
+                var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'));
+                var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
+                    return new bootstrap.Popover(popoverTriggerEl, {trigger:"hover"});
+                });
             }
         )
     }
@@ -232,9 +235,8 @@
 
 
     //---------------- load more on end -------------------
-    window.onscroll = function (ev) {        
+    window.onscroll = function (ev) {
         if ((window.innerHeight + window.pageYOffset) >= document.body.offsetHeight) {
-            console.log("I am called");
             if (!reachedfullend) {
                 GetImages(search, count = count + 10, false)
             } else {
@@ -297,9 +299,9 @@
         }
 
         //hide profile
-        if (screen.width < 500) {
-            $(".profile-wrapper").hide();
-        }
+        //if (screen.width < 500) {
+        //    $(".profile-wrapper").hide();
+        //}
 
         //change of screen resize
         let currentWidth = 0;
@@ -319,12 +321,12 @@
                 resize = 0;
             }
 
-            if (screen.width < 500) {
-                $(".profile-wrapper").hide();
-            }
-            else {
-                $(".profile-wrapper").show();
-            }
+            //if (screen.width < 500) {
+            //    $(".profile-wrapper").hide();
+            //}
+            //else {
+            //    $(".profile-wrapper").show();
+            //}
 
         })
 
@@ -348,7 +350,10 @@
                 modal.innerHTML = element.innerHTML;
 
                 modal.getElementsByClassName("image")[0].removeAttribute("srcset");
-                modal.getElementsByClassName("profile-wrapper")[0].show();
+                //let test = modal.getElementsByClassName("profile-wrapper")[0];
+                //console.log(test);
+
+                //modal.getElementsByClassName("profile-wrapper")[0].show();
             }
     }
 
@@ -372,7 +377,7 @@
         //        document.getElementById("modal_imagecard").innerHTML = element.currentTarget.innerHTML;
         //    }
         //})
-        
+
 </script>
 
 

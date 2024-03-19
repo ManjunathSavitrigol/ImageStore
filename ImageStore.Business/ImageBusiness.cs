@@ -167,7 +167,8 @@ namespace ImageStore.Business
                                                           ApprovedBy = i.VerifiedBy,
                                                           RejectedBy = i.RejectedBy,
                                                           ApprovedDate = i.ApprovedDate,
-                                                          RejectedDate = i.RejectedDate
+                                                          RejectedDate = i.RejectedDate,
+                                                          Bio = u.Bio
                                                       }
                          );
 

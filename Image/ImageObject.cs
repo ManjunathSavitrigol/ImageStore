@@ -25,7 +25,7 @@ namespace Image
         public string Reason { get; set; }
         public bool IsVerified { get; set; }
         public DateTime? ApprovedDate { get; set; }
-       
+        public string Bio { get; set; }
 
 
 

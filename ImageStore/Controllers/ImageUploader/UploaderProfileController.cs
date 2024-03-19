@@ -96,6 +96,6 @@ namespace ImageStore.Controllers.ImageUploader
 
             //return Json(res, JsonRequestBehavior.AllowGet);
             return RedirectToAction("Index");
-        }
+        }        
     }
 }
