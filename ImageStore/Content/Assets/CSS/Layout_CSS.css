@@ -29,15 +29,25 @@
     #sidebar.toggle {
         margin-left: -250px;
         animation: ease-in 5s linear;
-        position:absolute;
+        position: fixed;
+        top: 75px;
     }
     #sidebar {
-        position: absolute;
+        position: fixed;
         z-index: 50;
-        min-height: 100%;
-        top:85px;
+        min-height: 89vh;
+        top:75px;
         left:0px;
         margin:0px;
+    }
+
+    #page-content-topbar{
+        position:sticky;
+        margin:0px;
+        width:100%;
+        z-index:50;
+        top:0px;
+        left:0px;
     }
 }
 @media screen and (min-width:890px) {
@@ -45,7 +55,17 @@
     #sidebar.toggle {
         margin-left: -250px;
         animation: ease-in 5s linear;
-    }   
+    }
+
+    #page-content-topbar {
+        margin-top: 10px;
+        margin-right: 10px;
+        padding-left: 10px;
+        background-color: #2c5f2d;
+        border: 2px solid black;
+        border-radius: 5px;
+        color: white;
+    }
 }
    
 
@@ -56,9 +76,6 @@
 
 /*content > topbar*/
 #page-content-topbar {
-    margin-top: 10px;
-    margin-right: 10px;
-    padding-left: 10px;
     background-color: #2c5f2d;
     border: 2px solid black;
     border-radius: 5px;

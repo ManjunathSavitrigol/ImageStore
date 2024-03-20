@@ -19,7 +19,7 @@
         @Html.Partial("_TopLeft")
 
         <!-- current page indication by breadcrumb-->
-        <div class="pt-3 ps-2">
+        <div class="pt-3 ps-2 pe-2">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="@Url.Action(Session["ActionName"]?.ToString(), Session["ControllerName"]?.ToString())">@Session["PreviousPage"].ToString()</a></li>
