@@ -13,10 +13,12 @@ using System.Web.Mvc;
 namespace ImageStore.Controllers
 {
     [CheckAdmin]
+    [CheckDemo]
     public class SettingsController : Controller
     {
         ISettingsBusiness _settings = new SettingsBusiness();
 
+        [CheckDemo(Disable=true)]
         public ActionResult Index()
         {
             List<Settings> settings = new List<Settings>();
@@ -32,7 +34,8 @@ namespace ImageStore.Controllers
             catch { }
             return View(settings);
         }
-
+ 
+        [CheckDemo(Disable=true)]
         public ActionResult Get(ServerDataTable server) 
         {
             int count = 0;

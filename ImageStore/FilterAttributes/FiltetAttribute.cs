@@ -1,11 +1,8 @@
 ﻿using ImageStore.Business;
 using ImageStore.Business.Interfaces;
-using ImageStore.Data;
 using ImageStore.Data.Infrastructure;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
@@ -112,6 +109,40 @@ namespace ImageStore.FilterAttributes
 
             }
 
+        }
+    }
+
+    public class CheckDemo: ActionFilterAttribute
+    {
+        public bool Disable { get; set; }
+        public override void OnActionExecuting(ActionExecutingContext filterContext)
+        {
+            if (!Disable)
+            {
+                HttpContext context = HttpContext.Current;
+                string controller = context.Request.RequestContext.RouteData.Values["controller"].ToString();
+                string a = context.Session["IsDemo"]?.ToString();
+
+                if (context.Session["IsDemo"]?.ToString() == "true")
+                {   
+                    filterContext.Controller.TempData["message"] = "Unauthorised";
+                    filterContext.Controller.TempData["messagetype"] = "warning";
+
+                    if (filterContext.HttpContext.Request.IsAjaxRequest())
+                    {
+                        filterContext.HttpContext.Response.StatusCode = 401;
+                    }
+                    else
+                    {
+                        filterContext.Result = new RedirectToRouteResult(
+                              new RouteValueDictionary {
+                                { "Controller", controller },
+                                { "Action", "Index" }
+                              });
+                    }                
+
+                }
+            }    
         }
     }
 }

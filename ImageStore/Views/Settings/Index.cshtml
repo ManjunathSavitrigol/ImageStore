@@ -152,6 +152,9 @@
             contentType: false,
             enctype: 'multipart/form-data',
             processData: false,
+            statusCode: {
+                401: function () { swal("Unauthorised", "", "warning") }
+            },
             success: function (response) {
                 let data = response.Message.split('*');
                  swal({

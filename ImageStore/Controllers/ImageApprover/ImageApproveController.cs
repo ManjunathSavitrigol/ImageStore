@@ -13,10 +13,12 @@ using ImageStore.FilterAttributes;
 namespace ImageStore.Controllers.ImageApprover
 {
     [CheckIA]
+    [CheckDemo]
     public class ImageApproveController : Controller
     {
         IImageBusiness _image = new ImageBusiness();
 
+        [CheckDemo(Disable=true)]
         public ActionResult Index()
         {
             Session["PreviousPage"] = "All";
@@ -25,6 +27,7 @@ namespace ImageStore.Controllers.ImageApprover
             return View();
         }
 
+        [CheckDemo(Disable = true)]
         public ActionResult GetImages(ServerDataTable serverData)
         {
             DateTime fromdate = DateTime.Now.Date;
@@ -126,6 +129,7 @@ namespace ImageStore.Controllers.ImageApprover
             return Json(res, JsonRequestBehavior.AllowGet);   
         }
 
+        [CheckDemo(Disable = true)]
         public ActionResult Byme()
         {
             Session["PreviousPage"] = "By me";
@@ -135,6 +139,7 @@ namespace ImageStore.Controllers.ImageApprover
             return View();
         }
 
+        [CheckDemo(Disable = true)]
         public ActionResult Pending()
         {
             Session["PreviousPage"] = "Pending";

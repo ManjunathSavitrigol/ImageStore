@@ -13,9 +13,12 @@ using ImageStore.FilterAttributes;
 namespace ImageStore.Controllers
 {
     [CheckAdmin]
+    [CheckDemo]
     public class ResolutionController : Controller
     {
         IResolutionBusiness _resolutionBusiness = new ResolutionBusiness();
+
+        [CheckDemo(Disable = true)]
         public ActionResult Index()
         {
             return View();
@@ -117,6 +120,7 @@ namespace ImageStore.Controllers
             return Json(res.Message, JsonRequestBehavior.AllowGet);
         }
 
+        [CheckDemo(Disable = true)]
         public ActionResult GetResolutions(ServerDataTable serverData)
         {
             int count = 0;

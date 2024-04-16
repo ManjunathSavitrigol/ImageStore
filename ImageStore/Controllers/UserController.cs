@@ -13,18 +13,19 @@ using System.Web.Razor.Tokenizer;
 
 namespace ImageStore.Controllers
 {
-   
+    [CheckDemo]
+    [CheckAdmin]
     public class UserController : Controller
     {
         IUserBusiness _userBusiness = new UserBusiness();
-        [CheckAdmin]
+
+        [CheckDemo(Disable = true)]
         public ActionResult Index()
         {
             return View();
         }
 
         [HttpPost]
-        [CheckAdmin]
         public ActionResult Save(User_Details user)
         {
             try
@@ -44,7 +45,6 @@ namespace ImageStore.Controllers
             return RedirectToAction("Index");
         }
 
-        [CheckAdmin]
         public ActionResult Edit(int userId)
         {
             try
@@ -73,7 +73,6 @@ namespace ImageStore.Controllers
             return View();
         }
 
-        [CheckAdmin]
         public ActionResult Create()
         {
             User_Details newUser = new User_Details();
@@ -82,7 +81,6 @@ namespace ImageStore.Controllers
         }
 
         [HttpPost]
-        [CheckAdmin]
         public ActionResult Deactivate(string ids)
         {
             Response res = new Response();
@@ -96,7 +94,6 @@ namespace ImageStore.Controllers
         }
 
         [HttpPost]
-        [CheckAdmin]
         public ActionResult Activate(string ids)
         {
             Response res = new Response();
@@ -109,7 +106,7 @@ namespace ImageStore.Controllers
             return Json(res.Message, JsonRequestBehavior.AllowGet);
         }
 
-        [CheckAdmin]
+        [CheckDemo(Disable = true)]
         public ActionResult GetUsers(ServerDataTable serverData)
         {
             int count = 0;

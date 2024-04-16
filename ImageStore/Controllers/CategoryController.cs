@@ -14,9 +14,12 @@ using System.Web.Mvc;
 namespace ImageStore.Controllers
 {
     [CheckAdmin]
+    [CheckDemo]
     public class CategoryController : Controller
     {
         ICategoryBusiness _categoryBusiness = new CategoryBusiness();
+
+        [CheckDemo(Disable=true)]
         public ActionResult Index()
         {
             return View();
@@ -94,6 +97,7 @@ namespace ImageStore.Controllers
             return Json(res.Message, JsonRequestBehavior.AllowGet);
         }
 
+        [CheckDemo(Disable = true)]
         public ActionResult GetCategories(ServerDataTable serverData)
         {
             int count = 0;

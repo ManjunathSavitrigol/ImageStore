@@ -92,6 +92,9 @@
 
 <script type="text/javascript">
 
+    //document.getElementById("main-content").style.pointerEvents = "none";
+
+
     //load table
     var table;
     $(document).ready(function () {
@@ -170,7 +173,10 @@
              type: "POST",
              data: { ids: boxdata.join(',') },
              url: '@Url.Action("Deactivate", "user")',
-             success: function (result) {
+             statusCode: {
+                 401: function () { swal("Unauthorised", "", "warning") }
+             },
+             success: function (result, something, another) {
                  let data = result.split("*");
                  swal({
                      title: data[1],
@@ -208,6 +214,9 @@
              type: "POST",
              data: { ids: boxdata.join(',') },
              url: '@Url.Action("activate", "user")',
+             statusCode: {
+                 401: function () { swal("Unauthorised", "", "warning") }
+             },
              success: function (result) {
                  let data = result.split("*");
                  swal({

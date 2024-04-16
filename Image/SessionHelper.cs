@@ -17,5 +17,6 @@ namespace Image
         public string Redirect { get; set; }
         public string ProfileImage { get; set; }
         public string SessionStart { get; set; }    
+        public string IsDemo { get; set; }
     }
 }

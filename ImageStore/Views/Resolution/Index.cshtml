@@ -147,6 +147,9 @@
              type: "POST",
              data: { ids: boxdata.join(',') },
              url: '@Url.Action("Deactivate", "Resolution")',
+             statusCode: {
+                 401: function () { swal("Unauthorised", "", "warning") }
+             },
              success: function (result) {
                  let data = result.split("*");
                  swal({
@@ -185,6 +188,9 @@
              type: "POST",
              data: { ids: boxdata.join(',') },
              url: '@Url.Action("activate", "Resolution")',
+             statusCode: {
+                 401: function () { swal("Unauthorised", "", "warning") }
+             },
              success: function (result) {
                  let data = result.split("*");
                  swal({

@@ -28,15 +28,32 @@ namespace ImageStore.Controllers
         }
 
         [HttpPost]
-        public ActionResult Login(string login_email, string login_password)
+        public ActionResult Login(string login_email, string login_password, string isDemo = "false", string isDemoAdmin = "false")
         {
             try
             {
+                if(isDemo == "true")
+                {
+                    if(isDemoAdmin == "true")
+                    {
+                        login_email = "Admin@gmail.com";
+                        login_password = "Admin";
+                    }
+                    else
+                    {
+                        login_email = "approver@gmail.com";
+                        login_password = "123";
+                    }
+                }
                 Response check = loginBusiness.CheckUser(login_email, login_password);
+               
                 if(check.Flag == true) 
                 {
                     User_Details user = (User_Details)check.Object1;
-                    SetSession((SessionHelper)check.Object);
+                    var session = (SessionHelper)check.Object;
+                    session.IsDemo = isDemo;
+
+                    SetSession(session);
 
                     if(user.UserType == "IU" &&( user.DOB == null || user.Profile == null || user.MobileNo == null))
                     {
